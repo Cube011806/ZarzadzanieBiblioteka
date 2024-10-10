@@ -6,7 +6,11 @@ namespace ZarzadzanieBiblioteka.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+		public virtual DbSet<Uzytkownik> Uzytkownicy { get; set; }
+        public virtual DbSet<Autor> Autorzy { get; set; }
+        public virtual DbSet<Biblioteka> Biblioteki { get; set; }
+        public virtual DbSet<Ksiazka> Ksiazki { get; set; }
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
@@ -20,6 +24,5 @@ namespace ZarzadzanieBiblioteka.Data
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseLazyLoadingProxies();
         }
-        public virtual DbSet<Uzytkownik> Uzytkownicy { get; set; }
     }
 }
