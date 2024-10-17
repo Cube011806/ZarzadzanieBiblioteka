@@ -7,11 +7,11 @@ namespace ZarzadzanieBiblioteka.Models
 	{
 		public int Id { get; set; }
 
-		[Column(TypeName = "varchar2(100)")]
+		//[Column(TypeName = "varchar2(100)")]
 		[MaxLength(100)]
 		public string Nazwa { get; set; } = string.Empty;
 
-		[Column(TypeName = "varchar2(30)")]
+		//[Column(TypeName = "varchar2(30)")]
 		[MaxLength(30)]
 		public string Gatunek { get; set; } = string.Empty;
 		public DateTime DataWydania { get; set; }
@@ -20,8 +20,8 @@ namespace ZarzadzanieBiblioteka.Models
 		public virtual Biblioteka Biblioteka { get; set; } = null!;
 		public int AutorId { get; set; }
 		public virtual Autor Autor { get; set; } = null!;
-		public virtual ICollection<Opinia>? Opinie { get; set; } = new List<Opinia>();
-		public virtual ICollection<Wypozyczenie>? Wypozyczenia { get; set; } = new List<Wypozyczenie>();
-		public virtual ICollection<Rezerwacja>? Rezerwacje { get; set; } = new List<Rezerwacja>();
+		public virtual ICollection<Opinia> Opinie { get; set; } = new List<Opinia>();
+		public virtual ICollection<Wypozyczenie> Wypozyczenia { get; set; } = new List<Wypozyczenie>();
+		public virtual ICollection<Rezerwacja> Rezerwacje { get; set; } = new List<Rezerwacja>();
 	}
 }

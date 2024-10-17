@@ -7,13 +7,13 @@ namespace ZarzadzanieBiblioteka.Models
 	{
 		public int Id { get; set; }
 
-		[Column(TypeName = "varchar2(60)")]
+		//[Column(TypeName = "varchar2(60)")]
 		[MaxLength(60)]
-		public string ImieAutora { get; set; } = string.Empty;
+		public string Imie { get; set; } = string.Empty;
 
-		[Column(TypeName = "varchar2(60)")]
+		//[Column(TypeName = "varchar2(60)")]
 		[MaxLength(60)]
-		public string NazwiskoAutora { get; set; } = string.Empty;
+		public string Nazwisko { get; set; } = string.Empty;
 
 		public virtual ICollection<Ksiazka> Ksiazki { get; set; } = new List<Ksiazka>();
 	}

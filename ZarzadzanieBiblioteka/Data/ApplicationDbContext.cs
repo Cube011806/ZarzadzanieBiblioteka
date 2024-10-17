@@ -13,6 +13,7 @@ namespace ZarzadzanieBiblioteka.Data
         public virtual DbSet<Opinia> Opinie { get; set; }
         public virtual DbSet<Wypozyczenie> Wypozyczenia { get; set; }
         public virtual DbSet<Rezerwacja> Rezerwacje { get; set; }
+        public virtual DbSet<Wolumin> Woluminy { get; set; }
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

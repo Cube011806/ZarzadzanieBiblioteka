@@ -7,7 +7,7 @@ namespace ZarzadzanieBiblioteka.Models
 	{
 		public int Id { get; set; }
 
-		[Column(TypeName = "varchar2(1000)")]
+		//[Column(TypeName = "varchar2(1000)")]
 		[MaxLength(1000)]
 		public string Komentarz { get; set; } = string.Empty;
 
@@ -15,7 +15,7 @@ namespace ZarzadzanieBiblioteka.Models
 		public byte Ocena { get; set; }
 		public int KsiazkaId { get; set; }
 		public virtual Ksiazka Ksiazka { get; set; } = null!;
-		public int UzytkownikId { get; set; }
+		public string UzytkownikId { get; set; }
 		public virtual Uzytkownik Uzytkownik { get; set; } = null!;
 	}
 }
