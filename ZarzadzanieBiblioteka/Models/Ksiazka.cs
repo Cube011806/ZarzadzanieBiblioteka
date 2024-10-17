@@ -20,8 +20,5 @@ namespace ZarzadzanieBiblioteka.Models
 		public virtual Biblioteka Biblioteka { get; set; } = null!;
 		public int AutorId { get; set; }
 		public virtual Autor Autor { get; set; } = null!;
-		public virtual ICollection<Opinia>? Opinie { get; set; } = new List<Opinia>();
-		public virtual ICollection<Wypozyczenie>? Wypozyczenia { get; set; } = new List<Wypozyczenie>();
-		public virtual ICollection<Rezerwacja>? Rezerwacje { get; set; } = new List<Rezerwacja>();
 	}
 }
