@@ -14,7 +14,8 @@ namespace ZarzadzanieBiblioteka.Models
 		//[Column(TypeName = "varchar2(30)")]
 		[MaxLength(30)]
 		public string Gatunek { get; set; } = string.Empty;
-		public DateTime DataWydania { get; set; }
+        public string Okladka { get; set; } = string.Empty;
+        public DateTime DataWydania { get; set; }
 		public int LiczbaStron { get; set; }
 		public string Oprawa { get; set; } = string.Empty;
 		public int Wydanie { get; set; }
