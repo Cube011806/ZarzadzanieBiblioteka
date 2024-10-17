@@ -10,6 +10,9 @@ namespace ZarzadzanieBiblioteka.Data
         public virtual DbSet<Autor> Autorzy { get; set; }
         public virtual DbSet<Biblioteka> Biblioteki { get; set; }
         public virtual DbSet<Ksiazka> Ksiazki { get; set; }
+        public virtual DbSet<Opinia> Opinie { get; set; }
+        public virtual DbSet<Wypozyczenie> Wypozyczenia { get; set; }
+        public virtual DbSet<Rezerwacja> Rezerwacje { get; set; }
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
