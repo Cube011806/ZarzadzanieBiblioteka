@@ -9,13 +9,17 @@ namespace ZarzadzanieBiblioteka.Models
 
 		//[Column(TypeName = "varchar2(100)")]
 		[MaxLength(100)]
-		public string Nazwa { get; set; } = string.Empty;
+		public string Tytul { get; set; } = string.Empty;
 
 		//[Column(TypeName = "varchar2(30)")]
 		[MaxLength(30)]
 		public string Gatunek { get; set; } = string.Empty;
 		public DateTime DataWydania { get; set; }
 		public int LiczbaStron { get; set; }
+		public string Oprawa { get; set; } = string.Empty;
+		public int Wydanie { get; set; }
+		public int ISBN { get; set; }
+		//Relacje
 		public int BibliotekaId { get; set; }
 		public virtual Biblioteka Biblioteka { get; set; } = null!;
 		public int AutorId { get; set; }

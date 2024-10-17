@@ -6,6 +6,7 @@ namespace ZarzadzanieBiblioteka.Models
     {
         public string Imie { get; set; } = string.Empty;
         public string Nazwisko { get; set; } = string.Empty;
+        public int AccessLevel { get; set; } = 0; //Do zarządzania uprawnieniami
         public DateTime DataUrodzenia { get; set; }
 
         /*

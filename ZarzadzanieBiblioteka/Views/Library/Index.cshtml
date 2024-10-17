@@ -1,0 +1,34 @@
+﻿@model ICollection<Ksiazka>
+
+<div class="text-center">
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (Model.Count != 0)
+        {
+            foreach (var ksiazka in Model)
+            {
+                <div>
+                    @ksiazka.Tytul
+                    @* 
+                        @ksiazka.Autor.Imie
+                        @ksiazka.Autor.Nazwisko 
+                    *@
+                    @ksiazka.Wydanie
+                    @ksiazka.DataWydania
+                </div>
+            }
+        }
+        else
+        {
+            <h2>Brak książek w katalogu</h2>
+        }
+        <a asp-action="Add" class="btn btn-primary btn-lg">
+            Dodaj Książkę
+        </a>
+
+    }
+    else
+    {
+        <h1 class="display-4">Brak dostępu!</h1>
+    }
+</div>
