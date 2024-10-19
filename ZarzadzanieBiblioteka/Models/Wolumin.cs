@@ -7,7 +7,7 @@
         //Relacje
         public virtual Ksiazka Ksiazka { get; set; }
         public int KsiazkaId { get; set; }
-        public virtual ICollection<Wypozyczenie> Wypozyczenia { get; set; }
-        public virtual ICollection<Rezerwacja> Rezerwacje { get; set; }
+        public virtual ICollection<Wypozyczenie> Wypozyczenia { get; set; } = new List<Wypozyczenie>();
+        public virtual ICollection<Rezerwacja> Rezerwacje { get; set; } = new List<Rezerwacja>();
     }
 }

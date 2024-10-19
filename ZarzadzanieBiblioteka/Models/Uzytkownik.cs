@@ -15,8 +15,8 @@ namespace ZarzadzanieBiblioteka.Models
         */
 
         //Relacje
-        public virtual ICollection<Opinia> Opinie { get; set; }
-        public virtual ICollection<Wypozyczenie> Wypozyczenia { get; set; }
-        public virtual ICollection<Rezerwacja> Rezerwacje { get; set; }
+        public virtual ICollection<Opinia> Opinie { get; set; } = new List<Opinia>();
+        public virtual ICollection<Wypozyczenie> Wypozyczenia { get; set; } = new List<Wypozyczenie>();
+        public virtual ICollection<Rezerwacja> Rezerwacje { get; set; } = new List<Rezerwacja>();
     }
 }
