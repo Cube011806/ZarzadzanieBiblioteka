@@ -23,5 +23,22 @@ namespace ZarzadzanieBiblioteka.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Add(Ksiazka ksiazka, IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                var filePath = Path.Combine("wwwroot/images", file.FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyToAsync(stream);
+                }
+                ksiazka.Okladka = filePath;
+            }
+            _dbcontext.Add(ksiazka);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -1,1 +1,70 @@
-﻿<h2>Tu wkrótce będzie formularz ;)</h2>
+﻿@model Ksiazka;
+<form asp-action="Add" method="post" enctype="multipart/form-data">
+    <input type="text" asp-for="Tytul"/>
+    <label>: Tytuł</label>
+    <p></p>
+    <input type="text" asp-for="Gatunek"/>
+    <label>: Gatunek</label>
+    <p></p>
+    <input type="date" asp-for="DataWydania"/>
+    <label>: Data wydania</label>
+    <p></p>
+    <input type="number" asp-for="LiczbaStron"/>
+    <label>: Liczba Stron</label>
+    <p></p>
+    <input type="text" asp-for="Oprawa"/>
+    <label>: Oprawa</label>
+    <p></p>
+    <input type="number" asp-for="Wydanie"/>
+    <label>: Wydanie</label>
+    <p></p>
+    <input type="number" asp-for="ISBN"/>
+    <label>: ISBN</label>
+    <div id="drop-zone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; display:flex; align-items:center;justify-content:center; position:fixed; top:75px; right: 100px; height: 350px;">
+        Drag and drop an image file here or click to select.
+    </div>
+    <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)" />
+    <div>
+        <img id="preview" src="#" alt="Image Preview" style="display: none; max-height: 350px; position: fixed; top:75px; right: 525px" />
+    </div>
+    <button type="submit">Dodaj</button>
+</form>
+
+<script>
+    var dropZone = document.getElementById('drop-zone');
+    var fileInput = document.getElementById('file');
+
+    dropZone.addEventListener('click', function () {
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        dropZone.style.backgroundColor='#eee'
+    });
+
+    dropZone.addEventListener('dragleave', function (e) {
+        e.preventDefault();
+        dropZone.style.backgroundColor = '#fff';
+    });
+
+    dropZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        dropZone.style.backgroundColor = '#fff';
+        var files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            previewImage({ target: { files: files } });
+        }
+    });
+    //
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('preview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
