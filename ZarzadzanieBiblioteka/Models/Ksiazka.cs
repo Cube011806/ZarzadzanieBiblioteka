@@ -7,16 +7,15 @@ namespace ZarzadzanieBiblioteka.Models
 	{
 		public int Id { get; set; }
 
-		//[Column(TypeName = "varchar2(100)")]
 		[MaxLength(100)]
 		public string Tytul { get; set; } = string.Empty;
 
-		//[Column(TypeName = "varchar2(30)")]
-		[MaxLength(30)]
+		[MaxLength(50)]
 		public string Gatunek { get; set; } = string.Empty;
         public string Okladka { get; set; } = string.Empty;
         public DateTime DataWydania { get; set; }
 		public int LiczbaStron { get; set; }
+		[MaxLength(50)]
 		public string Oprawa { get; set; } = string.Empty;
 		public int Wydanie { get; set; }
 		public int ISBN { get; set; }
@@ -26,7 +25,5 @@ namespace ZarzadzanieBiblioteka.Models
 		public int AutorId { get; set; }
 		public virtual Autor Autor { get; set; } = null!;
 		public virtual ICollection<Opinia> Opinie { get; set; } = new List<Opinia>();
-		public virtual ICollection<Wypozyczenie> Wypozyczenia { get; set; } = new List<Wypozyczenie>();
-		public virtual ICollection<Rezerwacja> Rezerwacje { get; set; } = new List<Rezerwacja>();
 	}
 }

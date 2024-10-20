@@ -7,7 +7,6 @@ namespace ZarzadzanieBiblioteka.Models
 	{
 		public int Id { get; set; }
 
-		//[Column(TypeName = "varchar2(1000)")]
 		[MaxLength(1000)]
 		public string Komentarz { get; set; } = string.Empty;
 
