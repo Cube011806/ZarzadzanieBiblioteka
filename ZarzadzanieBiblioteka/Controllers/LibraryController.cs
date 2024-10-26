@@ -40,5 +40,23 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public IActionResult Delete(int id)
+        {
+            return View(id);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmDelete(int id)
+        {
+            var ksiazkaToDelete = _dbcontext.Ksiazki.FirstOrDefault(ksiazka => ksiazka.Id == id);
+            if(ksiazkaToDelete == null)
+            {
+                return View("Index");
+            }
+            _dbcontext.Ksiazki.Remove(ksiazkaToDelete);
+            _dbcontext.SaveChanges();
+            return View("Index");
+        }
     }
 }
