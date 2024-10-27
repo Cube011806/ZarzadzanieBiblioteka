@@ -1,21 +1,9 @@
 ﻿@model Ksiazka;
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
 
-<html>
-    <head>
-
-    </head>
-    <body>
-        <div class="w3-container w3-border">
-            <p>Czy na pewno chcesz usunąć tę książkę z bazy danych?</p>
-            <form asp-action="ConfirmDelete" method="post" asp-route-id="@Model">
-                <a asp-action="Index" class="btn btn-secondary">Powrót</a>
-                <button type="submit" class="btn btn-primary">Usuń</button>
-            </form>
-        </div>
-    </body>
-</html>
+<div class="w3-container w3-border">
+    <p>Czy na pewno chcesz usunąć tę książkę z bazy danych?</p>
+    <form asp-action="ConfirmDelete" method="post" asp-route-id="@Model.Id">
+        <a asp-action="Index" class="btn btn-secondary">Powrót</a>
+        <button type="submit" class="btn btn-primary">Usuń</button>
+    </form>
+</div>

@@ -1,0 +1,8 @@
+﻿@model Autor
+<div>
+    <form asp-action="EditAuthor" method="post">
+        <label>Imię: <input type="text" asp-for="Imie" /></label>
+        <label>Nazwisko: <input type="text" asp-for="Nazwisko" /></label>
+        <button type="submit" class="btn btn-info">Zmień</button>
+    </form>
+</div>

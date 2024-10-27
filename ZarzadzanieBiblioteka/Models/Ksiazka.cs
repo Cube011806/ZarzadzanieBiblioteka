@@ -18,10 +18,10 @@ namespace ZarzadzanieBiblioteka.Models
 		[MaxLength(50)]
 		public string Oprawa { get; set; } = string.Empty;
 		public int Wydanie { get; set; }
-		public int ISBN { get; set; }
+		public string ISBN { get; set; } = string.Empty;
 		//Relacje
-		public int BibliotekaId { get; set; }
-		public virtual Biblioteka Biblioteka { get; set; } = null!;
+		public int? BibliotekaId { get; set; }							//
+		public virtual Biblioteka? Biblioteka { get; set; } = null!;	//Obie te relacje są tymczasowo jako nullable, by baza się nie buntowała przy próbie wpisania ksiazki
 		public int AutorId { get; set; }
 		public virtual Autor Autor { get; set; } = null!;
 		public virtual ICollection<Opinia> Opinie { get; set; } = new List<Opinia>();

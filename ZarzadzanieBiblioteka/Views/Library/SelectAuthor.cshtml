@@ -1,0 +1,27 @@
+﻿@model ICollection<Autor>
+<div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (Model.Count == 0)
+        {
+            <h2>Brak autorów</h2>
+        }
+        foreach (var autor in Model)
+        {
+            <div style="border: solid 1px black">
+                <p>
+                    @autor.Id
+                    @autor.Imie
+                    @autor.Nazwisko
+                </p>
+                <a asp-action="DeleteAuthor" class="btn btn-info" asp-route-id="@autor.Id">Wybierz</a>
+            </div>
+
+        }
+        <a asp-action="AddAuthor" class="btn btn-info">Dodaj Autora</a>
+    }
+    else
+    {
+        <h1>Zaloguj się by zobaczyć zawartość</h1>
+    }
+</div>

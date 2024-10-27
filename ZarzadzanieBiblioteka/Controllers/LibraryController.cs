@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
@@ -26,6 +27,12 @@ namespace ZarzadzanieBiblioteka.Controllers
         }
         public IActionResult Add()
         {
+            var authors = _dbcontext.Autorzy.Select(a => new
+            {
+                Id = a.Id,
+                Dane = a.Imie + " " + a.Nazwisko
+            }).ToList();
+            ViewBag.ListaAutorow = new SelectList(authors, "Id", "Dane");
             return View();
         }
 
@@ -34,7 +41,7 @@ namespace ZarzadzanieBiblioteka.Controllers
         {
             if (file != null && file.Length > 0)
             {
-                var filePath = Path.Combine("wwwroot/images", file.FileName);
+                var filePath = Path.Combine("wwwroot/images/", file.FileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
@@ -54,7 +61,8 @@ namespace ZarzadzanieBiblioteka.Controllers
 
         public IActionResult Delete(int id)
         {
-            return View(id);
+            var ksiazka = _dbcontext.Ksiazki.Find(id);
+            return View(ksiazka);
         }
 
         [HttpPost]
@@ -69,7 +77,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.Ksiazki.Remove(ksiazkaToDelete);
             _dbcontext.SaveChanges();
             TempData["SuccessMessage"] = "Pomyślnie usunięto książkę!";
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
@@ -86,16 +94,16 @@ namespace ZarzadzanieBiblioteka.Controllers
         [HttpPost]
         public IActionResult Edit(Ksiazka ksiazka, IFormFile file)
         {
-            if (ksiazka.Tytul == null || ksiazka.Gatunek == null || ksiazka.LiczbaStron == 0 || ksiazka.ISBN == 0 || ksiazka.Wydanie == 0 || ksiazka.Oprawa == null)
+            if (ksiazka.Tytul == null || ksiazka.Gatunek == null || ksiazka.LiczbaStron == 0 || ksiazka.ISBN == null || ksiazka.Wydanie == 0 || ksiazka.Oprawa == null)
             {
                 TempData["ErrorMessage"] = "Pola nie mogą być puste!";
-                return View("Index");
+                return RedirectToAction("Index");
             }
             var ksiazkaToEdit = _dbcontext.Ksiazki.FirstOrDefault(k => k.Id == ksiazka.Id);
             if(ksiazkaToEdit == null)
             {
                 TempData["ErrorMessage"] = "Nie udało się pobrać edytowanej książki z bazy!";
-                return View("Index");
+                return RedirectToAction("Index");
             }
             if (file != null && file.Length > 0)
             {
@@ -109,7 +117,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             else
             {
                 TempData["ErrorMessage"] = "Problem z wgraniem okładki książki!";
-                return View("Index");
+                return RedirectToAction("Index");
             }
             ksiazkaToEdit.Tytul = ksiazka.Tytul;
             ksiazkaToEdit.Gatunek = ksiazka.Gatunek;
@@ -120,12 +128,58 @@ namespace ZarzadzanieBiblioteka.Controllers
             ksiazkaToEdit.ISBN = ksiazka.ISBN;
             _dbcontext.SaveChanges();
             TempData["SuccessMessage"] = "Pomyślnie edytowano książkę!";
-            return View("Index");
+            return RedirectToAction("Index");
         }
         public IActionResult IndexAuthors()
         {
             var authors = _dbcontext.Autorzy.ToList();
             return View(authors);
+        }
+        public IActionResult ViewAuthor(Ksiazka ksiazka)
+        {
+            var authors = _dbcontext.Autorzy.ToList();
+            return View(authors);
+        }
+        public IActionResult SelectAuthor(Ksiazka ksiazka, int id)
+        {
+            ksiazka.AutorId = id;
+            _dbcontext.Update(ksiazka);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult AddAuthor()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddAuthor(Autor autor)
+        {
+            _dbcontext.Autorzy.Add(autor);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("IndexAuthors");
+        }
+        public IActionResult EditAuthor(int id)
+        {
+            var author = _dbcontext.Autorzy.Find(id);
+            return View(author);
+        }
+        [HttpPost]
+        public IActionResult EditAuthor(Autor autor)
+        {
+            _dbcontext.Autorzy.Update(autor);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("IndexAuthors");
+        }
+
+        public IActionResult DeleteAuthor(int id)
+        {
+            var author = _dbcontext.Autorzy.Find(id);
+            if(author != null)
+            {
+                _dbcontext.Autorzy.Remove(author);
+                _dbcontext.SaveChanges();
+            }
+            return RedirectToAction("IndexAuthors");
         }
     }
 }

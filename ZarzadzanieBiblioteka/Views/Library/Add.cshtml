@@ -1,8 +1,14 @@
-﻿@model ZarzadzanieBiblioteka.Models.Ksiazka;
+﻿@model Ksiazka
 <form asp-action="Add" method="post" enctype="multipart/form-data">
     <input type="text" asp-for="Tytul"/>
     <label>: Tytuł</label>
-    <p>Test</p>
+    <p></p>
+    <p>
+        <label for="Autor">Autor</label>
+        <select asp-for="AutorId" class="form-control" asp-items="ViewBag.ListaAutorow">
+            <option value="" disabled>-- Wybierz autora --</option>
+        </select>
+    </p>
     <input type="text" asp-for="Gatunek"/>
     <label>: Gatunek</label>
     <p></p>
