@@ -25,19 +25,19 @@ namespace ZarzadzanieBiblioteka.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Ksiazka ksiazka, IFormFile file)
+        public async Task<IActionResult> Add(Ksiazka ksiazka, IFormFile file)
         {
             if (file != null && file.Length > 0)
             {
                 var filePath = Path.Combine("wwwroot/images", file.FileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    file.CopyToAsync(stream);
+                    await file.CopyToAsync(stream);
                 }
                 ksiazka.Okladka = filePath;
             }
             _dbcontext.Add(ksiazka);
-            _dbcontext.SaveChanges();
+            await _dbcontext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
