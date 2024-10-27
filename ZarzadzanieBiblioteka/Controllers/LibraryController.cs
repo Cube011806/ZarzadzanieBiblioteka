@@ -17,6 +17,11 @@ namespace ZarzadzanieBiblioteka.Controllers
         public IActionResult Index()
         {
             var ksiazki = _dbcontext.Ksiazki.ToList();
+            //if(ksiazki == null || ksiazki.Count == 0)
+            //{
+                //TempData["ErrorMessage"] = "Nie udało się pobrać książek z bazy!";
+                //return View();
+            //}
             return View(ksiazki);
         }
         public IActionResult Add()
@@ -36,8 +41,14 @@ namespace ZarzadzanieBiblioteka.Controllers
                 }
                 ksiazka.Okladka = filePath;
             }
+            else
+            {
+                TempData["ErrorMessage"] = "Problem z wgraniem okładki książki!";
+                return View("Index");
+            }
             _dbcontext.Add(ksiazka);
             _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie dodano książkę!";
             return RedirectToAction("Index");
         }
 
@@ -50,12 +61,65 @@ namespace ZarzadzanieBiblioteka.Controllers
         public IActionResult ConfirmDelete(int id)
         {
             var ksiazkaToDelete = _dbcontext.Ksiazki.FirstOrDefault(ksiazka => ksiazka.Id == id);
-            if(ksiazkaToDelete == null)
+            if (ksiazkaToDelete == null)
             {
+                TempData["ErrorMessage"] = "Nie udało się pobrać usuwanej książki z bazy!";
                 return View("Index");
             }
             _dbcontext.Ksiazki.Remove(ksiazkaToDelete);
             _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie usunięto książkę!";
+            return View("Index");
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var ksiazkaToEdit = _dbcontext.Ksiazki.FirstOrDefault(ksiazka => ksiazka.Id == id);
+            if (ksiazkaToEdit == null)
+            {
+                TempData["ErrorMessage"] = "Nie udało się pobrać edytowanej książki z bazy!";
+                return View("Index");
+            }
+            return View(ksiazkaToEdit);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Ksiazka ksiazka, IFormFile file)
+        {
+            if (ksiazka.Tytul == null || ksiazka.Gatunek == null || ksiazka.LiczbaStron == 0 || ksiazka.ISBN == 0 || ksiazka.Wydanie == 0 || ksiazka.Oprawa == null)
+            {
+                TempData["ErrorMessage"] = "Pola nie mogą być puste!";
+                return View("Index");
+            }
+            var ksiazkaToEdit = _dbcontext.Ksiazki.FirstOrDefault(k => k.Id == ksiazka.Id);
+            if(ksiazkaToEdit == null)
+            {
+                TempData["ErrorMessage"] = "Nie udało się pobrać edytowanej książki z bazy!";
+                return View("Index");
+            }
+            if (file != null && file.Length > 0)
+            {
+                var filePath = Path.Combine("wwwroot/images", file.FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyToAsync(stream);
+                }
+                ksiazkaToEdit.Okladka = filePath;
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Problem z wgraniem okładki książki!";
+                return View("Index");
+            }
+            ksiazkaToEdit.Tytul = ksiazka.Tytul;
+            ksiazkaToEdit.Gatunek = ksiazka.Gatunek;
+            ksiazkaToEdit.DataWydania = ksiazka.DataWydania;
+            ksiazkaToEdit.LiczbaStron = ksiazka.LiczbaStron;
+            ksiazkaToEdit.Oprawa = ksiazka.Oprawa;
+            ksiazkaToEdit.Wydanie = ksiazka.Wydanie;
+            ksiazkaToEdit.ISBN = ksiazka.ISBN;
+            _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie edytowano książkę!";
             return View("Index");
         }
     }

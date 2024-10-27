@@ -1,35 +1,51 @@
-﻿@model ZarzadzanieBiblioteka.Models.Ksiazka;
-<form asp-action="Add" method="post" enctype="multipart/form-data">
-    <input type="text" asp-for="Tytul"/>
-    <label>: Tytuł</label>
-    <p></p>
-    <input type="text" asp-for="Gatunek"/>
-    <label>: Gatunek</label>
-    <p></p>
-    <input type="date" asp-for="DataWydania"/>
-    <label>: Data wydania</label>
-    <p></p>
-    <input type="number" asp-for="LiczbaStron"/>
-    <label>: Liczba Stron</label>
-    <p></p>
-    <input type="text" asp-for="Oprawa"/>
-    <label>: Oprawa</label>
-    <p></p>
-    <input type="number" asp-for="Wydanie"/>
-    <label>: Wydanie</label>
-    <p></p>
-    <input type="number" asp-for="ISBN"/>
-    <label>: ISBN</label>
+﻿@model ZarzadzanieBiblioteka.Models.Ksiazka
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h1>Edytuj książkę</h1>
+<form asp-action="Edit" method="post" class="w3-container">
+    <div>
+        <label asp-for="Tytul">Tytuł:</label>
+        <input asp-for="Tytul" class="w3-input w3-border" />
+    </div>
+    <div>
+        <label asp-for="Tytul">Gatunek:</label>
+        <input asp-for="Gatunek" class="w3-input w3-border" />
+    </div>
+    <div>
+        <label asp-for="DataWydania">Data wydania:</label>
+        <input asp-for="DataWydania" class="w3-input w3-border" />
+    </div>
+    <div>
+        <label asp-for="LiczbaStron">Liczba stron:</label>
+        <input asp-for="LiczbaStron" class="w3-input w3-border" />
+    </div>
+    <div>
+        <label asp-for="Oprawa">Oprawa:</label>
+        <input asp-for="Oprawa" class="w3-input w3-border" />
+    </div>
+    <div>
+        <label asp-for="Wydanie">Wydanie:</label>
+        <input asp-for="Wydanie" class="w3-input w3-border" />
+    </div>
+    <div>
+        <label asp-for="ISBN">ISBN:</label>
+        <input asp-for="ISBN" class="w3-input w3-border" />
+    </div>
     <div id="drop-zone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; display:flex; align-items:center;justify-content:center; position:fixed; top:75px; right: 100px; height: 350px;">
         Drag and drop an image file here or click to select.
     </div>
-    <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)" />
+        <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)" />
     <div>
         <img id="preview" src="#" alt="Image Preview" style="display: none; max-height: 350px; position: fixed; top:75px; right: 525px" />
     </div>
-    <button type="submit">Dodaj</button>
+    <div>
+        <button type="submit" class="w3-btn w3-border"/>Edytuj</button>
+    </div>
 </form>
-
 <script>
     var dropZone = document.getElementById('drop-zone');
     var fileInput = document.getElementById('file');
@@ -40,7 +56,7 @@
 
     dropZone.addEventListener('dragover', function (e) {
         e.preventDefault();
-        dropZone.style.backgroundColor='#eee'
+        dropZone.style.backgroundColor = '#eee'
     });
 
     dropZone.addEventListener('dragleave', function (e) {
