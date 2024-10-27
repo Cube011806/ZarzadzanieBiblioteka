@@ -122,5 +122,10 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie edytowano książkę!";
             return View("Index");
         }
+        public IActionResult IndexAuthors()
+        {
+            var authors = _dbcontext.Autorzy.ToList();
+            return View(authors);
+        }
     }
 }
