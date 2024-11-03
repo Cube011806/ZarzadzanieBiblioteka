@@ -93,7 +93,7 @@ namespace ZarzadzanieBiblioteka.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Ksiazka ksiazka, IFormFile file)
+        public async Task<IActionResult> Edit(Ksiazka ksiazka, IFormFile file)
         {
             if (ksiazka.Tytul == null || ksiazka.Gatunek == null || ksiazka.LiczbaStron == 0 || ksiazka.ISBN == null || ksiazka.Wydanie == 0 || ksiazka.Oprawa == null)
             {
@@ -111,10 +111,10 @@ namespace ZarzadzanieBiblioteka.Controllers
                 var filePath = Path.Combine("wwwroot/images", file.FileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    file.CopyToAsync(stream);
+                    await file.CopyToAsync(stream);
                 }
                 var placeParh = Path.Combine("images/", file.FileName);
-                ksiazkaToEdit.Okladka = filePath;
+                ksiazkaToEdit.Okladka = placeParh;
             }
             else
             {
