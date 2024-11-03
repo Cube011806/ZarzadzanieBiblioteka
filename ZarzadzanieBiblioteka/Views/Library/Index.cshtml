@@ -1,5 +1,6 @@
-﻿@model ICollection<Ksiazka>
-
+﻿@using Microsoft.AspNetCore.Identity
+@model ICollection<Ksiazka>
+@inject UserManager<Uzytkownik> UserManager
 <div class="text-center">
     @if (TempData["ErrorMessage"] != null)
     {
@@ -22,21 +23,44 @@
             foreach (var ksiazka in Model)
             {
                 <div>
+                    <img src="@ksiazka.Okladka" width="20%" />
                     @ksiazka.Tytul
                     
-                        @ksiazka.Autor.Imie
-                        @ksiazka.Autor.Nazwisko 
-                    
-                    
+                    @ksiazka.Autor.Imie
+                    @ksiazka.Autor.Nazwisko 
                     @ksiazka.Wydanie
                     @ksiazka.DataWydania
-                    <img src="@ksiazka.Okladka" />
                     <a asp-action="Delete" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg">
                         Usuń książkę
                     </a>
                     <a asp-action="Edit" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg">
                         Edytuj książkę
                     </a>
+                    @if(ksiazka.Opinie.Count == 0)
+                    {
+                        <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg">
+                            Dodaj opinię
+                        </a>
+                    }
+                    @if(ksiazka.Opinie.Count == 0)
+                    {
+                        <p>Brak opinii</p>
+                    }
+                    else
+                    {
+                        <p>Opinie: </p>
+                        foreach(var opinia in ksiazka.Opinie)
+                        {
+                            @opinia.Ocena
+                            @opinia.Komentarz
+                            <a asp-action="EditReview" asp-route-id="@opinia.Id" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg">
+                                Zmień opinię
+                            </a>
+                            <a asp-action="DeleteReview" asp-route-id="@opinia.Id" class="btn btn-secondary btn-lg">
+                                Usuń opinię
+                            </a>
+                        }
+                    }
                 </div>
             }
         }

@@ -171,16 +171,59 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexAuthors");
         }
-
         public IActionResult DeleteAuthor(int id)
         {
             var author = _dbcontext.Autorzy.Find(id);
-            if(author != null)
+            if (author != null)
             {
                 _dbcontext.Autorzy.Remove(author);
                 _dbcontext.SaveChanges();
             }
             return RedirectToAction("IndexAuthors");
         }
+        public IActionResult AddReview(int idksiazka)
+        {
+            ViewBag.IdKsiazka = idksiazka;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddReview(Opinia opinia, int IdKsiazka)
+        {
+            opinia.UzytkownikId = _userManager.GetUserId(User);
+            opinia.KsiazkaId = IdKsiazka;
+            //var ksiazka = _dbcontext.Ksiazki.Find(IdKsiazka);
+            //ksiazka.Opinie.Add(opinia);
+            _dbcontext.Opinie.Add(opinia);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult EditReview(int id, int IdKsiazka)
+        {
+            ViewBag.IdKsiazka = IdKsiazka;
+            var opinia = _dbcontext.Opinie.Find(id);
+            return View(opinia);
+        }
+        [HttpPost]
+        public IActionResult EditReview(Opinia opinia, int IdKsiazka)
+        {
+            opinia.UzytkownikId = _userManager.GetUserId(User);
+            opinia.KsiazkaId = IdKsiazka;
+            //var ksiazka = _dbcontext.Ksiazki.Find(IdKsiazka);
+            //ksiazka.Opinie.Add(opinia);
+            _dbcontext.Opinie.Update(opinia);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        public IActionResult DeleteReview(int id)
+        {
+            var opinia = _dbcontext.Opinie.Find(id);
+            if (opinia != null)
+            {
+                _dbcontext.Opinie.Remove(opinia);
+                _dbcontext.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }

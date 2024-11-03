@@ -1,0 +1,10 @@
+﻿@model Opinia
+<div>
+    <form asp-action="EditReview" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" name="IdKsiazka" value="@ViewBag.IdKsiazka" />
+        <label>Opinia: <input type="number" asp-for="Ocena" /></label>
+        <label>Komentarz: <input type="text" asp-for="Komentarz" /></label>
+        <button type="submit" class="btn btn-info">Edytuj</button>
+    </form>
+</div>
