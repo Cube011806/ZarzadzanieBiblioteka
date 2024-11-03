@@ -20,3 +20,42 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.Ksiazka{
+    display : grid;
+    grid-template-rows : auto 1fr auto ;
+    grid-template-columns : 1fr 3fr 3fr;
+    height : auto;
+    grid-template-areas:
+        "left       prev    drop"
+        "button     box     box";
+    padding : 10px;
+}
+
+@media (max-width: 760px){
+    .Ksiazka{
+        grid-template-rows: auto 1fr 1fr auto;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "left"
+            "drop"
+            "prev"
+            "button";
+    }
+}
+
+.left{
+    grid-area: left;
+}
+
+.prev {
+    grid-area: prev;
+}
+
+.drop{
+    grid-area: drop;
+}
+
+.button{
+    grid-area: button;
+}

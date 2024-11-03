@@ -46,7 +46,8 @@ namespace ZarzadzanieBiblioteka.Controllers
                 {
                     await file.CopyToAsync(stream);
                 }
-                ksiazka.Okladka = filePath;
+                var placeParh = Path.Combine("images/", file.FileName);
+                ksiazka.Okladka = placeParh;
             }
             else
             {
