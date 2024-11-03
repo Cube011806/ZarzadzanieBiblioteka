@@ -1,46 +1,47 @@
 ﻿@model ZarzadzanieBiblioteka.Models.Ksiazka
 
 <h1>Edytuj książkę test</h1>
-<form asp-action="Edit" method="post" class="w3-container">
-    <div>
-        <label asp-for="Tytul">Tytuł:</label>
-        <input asp-for="Tytul" class="w3-input w3-border" />
-    </div>
-    <div>
-        <label asp-for="Tytul">Gatunek:</label>
-        <input asp-for="Gatunek" class="w3-input w3-border" />
-    </div>
-    <div>
-        <label asp-for="DataWydania">Data wydania:</label>
-        <input asp-for="DataWydania" class="w3-input w3-border" />
-    </div>
-    <div>
-        <label asp-for="LiczbaStron">Liczba stron:</label>
-        <input asp-for="LiczbaStron" class="w3-input w3-border" />
-    </div>
-    <div>
-        <label asp-for="Oprawa">Oprawa:</label>
-        <input asp-for="Oprawa" class="w3-input w3-border" />
-    </div>
-    <div>
-        <label asp-for="Wydanie">Wydanie:</label>
-        <input asp-for="Wydanie" class="w3-input w3-border" />
-    </div>
-    <div>
-        <label asp-for="ISBN">ISBN:</label>
-        <input asp-for="ISBN" class="w3-input w3-border" />
-    </div>
-    <div id="drop-zone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; display:flex; align-items:center;justify-content:center; position:fixed; top:75px; right: 100px; height: 350px;">
-        Drag and drop an image file here or click to select.
-    </div>
-        <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)" />
-    <div>
-        <img id="preview" src="#" alt="Image Preview" style="display: none; max-height: 350px; position: fixed; top:75px; right: 525px" />
-    </div>
-    <div>
-        <button type="submit" class="w3-btn w3-border"/>Edytuj</button>
+<form asp-action="Edit" method="post" class="w3-container" enctype="multipart/form-data">
+    <div class="Ksiazka">
+        <left>
+            <p>
+                <label asp-for="Tytul">Tytuł:</label>
+                <input asp-for="Tytul" class="w3-input w3-border form-control" />
+            </p>
+            <p>
+                <label asp-for="Tytul">Gatunek:</label>
+                <input asp-for="Gatunek" class="w3-input w3-border form-control" />
+            </p>
+            <p>
+                <label asp-for="DataWydania">Data wydania:</label>
+                <input asp-for="DataWydania" class="w3-input w3-border form-control" />
+            </p>
+            <p>
+                <label asp-for="LiczbaStron">Liczba stron:</label>
+                <input asp-for="LiczbaStron" class="w3-input w3-border form-control" />
+            </p>
+            <p>
+                <label asp-for="Oprawa">Oprawa:</label>
+                <input asp-for="Oprawa" class="w3-input w3-border form-control" />
+            </p>
+            <p>
+                <label asp-for="Wydanie">Wydanie:</label>
+                <input asp-for="Wydanie" class="w3-input w3-border form-control" />
+            </p>
+            <p>
+                <label asp-for="ISBN">ISBN:</label>
+                <input asp-for="ISBN" class="w3-input w3-border form-control" />
+            </p>
+        </left>
+        <img for="file" class="prev" id="preview" src="~/images/prev_placeholder.png" alt="Image Preview" style="display: grid; width:100%; height: 100%; object-fit:contain" />
+        <div class="drop" id="drop-zone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; display:flex; flex-direction:column; align-items:center;justify-content:center;">
+            <div style="padding:5px">Drag and drop an image file here or click to select.</div>
+            <input type="file" id="file" name="file" accept="image/*" class="form-control" onchange="previewImage(event)" required />
+        </div>
+        <button type="submit" class="form-control btn-success">Edytuj</button>
     </div>
 </form>
+
 <script>
     var dropZone = document.getElementById('drop-zone');
     var fileInput = document.getElementById('file');

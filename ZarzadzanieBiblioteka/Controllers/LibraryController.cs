@@ -113,6 +113,7 @@ namespace ZarzadzanieBiblioteka.Controllers
                 {
                     file.CopyToAsync(stream);
                 }
+                var placeParh = Path.Combine("images/", file.FileName);
                 ksiazkaToEdit.Okladka = filePath;
             }
             else
