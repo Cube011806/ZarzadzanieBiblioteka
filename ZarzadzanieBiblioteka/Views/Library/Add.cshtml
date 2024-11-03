@@ -4,7 +4,7 @@
             <left>
                 <p>
                     <label for="Tytul">Tytuł</label>
-                    <input type="text" class="form-control" asp-for="Tytul" />
+                    <input type="text" class="form-control" asp-for="Tytul" required/>
                 </p>
                 <p>
                     <label for="Autor">Autor</label>
@@ -14,34 +14,34 @@
                 </p>
                 <p>
                     <label for="Gatunek">Gatunek</label>
-                    <input type="text" class="form-control"  asp-for="Gatunek" />
+                    <input type="text" class="form-control"  asp-for="Gatunek" required/>
                 </p>
                 <p>
                     <label for="DataWydania">Data wydania</label>
-                    <input type="date" class="form-control" asp-for="DataWydania" />
+                    <input type="date" class="form-control" asp-for="DataWydania" required/>
                 </p>
                 <p>
                     <label for="LiczbaStron">Liczba Stron</label>
-                    <input type="number" class="form-control" asp-for="LiczbaStron" />
+                    <input type="number" class="form-control" asp-for="LiczbaStron" required/>
                 </p>
                 <p>
                     <label for="Oprawa">Oprawa</label>
-                    <input type="text" class="form-control" asp-for="Oprawa" />
+                    <input type="text" class="form-control" asp-for="Oprawa" required/>
                 </p>
                 <p>
                     <label for="Wydanie">Wydanie</label>
-                    <input type="number" class="form-control" asp-for="Wydanie" />
+                    <input type="number" class="form-control" asp-for="Wydanie" required/>
                 </p>
                 <p>
                     <label for="ISBN">ISBN</label>
-                    <input type="number" class="form-control" asp-for="ISBN" />
+                    <input type="number" class="form-control" asp-for="ISBN" required/>
                 </p>
             </left>
-            <img class="prev" id="preview" src="~/images/prev_placeholder.png" alt="Image Preview" style="display: grid; width:100%; height: 100%; object-fit:contain" />
-            <div class ="drop" id="drop-zone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; display:flex; align-items:center;justify-content:center;">
-                Drag and drop an image file here or click to select.
+            <img for="file" class="prev" id="preview" src="~/images/prev_placeholder.png" alt="Image Preview" style="display: grid; width:100%; height: 100%; object-fit:contain" />
+            <div class ="drop" id="drop-zone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; display:flex; flex-direction:column; align-items:center;justify-content:center;">
+                <div style="padding:5px">Drag and drop an image file here or click to select.</div>
+                <input type="file" id="file" name="file" accept="image/*" class="form-control" onchange="previewImage(event)" required />
             </div>
-            <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)" />
             <button type="submit" class="form-control btn-success">Dodaj</button>
         </div>
     </form>
@@ -81,4 +81,5 @@
         }
         reader.readAsDataURL(event.target.files[0]);
     }
+    //
 </script>
