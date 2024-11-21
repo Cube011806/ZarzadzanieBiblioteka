@@ -89,13 +89,21 @@ namespace ZarzadzanieBiblioteka.Controllers
                 TempData["ErrorMessage"] = "Nie udało się pobrać edytowanej książki z bazy!";
                 return View("Index");
             }
+
+            var authors = _dbcontext.Autorzy.Select(a => new
+            {
+                Id = a.Id,
+                Dane = a.Imie + " " + a.Nazwisko
+            }).ToList();
+            ViewBag.ListaAutorow = new SelectList(authors, "Id", "Dane");
             return View(ksiazkaToEdit);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(Ksiazka ksiazka, IFormFile file)
         {
-            if (ksiazka.Tytul == null || ksiazka.Gatunek == null || ksiazka.LiczbaStron == 0 || ksiazka.ISBN == null || ksiazka.Wydanie == 0 || ksiazka.Oprawa == null)
+            //nulle są sprawdzane na wejściu po stronie klienta ale można zostawić sprawdzanie czy jakaś liczba jest rówa zero
+            if (ksiazka.LiczbaStron == 0 || ksiazka.Wydanie == 0 )
             {
                 TempData["ErrorMessage"] = "Pola nie mogą być puste!";
                 return RedirectToAction("Index");
@@ -105,7 +113,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             {
                 TempData["ErrorMessage"] = "Nie udało się pobrać edytowanej książki z bazy!";
                 return RedirectToAction("Index");
-            }
+            }            
             if (file != null && file.Length > 0)
             {
                 var filePath = Path.Combine("wwwroot/images", file.FileName);
@@ -116,11 +124,7 @@ namespace ZarzadzanieBiblioteka.Controllers
                 var placeParh = Path.Combine("images/", file.FileName);
                 ksiazkaToEdit.Okladka = placeParh;
             }
-            else
-            {
-                TempData["ErrorMessage"] = "Problem z wgraniem okładki książki!";
-                return RedirectToAction("Index");
-            }
+//jeżeli nie ma okładki w editcie, okładka poprzednia jest do niej przypisywana ale nie ma potrzeby na wypisywanie błędu
             ksiazkaToEdit.Tytul = ksiazka.Tytul;
             ksiazkaToEdit.Gatunek = ksiazka.Gatunek;
             ksiazkaToEdit.DataWydania = ksiazka.DataWydania;
@@ -128,7 +132,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             ksiazkaToEdit.Oprawa = ksiazka.Oprawa;
             ksiazkaToEdit.Wydanie = ksiazka.Wydanie;
             ksiazkaToEdit.ISBN = ksiazka.ISBN;
-            _dbcontext.SaveChanges();
+            //edycja autora
+            ksiazkaToEdit.Autor = ksiazka.Autor;
+            ksiazkaToEdit.AutorId = ksiazka.AutorId;
+            _dbcontext.Update(ksiazkaToEdit);
+            await _dbcontext.SaveChangesAsync();
             TempData["SuccessMessage"] = "Pomyślnie edytowano książkę!";
             return RedirectToAction("Index");
         }

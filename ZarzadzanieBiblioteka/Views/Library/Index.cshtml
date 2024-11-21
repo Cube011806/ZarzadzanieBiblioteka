@@ -18,33 +18,41 @@
     }
     @if (User.Identity.IsAuthenticated)
     {
+        <a asp-action="Add" class="btn btn-primary btn-lg">
+            Dodaj Książkę
+        </a>
         if (Model.Count != 0)
         {
-            foreach (var ksiazka in Model)
+            <div class="gallery-image">
+            @foreach (var ksiazka in Model)
             {
-                <div>
-                    <img src="@ksiazka.Okladka" width="20%" />
-                    @ksiazka.Tytul
-                    
-                    @ksiazka.Autor.Imie
-                    @ksiazka.Autor.Nazwisko 
-                    @ksiazka.Wydanie
-                    @ksiazka.DataWydania
-                    <a asp-action="Delete" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg">
+                <div class ="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 20px;">
+                    <div class="img-box">
+                        <img src="@ksiazka.Okladka"/>
+                        <div class="transparent-box">
+                            <div class="caption">
+                                <p class="upper">@ksiazka.Tytul</p>
+                                <p class="opacity-low upper">@ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko </p>
+                                <p class="opacity-low upper"> @ksiazka.Wydanie</p>
+                                <p class="opacity-low upper">@ksiazka.DataWydania.ToString("dd.MM.yyyy") </p>
+                            </div>
+                        </div>
+                    </div>
+                    <a asp-action="Delete" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton">
                         Usuń książkę
                     </a>
-                    <a asp-action="Edit" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg">
+                    <a asp-action="Edit" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton">
                         Edytuj książkę
                     </a>
                     @if(ksiazka.Opinie.Count == 0)
                     {
-                        <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg">
+                        <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg" style="grid-column:span 2">
                             Dodaj opinię
                         </a>
                     }
                     @if(ksiazka.Opinie.Count == 0)
                     {
-                        <p>Brak opinii</p>
+                        <p style="grid-column:span 2">Brak opinii</p>
                     }
                     else
                     {
@@ -63,14 +71,12 @@
                     }
                 </div>
             }
+            </div>
         }
         else
         {
             <h2>Brak książek w katalogu</h2>
         }
-        <a asp-action="Add" class="btn btn-primary btn-lg">
-            Dodaj Książkę
-        </a>
 
     }
     else
