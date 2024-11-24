@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
@@ -237,5 +238,35 @@ namespace ZarzadzanieBiblioteka.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult IndexVolumes()
+        {
+            var books = _dbcontext.Ksiazki.ToList();
+            return View(books);
+        }
+        public IActionResult AddVolume(int id)
+        {
+            var ksiazka = _dbcontext.Ksiazki.FirstOrDefault(k => k.Id == id);
+            if (ksiazka == null)
+            {
+                return NotFound("Nie znaleziono książki o podanym ID.");
+            }
+            var wolumin = new Wolumin();
+            wolumin.KsiazkaId = id;
+            ksiazka.Woluminy.Add(wolumin);
+            _dbcontext.Woluminy.Add(wolumin);
+            _dbcontext.Update(ksiazka);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("IndexVolumes");
+        }
+        public IActionResult DeleteVolume(int id)
+        {
+            var wolumin = _dbcontext.Woluminy.Find(id);
+            if (wolumin != null)
+            {
+                _dbcontext.Woluminy.Remove(wolumin); 
+            }
+            _dbcontext.SaveChanges();
+            return RedirectToAction("IndexVolumes");
+        }
     }
 }

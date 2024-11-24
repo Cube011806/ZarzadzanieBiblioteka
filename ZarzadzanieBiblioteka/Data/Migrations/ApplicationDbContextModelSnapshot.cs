@@ -256,7 +256,7 @@ namespace ZarzadzanieBiblioteka.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Autorzy");
+                    b.ToTable("Autorzy", (string)null);
                 });
 
             modelBuilder.Entity("ZarzadzanieBiblioteka.Models.Biblioteka", b =>
@@ -294,7 +294,7 @@ namespace ZarzadzanieBiblioteka.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Biblioteki");
+                    b.ToTable("Biblioteki", (string)null);
                 });
 
             modelBuilder.Entity("ZarzadzanieBiblioteka.Models.Ksiazka", b =>
@@ -349,7 +349,7 @@ namespace ZarzadzanieBiblioteka.Data.Migrations
 
                     b.HasIndex("BibliotekaId");
 
-                    b.ToTable("Ksiazki");
+                    b.ToTable("Ksiazki", (string)null);
                 });
 
             modelBuilder.Entity("ZarzadzanieBiblioteka.Models.Opinia", b =>
@@ -381,7 +381,7 @@ namespace ZarzadzanieBiblioteka.Data.Migrations
 
                     b.HasIndex("UzytkownikId");
 
-                    b.ToTable("Opinie");
+                    b.ToTable("Opinie", (string)null);
                 });
 
             modelBuilder.Entity("ZarzadzanieBiblioteka.Models.Rezerwacja", b =>
@@ -411,7 +411,7 @@ namespace ZarzadzanieBiblioteka.Data.Migrations
 
                     b.HasIndex("WoluminId");
 
-                    b.ToTable("Rezerwacje");
+                    b.ToTable("Rezerwacje", (string)null);
                 });
 
             modelBuilder.Entity("ZarzadzanieBiblioteka.Models.Wolumin", b =>
@@ -429,7 +429,7 @@ namespace ZarzadzanieBiblioteka.Data.Migrations
 
                     b.HasIndex("KsiazkaId");
 
-                    b.ToTable("Woluminy");
+                    b.ToTable("Woluminy", (string)null);
                 });
 
             modelBuilder.Entity("ZarzadzanieBiblioteka.Models.Wypozyczenie", b =>
@@ -459,7 +459,7 @@ namespace ZarzadzanieBiblioteka.Data.Migrations
 
                     b.HasIndex("WoluminId");
 
-                    b.ToTable("Wypozyczenia");
+                    b.ToTable("Wypozyczenia", (string)null);
                 });
 
             modelBuilder.Entity("ZarzadzanieBiblioteka.Models.Uzytkownik", b =>

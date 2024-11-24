@@ -25,5 +25,6 @@ namespace ZarzadzanieBiblioteka.Models
 		public int AutorId { get; set; }
 		public virtual Autor Autor { get; set; } = null!;
 		public virtual ICollection<Opinia> Opinie { get; set; } = new List<Opinia>();
-	}
+        public virtual ICollection<Wolumin> Woluminy { get; set; } = new List<Wolumin>();
+    }
 }
