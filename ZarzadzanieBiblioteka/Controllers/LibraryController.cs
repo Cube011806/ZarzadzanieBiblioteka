@@ -204,6 +204,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             //ksiazka.Opinie.Add(opinia);
             _dbcontext.Opinie.Add(opinia);
             _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie dodano opinię!";
             return RedirectToAction("Index");
         }
         public IActionResult EditReview(int id, int IdKsiazka)
@@ -221,6 +222,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             //ksiazka.Opinie.Add(opinia);
             _dbcontext.Opinie.Update(opinia);
             _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie edytowano opinię!";
             return RedirectToAction("Index");
         }
         public IActionResult DeleteReview(int id)
@@ -230,6 +232,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             {
                 _dbcontext.Opinie.Remove(opinia);
                 _dbcontext.SaveChanges();
+                TempData["SuccessMessage"] = "Pomyślnie usunięto opinię!";
             }
             return RedirectToAction("Index");
         }

@@ -3,7 +3,16 @@
     <form asp-action="AddReview" method="post">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" name="IdKsiazka" value="@ViewBag.IdKsiazka" />
-        <label>Opinia: <input type="number" asp-for="Ocena" /></label>
+        <label>
+            Ocena:
+            <select asp-for="Ocena">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </label>
         <label>Komentarz: <input type="text" asp-for="Komentarz" /></label>
         <button type="submit" class="btn btn-info">Dodaj</button>
     </form>

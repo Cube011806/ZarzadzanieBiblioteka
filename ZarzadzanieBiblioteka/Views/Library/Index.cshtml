@@ -57,10 +57,11 @@
                     else
                     {
                         <p>Opinie: </p>
-                        foreach(var opinia in ksiazka.Opinie)
+                        <br />
+                        @foreach(var opinia in ksiazka.Opinie)
                         {
-                            @opinia.Ocena
-                            @opinia.Komentarz
+                                <p>Ocena: @opinia.Ocena</p>
+                                <p>Komentarz: @opinia.Komentarz</p>
                             <a asp-action="EditReview" asp-route-id="@opinia.Id" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg">
                                 Zmień opinię
                             </a>
