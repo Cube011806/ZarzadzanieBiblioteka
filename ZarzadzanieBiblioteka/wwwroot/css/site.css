@@ -143,3 +143,52 @@ body {
 .upper{
     text-align:left;
 }
+
+.star-rating{
+    direction:rtl;
+    display:inline-flex;
+    font-size:20px;
+}
+
+.star-rating input[type="radio"]{
+    display:none;
+}
+
+.star-rating label {
+    color: #ccc;
+    cursor: pointer;
+    padding: 0 0.1em;
+    transition: color 0.2s;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #f5c518;
+}
+
+.star-rating input[type="radio"]:checked ~ label{
+    color:#f5c518;
+}
+
+.star-rating input[type="radio"]:checked ~ label:hover,
+.star-rating input[type="radio"]:checked ~ label:hover ~ label {
+    color: #f3b53e;
+}
+:root {
+    --star-color: #fff;
+    --star-background: #fc0;
+}
+
+.Stars {
+    --percent: calc(var(--rating)/5*100%);
+    display: inline-block;
+    font-size:20px;
+    line-height: 1;
+    &::after{
+        content: '\2605 \2605 \2605 \2605 \2605';
+        letter-spacing: 3px;
+        background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
+        background-clip:text;
+        -webkit-text-fill-color: transparent;
+    }
+}

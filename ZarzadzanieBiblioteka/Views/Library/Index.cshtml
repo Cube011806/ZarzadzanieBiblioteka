@@ -60,8 +60,8 @@
                         <br />
                         @foreach(var opinia in ksiazka.Opinie)
                         {
-                                <p>Ocena: @opinia.Ocena</p>
-                                <p>Komentarz: @opinia.Komentarz</p>
+                            <div class="Stars" style="--rating: @opinia.Ocena;" aria-label="Rating">Ocena:</div>
+                            <p>Komentarz: @opinia.Komentarz</p>
                             <a asp-action="EditReview" asp-route-id="@opinia.Id" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg">
                                 Zmień opinię
                             </a>
