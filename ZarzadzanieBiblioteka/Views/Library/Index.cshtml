@@ -44,6 +44,9 @@
                     <a asp-action="Edit" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton">
                         Edytuj książkę
                     </a>
+                    <a asp-action="ReserveBook" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton">
+                        Zarezerwuj książkę
+                    </a>
                     @if(ksiazka.Opinie.Count == 0)
                     {
                         <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg" style="grid-column:span 2">
