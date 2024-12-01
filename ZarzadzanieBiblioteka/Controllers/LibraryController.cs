@@ -237,7 +237,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        public IActionResult IndexLoans()
+        {
+            var loans = _dbcontext.Wypozyczenia.ToList();
+            return View(loans);
+        }
         public IActionResult IndexVolumes()
         {
             var books = _dbcontext.Ksiazki.ToList();

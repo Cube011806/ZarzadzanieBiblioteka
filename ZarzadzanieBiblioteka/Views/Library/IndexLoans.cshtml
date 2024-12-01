@@ -1,0 +1,17 @@
+﻿@model ICollection<Wypozyczenie>
+<h2>Wypożyczenia</h2>
+<div style="border: black 1px solid">
+    @foreach (var loan in Model)
+    {
+        <p>@loan.Id</p>
+        <p>@loan.DataWypozyczenia</p>
+        <p>@loan.Wolumin.Id</p>
+        <p>@loan.Wolumin.Ksiazka.Tytul</p>
+        <p>@loan.DataZwrotu</p>
+        <p>@loan.Uzytkownik.Imie</p>
+        <p>@loan.Uzytkownik.Nazwisko</p>
+        <p>Akcje: </p>
+        <a class="btn btn-info" asp-route-id="@loan.Id" asp-action="">Zwróć książkę</a>
+        <a class="btn btn-info" asp-route-id="@loan.Id" asp-action="">Przedłuż wypożyczenie</a>
+    }
+</div>
