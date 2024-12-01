@@ -263,10 +263,25 @@ namespace ZarzadzanieBiblioteka.Controllers
             var wolumin = _dbcontext.Woluminy.Find(id);
             if (wolumin != null)
             {
-                _dbcontext.Woluminy.Remove(wolumin); 
+                _dbcontext.Woluminy.Remove(wolumin);
             }
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexVolumes");
+        }
+        public IActionResult ReserveBook(int id)
+        {
+            var ksiazka = _dbcontext.Ksiazki.Find(id);
+            return View(ksiazka);
+        }
+        [HttpPost]
+        public IActionResult ConfirmReservation(int id)
+        {
+            //Trzeba jeszcze ogarnąć przypisywanie woluminów. To na razie test.
+            var uzytkownikId = _userManager.GetUserId(User);
+            var dataRezerwacji = DateTime.Now;
+            var dataWygasniecia = dataRezerwacji.AddDays(7);
+            TempData["SuccessMessage"] = "Pomyślnie zarezerwowano książkę!";
+            return RedirectToAction("Index");
         }
     }
 }
