@@ -3,16 +3,20 @@
     <form asp-action="AddReview" method="post">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" name="IdKsiazka" value="@ViewBag.IdKsiazka" />
-        <label>
-            Ocena:
-            <select asp-for="Ocena">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </label>
+        <div class="star-rating">
+            <input type="radio" id="star5" name="Ocena" value="5" asp-for="Ocena" />
+            <label for="star5" title="5 stars">&#9733;</label>
+            <input type="radio" id="star4" name="Ocena" value="4" asp-for="Ocena" />
+            <label for="star4" title="4 stars">&#9733;</label>
+            <input type="radio" id="star3" name="Ocena" value="3" asp-for="Ocena" />
+            <label for="star3" title="3 stars">&#9733;</label>
+            <input type="radio" id="star2" name="Ocena" value="2" asp-for="Ocena" />
+            <label for="star2" title="2 stars">&#9733;</label>
+            <input type="radio" id="star1" name="Ocena" value="1" asp-for="Ocena" />
+            <label for="star1" title="1 star">&#9733;</label>
+            :Ocena
+        </div>
+        <p></p>
         <label>Komentarz: <input type="text" asp-for="Komentarz" /></label>
         <button type="submit" class="btn btn-info">Dodaj</button>
     </form>

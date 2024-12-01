@@ -1,0 +1,18 @@
+﻿@model ICollection<Ksiazka>
+<div style="border: black 1px solid">
+    @foreach (var book in Model){
+        <p>@book.Id</p>
+        <p>@book.Tytul</p>
+        <p>@book.ISBN</p>
+        <p>Woluminy: </p>
+        <div style="border: black 1px solid">
+        @foreach (var volume in book.Woluminy){
+            <p>@volume.Id</p>
+                <a class="btn btn-danger" asp-action="DeleteVolume" asp-route-id="@volume.Id">Usuń</a>
+                <a class="btn btn-info" asp-route-id="@volume.Id">Zarezerwuj</a>
+                <a class="btn btn-info" asp-route-id="@volume.Id">Wypożycz</a>
+        }
+        </div>
+        <a class="btn btn-info" asp-route-id="@book.Id" asp-action="AddVolume">Dodaj wolumin</a>
+    }
+</div>
