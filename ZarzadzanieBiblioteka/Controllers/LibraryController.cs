@@ -236,20 +236,5 @@ namespace ZarzadzanieBiblioteka.Controllers
             }
             return RedirectToAction("Index");
         }
-        public IActionResult ReserveBook(int id)
-        {
-            var ksiazka = _dbcontext.Ksiazki.Find(id);
-            return View(ksiazka);
-        }
-        [HttpPost]
-        public IActionResult ConfirmReservation(int id)
-        {
-            //Trzeba jeszcze w jakiś sposób dodać wolumin
-            var uzytkownikId = _userManager.GetUserId(User);
-            var dataRezerwacji = DateTime.Now;
-            var dataWygasniecia = dataRezerwacji.AddDays(7);
-            TempData["SuccessMessage"] = "Pomyślnie zarezerwowano książkę!";
-            return RedirectToAction("Index");
-        }
     }
 }
