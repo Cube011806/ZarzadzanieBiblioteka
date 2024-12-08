@@ -26,7 +26,7 @@
             <div class="gallery-image">
             @foreach (var ksiazka in Model)
             {
-                <div class ="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 20px;">
+                <div class ="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
                     <div class="img-box">
                         <img src="@ksiazka.Okladka"/>
                         <div class="transparent-box">
@@ -44,7 +44,7 @@
                     <a asp-action="Edit" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton">
                         Edytuj książkę
                     </a>
-                    <a asp-action="ReserveBook" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton">
+                    <a asp-action="ReserveBook" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton" style="grid-column:span 2">
                         Zarezerwuj książkę
                     </a>
                     @if(ksiazka.Opinie.Count == 0)

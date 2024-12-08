@@ -1,24 +1,24 @@
 ﻿@model ICollection<Autor>
-<div>
+<div class="text-center">
     @if (User.Identity.IsAuthenticated)
     {
         if(Model.Count == 0)
         {
             <h2>Brak autorów</h2>
         }
-        foreach(var autor in Model)
+        <a asp-action="AddAuthor" class="btn btn-info" style="display:inline-block">Dodaj Autora</a>
+        <div style="display:flex; gap: 10px; flex-wrap: wrap; margin: 7px">
+        @foreach(var autor in Model)
         {
-            <div style="border: solid 1px black">
+            <div style="border: solid 1px black; display:inline-block;">
                 <p>@autor.Id
                 @autor.Imie
                 @autor.Nazwisko</p>
                 <a asp-action="EditAuthor" class="btn btn-danger" asp-route-id="@autor.Id">Edytuj</a>
                 <a asp-action="DeleteAuthor" class="btn btn-danger" asp-route-id="@autor.Id">Usuń</a>
             </div>
-            
-
         }
-        <a asp-action="AddAuthor" class="btn btn-info">Dodaj Autora</a>
+        </div>
     }
     else
     {
