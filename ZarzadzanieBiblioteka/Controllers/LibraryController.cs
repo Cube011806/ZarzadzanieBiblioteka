@@ -245,7 +245,10 @@ namespace ZarzadzanieBiblioteka.Controllers
         public IActionResult IndexVolumes()
         {
             var books = _dbcontext.Ksiazki.ToList();
-            return View(books);
+            var reservations = _dbcontext.Rezerwacje.ToList();
+
+            var booksAndReservations = new Tuple<IEnumerable<Ksiazka>, IEnumerable<Rezerwacja>>(books, reservations);
+            return View(booksAndReservations);
         }
         public IActionResult AddVolume(int id)
         {
@@ -299,14 +302,25 @@ namespace ZarzadzanieBiblioteka.Controllers
             var ksiazka = _dbcontext.Ksiazki.Find(id);
             return View(ksiazka);
         }
+        public IActionResult Reservation(int id)
+        {
+            var wolumin = _dbcontext.Woluminy.Find(id);
+            return View(wolumin);
+        }
         [HttpPost]
         public IActionResult ConfirmReservation(int id)
         {
-            //Trzeba jeszcze ogarnąć przypisywanie woluminów. To na razie test.
             var uzytkownikId = _userManager.GetUserId(User);
             var dataRezerwacji = DateTime.Now;
             var dataWygasniecia = dataRezerwacji.AddDays(7);
-            TempData["SuccessMessage"] = "Pomyślnie zarezerwowano książkę!";
+            var rezerwcaja = new Rezerwacja();
+            rezerwcaja.WoluminId = id;
+            rezerwcaja.UzytkownikId = uzytkownikId;
+            rezerwcaja.DataRezerwacji = dataRezerwacji;
+            rezerwcaja.DataWygasniecia = dataWygasniecia;
+            _dbcontext.Rezerwacje.Add(rezerwcaja);
+            _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie zarezerwowano wolumin książki!";
             return RedirectToAction("Index");
         }
     }
