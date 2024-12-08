@@ -1,0 +1,18 @@
+﻿@model Wypozyczenie
+
+<div>
+    <form asp-action="LoanVolume" method="post">
+        <div class="form-group">
+            <label>Wolumin:</label>
+            <input type="hidden" asp-for="WoluminId" value="@ViewBag.Wolumin.Id" />
+            <h3>@ViewBag.Wolumin.Ksiazka.Tytul</h3>
+            <label for="UserId">Użytkownik</label>
+            <select asp-for="@Model.UzytkownikId" asp-items="ViewBag.Users" class="form-control"></select>
+            <label for="DataWypozyczenia">Data Wypożyczenia</label>
+            <input type="date" asp-for="DataWypozyczenia" />
+            <label for="DataZwrotu">Data Zwrotu</label>
+            <input type="date" asp-for="DataZwrotu" />
+        </div> 
+        <button type="submit" class="btn btn-primary">Zatwierdź</button> 
+    </form>
+</div>
