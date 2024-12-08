@@ -7,7 +7,7 @@
 		public DateTime DataZwrotu { get; set; }
 		public int WoluminId { get; set; }
 		public virtual Wolumin Wolumin { get; set; } = null!;
-		public string UzytkownikId { get; set; }
+		public string UzytkownikId { get; set; } = String.Empty;
 		public virtual Uzytkownik Uzytkownik { get; set; } = null!;
 	}
 }

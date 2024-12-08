@@ -13,7 +13,13 @@
                 @autor.Imie
                 @autor.Nazwisko</p>
                 <a asp-action="EditAuthor" class="btn btn-danger" asp-route-id="@autor.Id">Edytuj</a>
-                <a asp-action="DeleteAuthor" class="btn btn-danger" asp-route-id="@autor.Id">Usuń</a>
+                @if(autor.Ksiazki.Count == 0){
+                    <a asp-action="DeleteAuthor" class="btn btn-danger" asp-route-id="@autor.Id">Usuń</a>
+                }
+                else{
+                    <span>Usuwanie jest niedostępne - Autor posiada przypisane książki</span>
+                }
+                
             </div>
             
 

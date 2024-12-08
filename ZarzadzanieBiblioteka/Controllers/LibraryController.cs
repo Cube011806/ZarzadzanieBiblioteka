@@ -272,6 +272,28 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexVolumes");
         }
+        public IActionResult LoanVolume(int volid)
+        {
+            var wolumin = _dbcontext.Woluminy.Find(volid);
+            var users = _dbcontext.Uzytkownicy.ToList(); 
+            ViewBag.Users = new SelectList(users, "Id", "UserName");
+            ViewBag.Wolumin = wolumin;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult LoanVolume(Wypozyczenie wypozyczenie)
+        {
+            _dbcontext.Wypozyczenia.Add(wypozyczenie);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("IndexLoans");
+        }
+        public IActionResult ReturnVolume(int id)
+        {
+            var wypozyczenie = _dbcontext.Wypozyczenia.Find(id);
+            _dbcontext.Wypozyczenia.Remove(wypozyczenie);
+            _dbcontext.SaveChanges();
+            return RedirectToAction("IndexLoans");
+        }
         public IActionResult ReserveBook(int id)
         {
             var ksiazka = _dbcontext.Ksiazki.Find(id);

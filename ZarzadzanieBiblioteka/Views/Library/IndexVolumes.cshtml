@@ -10,7 +10,12 @@
             <p>@volume.Id</p>
                 <a class="btn btn-danger" asp-action="DeleteVolume" asp-route-id="@volume.Id">Usuń</a>
                 <a class="btn btn-info" asp-route-id="@volume.Id">Zarezerwuj</a>
-                <a class="btn btn-info" asp-route-id="@volume.Id">Wypożycz</a>
+                @if(volume.Wypozyczenia.Count == 0){
+                    <a class="btn btn-info" asp-action="LoanVolume" asp-route-volid="@volume.Id">Wypożycz</a>
+                }
+                else{
+
+                }
         }
         </div>
         <a class="btn btn-info" asp-route-id="@book.Id" asp-action="AddVolume">Dodaj wolumin</a>
