@@ -3,14 +3,16 @@
 <div style="border: black 1px solid">
     @foreach (var loan in Model)
     {
-        <label>Id Wypożyczenia: <p>@loan.Id</p></label>
-        <label>Data Wypożyczenia:<p>@loan.DataWypozyczenia</p></label>
-        <label>Id Woluminu:<p>@loan.Wolumin.Id</p></label>
-        <label>Tytuł Książki:<p>@loan.Wolumin.Ksiazka.Tytul</p></label>
-        <label>Data Zwrotu:<p>@loan.DataZwrotu</p></label>
-        <label>Nazwa Wypożyczającego:<p>@loan.Uzytkownik.UserName</p></label>
-        <p>Akcje: </p>
-        <a class="btn btn-info" asp-route-id="@loan.Id" asp-action="ReturnVolume">Zwróć książkę</a>
-        <a class="btn btn-info" asp-route-id="@loan.Id">Przedłuż wypożyczenie</a>
+        <div>
+            <label>Id Wypożyczenia: <p>@loan.Id</p></label>
+            <label>Data Wypożyczenia:<p>@loan.DataWypozyczenia</p></label>
+            <label>Id Woluminu:<p>@loan.Wolumin.Id</p></label>
+            <label>Tytuł Książki:<p>@loan.Wolumin.Ksiazka.Tytul</p></label>
+            <label>Data Zwrotu:<p>@loan.DataZwrotu</p></label>
+            <label>Nazwa Wypożyczającego:<p>@loan.Uzytkownik.UserName</p></label>
+            <p>Akcje: </p>
+            <a class="btn btn-info" asp-route-id="@loan.Id" asp-action="ReturnVolume">Zwróć książkę</a>
+            <a class="btn btn-info" asp-route-id="@loan.Id">Przedłuż wypożyczenie</a>
+        </div>
     }
 </div>
