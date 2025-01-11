@@ -1,97 +1,97 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model ICollection<Ksiazka>
 @inject UserManager<Uzytkownik> UserManager
-<div class="text-center">
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
-            <strong>@TempData["ErrorMessage"]</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-            <strong>@TempData["SuccessMessage"]</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["ErrorMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["SuccessMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="text-center" style="padding: 60px; max-width: 1200px; margin: 0 auto;">
     @if (User.Identity.IsAuthenticated)
     {
-        <a asp-action="Add" class="btn btn-primary btn-lg">
-            Dodaj Książkę
-        </a>
         if (Model.Count != 0)
         {
-            <div class="gallery-image">
-            @foreach (var ksiazka in Model)
-            {
-                <div class ="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
-                    <div class="img-box">
-                        <img src="@ksiazka.Okladka"/>
-                        <div class="transparent-box">
-                            <div class="caption">
-                                <p class="upper">@ksiazka.Tytul</p>
-                                <p class="opacity-low upper">@ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko </p>
-                                <p class="opacity-low upper"> @ksiazka.Wydanie</p>
-                                <p class="opacity-low upper">@ksiazka.DataWydania.ToString("dd.MM.yyyy") </p>
+            <div class="book-list" style="display: flex; flex-direction: column; gap: 20px;">
+                @foreach (var ksiazka in Model)
+                {
+                    <div class="book-item" style="display: flex; gap: 20px; border-bottom: 1px solid #ddd; padding-bottom: 20px;">
+                        <div class="book-cover" style="flex: 1; max-width: 500px;">
+                            <img src="@ksiazka.Okladka" style="width: 100%; max-width: 500px; border-radius: 10px;" alt="Okładka książki" />
+                        </div>
+                        <div class="book-info" style="flex: 2; text-align: left;">
+                            <h3>@ksiazka.Tytul</h3>
+                            <p><strong>Autor:</strong> @ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko</p>
+                            <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
+                            <p><strong>Data wydania:</strong> @ksiazka.DataWydania.ToString("dd.MM.yyyy")</p>
+
+                            <div class="buttons" style="margin-top: 15px;">
+                                <a asp-action="Delete" asp-route-id="@ksiazka.Id" class="btn btn-danger me-2">
+                                    Usuń książkę
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@ksiazka.Id" class="btn btn-warning me-2">
+                                    Edytuj książkę
+                                </a>
+                                <a asp-action="ReserveBook" asp-route-id="@ksiazka.Id" class="btn btn-success">
+                                    Zarezerwuj książkę
+                                </a>
+                            </div>
+
+                            <div class="reviews" style="margin-top: 20px;">
+                                @if (!ksiazka.Opinie.Any(op => op.UzytkownikId == UserManager.GetUserId(User)))
+                                {
+                                    <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary">
+                                        Dodaj opinię
+                                    </a>
+                                }
+                                else
+                                {
+                                    <p class="text-success">Już dodałeś opinię do tej książki!</p>
+                                }
+                                @if (ksiazka.Opinie.Count == 0)
+                                {
+                                    <p>Brak opinii</p>
+                                }
+                                else
+                                {
+                                    <h5>Opinie:</h5>
+                                    var opiniaAktualnieZalogowanegoUzytkownika = ksiazka.Opinie.FirstOrDefault(op => op.UzytkownikId == UserManager.GetUserId(User));
+                                    if (opiniaAktualnieZalogowanegoUzytkownika != null)
+                                    {
+                                        <div class="Stars" style="--rating: @opiniaAktualnieZalogowanegoUzytkownika.Ocena;" aria-label="Rating">Ocena:</div>
+                                        <p>Komentarz: @opiniaAktualnieZalogowanegoUzytkownika.Komentarz</p>
+                                        <a asp-action="EditReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary me-2">
+                                            Zmień opinię
+                                        </a>
+                                        <a asp-action="DeleteReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" class="btn btn-secondary">
+                                            Usuń opinię
+                                        </a>
+                                    }
+                                    @foreach (var opinia in ksiazka.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
+                                    {
+                                        <br />
+                                        <div class="Stars" style="--rating: @opinia.Ocena;" aria-label="Rating">Ocena:</div>
+                                        <p>Komentarz: @opinia.Komentarz</p>
+                                    }
+                                }
                             </div>
                         </div>
                     </div>
-                    <a asp-action="Delete" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton">
-                        Usuń książkę
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton">
-                        Edytuj książkę
-                    </a>
-                    <a asp-action="ReserveBook" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton" style="grid-column:span 2">
-                        Zarezerwuj książkę
-                    </a>
-                    @if(!ksiazka.Opinie.Any(op => op.UzytkownikId == UserManager.GetUserId(User)))
-                    {
-                        <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg" style="grid-column:span 2">
-                            Dodaj opinię
-                        </a>
-                    }
-                    else
-                    {
-                        <p>Już dodałeś opinię do tej książki!</p>
-                    }
-                    @if(ksiazka.Opinie.Count == 0)
-                    {
-                        <p style="grid-column:span 2">Brak opinii</p>
-                    }
-                    else
-                    {
-                        <p>Opinie: </p>
-                        <br />
-                        var opiniaAktualnieZalogowanegoUzytkownika = ksiazka.Opinie.FirstOrDefault(op => op.UzytkownikId == UserManager.GetUserId(User));
-                        if(opiniaAktualnieZalogowanegoUzytkownika != null)
-                        {
-                            <div class="Stars" style="--rating: @opiniaAktualnieZalogowanegoUzytkownika.Ocena;" aria-label="Rating">Ocena:</div>
-                                <p>Komentarz: @opiniaAktualnieZalogowanegoUzytkownika.Komentarz</p>
-                                <a asp-action="EditReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg">
-                                Zmień opinię
-                            </a>
-                                <a asp-action="DeleteReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" class="btn btn-secondary btn-lg">
-                                Usuń opinię
-                            </a>
-                        }
-                        @foreach(var opinia in ksiazka.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
-                        {
-                            <div class="Stars" style="--rating: @opinia.Ocena;" aria-label="Rating">Ocena:</div>
-                            <p>Komentarz: @opinia.Komentarz</p>
-                        }
-                    }
-                </div>
-            }
+                }
             </div>
         }
         else
         {
             <h2>Brak książek w katalogu</h2>
         }
-
     }
     else
     {

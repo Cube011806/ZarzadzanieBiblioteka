@@ -126,7 +126,7 @@ namespace ZarzadzanieBiblioteka.Controllers
                 var placeParh = Path.Combine("images/", file.FileName);
                 ksiazkaToEdit.Okladka = placeParh;
             }
-//jeżeli nie ma okładki w editcie, okładka poprzednia jest do niej przypisywana ale nie ma potrzeby na wypisywanie błędu
+            //jeżeli nie ma okładki w editcie, okładka poprzednia jest do niej przypisywana ale nie ma potrzeby na wypisywanie błędu
             ksiazkaToEdit.Tytul = ksiazka.Tytul;
             ksiazkaToEdit.Gatunek = ksiazka.Gatunek;
             ksiazkaToEdit.DataWydania = ksiazka.DataWydania;
