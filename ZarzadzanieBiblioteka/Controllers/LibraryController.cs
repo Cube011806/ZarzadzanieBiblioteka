@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ZarzadzanieBiblioteka.Controllers
 {
@@ -327,6 +328,45 @@ namespace ZarzadzanieBiblioteka.Controllers
         {
             var ksiazki = _dbcontext.Ksiazki.ToList();
             return View(ksiazki);
+        }
+        public IActionResult CompareBooks(int book1Id, int book2Id)
+        {
+            if(book1Id == book2Id)
+            {
+                TempData["ErrorMessage"] = "Nie możesz porównać tej samej książki ze sobą!";
+                return RedirectToAction("Index");
+            }
+
+            var book1 = _dbcontext.Ksiazki.Find(book1Id);
+            var book2 = _dbcontext.Ksiazki.Find(book2Id);
+            if (book1 == null || book2 == null)
+            {
+                TempData["ErrorMessage"] = "Nie można znaleźć jednej z książek w bazie!";
+                return RedirectToAction("Index");
+            }
+
+            double avgOcenaBook1 = 0.0;
+            double avgOcenaBook2 = 0.0;
+
+            //obliczamy srednia arytmetyczna z wszystkich ocen dla ksiazki1
+            if(book1.Opinie.Count > 0)
+            {
+                avgOcenaBook1 = book1.Opinie.Average(op => op.Ocena);
+            }
+
+            //obliczamy srednia arytmetyczna z wszystkich ocen dla ksiazki2
+            if (book2.Opinie.Count > 0)
+            {
+                avgOcenaBook2 = book2.Opinie.Average(op => op.Ocena);
+            }
+
+            ViewData["Book1"] = book1;
+            ViewData["AvgOcenaBook1"] = avgOcenaBook1;
+
+            ViewData["Book2"] = book2;
+            ViewData["AvgOcenaBook2"] = avgOcenaBook2;
+
+            return View();
         }
     }
 }

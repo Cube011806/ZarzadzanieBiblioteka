@@ -24,7 +24,7 @@
         }
         @if (User.Identity.IsAuthenticated)
         {
-            if (Model.Count != 0)
+            @if (Model.Count != 0)
             {
                 <div class="gallery-image">
                     @foreach (var ksiazka in Model)
@@ -35,15 +35,17 @@
                                 <div class="transparent-box">
                                     <div class="caption">
                                         <p class="upper">@ksiazka.Tytul</p>
-                                        <p class="opacity-low upper">@ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko </p>
-                                        <p class="opacity-low upper"> @ksiazka.Wydanie</p>
-                                        <p class="opacity-low upper">@ksiazka.DataWydania.ToString("dd.MM.yyyy") </p>
+                                        <p class="opacity-low upper">@ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko</p>
+                                        <p class="opacity-low upper">@ksiazka.Wydanie</p>
+                                        <p class="opacity-low upper">@ksiazka.DataWydania.ToString("dd.MM.yyyy")</p>
                                     </div>
                                 </div>
                             </div>
-                            <a asp-action="CompareBook" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton" style="grid-column:span 2">
+                            <button class="btn btn-primary btn-lg outbutton select-book"
+                                    data-id="@ksiazka.Id"
+                                    style="grid-column:span 2">
                                 Porównaj książkę
-                            </a>
+                            </button>
                         </div>
                     }
                 </div>
@@ -52,11 +54,35 @@
             {
                 <h2>Brak książek w katalogu</h2>
             }
-
         }
         else
         {
             <h1 class="display-4">Brak dostępu!</h1>
         }
     </div>
+
+    <script>
+        let selectedBooks = [];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const compareButtons = document.querySelectorAll('.select-book');
+
+            compareButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const bookId = this.dataset.id;
+
+                    if (selectedBooks.length < 2) {
+                        selectedBooks.push(bookId);
+                    }
+
+                    if (selectedBooks.length === 2) {
+                        const url = `/Library/CompareBooks?book1Id=${selectedBooks[0]}&book2Id=${selectedBooks[1]}`;
+                        window.location.href = url;
+                    } else {
+                        alert('Książka została dodana do porównania. Wybierz jeszcze jedną.');
+                    }
+                });
+            });
+        });
+    </script>
 }
