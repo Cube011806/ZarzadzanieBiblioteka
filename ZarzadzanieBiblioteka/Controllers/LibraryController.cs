@@ -323,5 +323,10 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie zarezerwowano wolumin książki!";
             return RedirectToAction("Index");
         }
+        public IActionResult IndexCompare()
+        {
+            var ksiazki = _dbcontext.Ksiazki.ToList();
+            return View(ksiazki);
+        }
     }
 }
