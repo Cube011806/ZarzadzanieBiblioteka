@@ -47,11 +47,15 @@
                     <a asp-action="ReserveBook" asp-route-id="@ksiazka.Id" class="btn btn-primary btn-lg outbutton" style="grid-column:span 2">
                         Zarezerwuj książkę
                     </a>
-                    @if(ksiazka.Opinie.Count == 0)
+                    @if(!ksiazka.Opinie.Any(op => op.UzytkownikId == UserManager.GetUserId(User)))
                     {
                         <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg" style="grid-column:span 2">
                             Dodaj opinię
                         </a>
+                    }
+                    else
+                    {
+                        <p>Już dodałeś opinię do tej książki!</p>
                     }
                     @if(ksiazka.Opinie.Count == 0)
                     {

@@ -200,7 +200,18 @@ namespace ZarzadzanieBiblioteka.Controllers
         [HttpPost]
         public IActionResult AddReview(Opinia opinia, int IdKsiazka)
         {
-            opinia.UzytkownikId = _userManager.GetUserId(User);
+            var uzytkownikId = _userManager.GetUserId(User);
+
+            //sprawdzamy czy użytkownik dodał już opinie o tej książcę
+            var czyIstniejeOpinia = _dbcontext.Opinie.FirstOrDefault(op => op.KsiazkaId == IdKsiazka && op.UzytkownikId == uzytkownikId);
+
+            if(czyIstniejeOpinia != null)
+            {
+                TempData["ErrorMessage"] = "Już dodałeś opinię do tej książki!";
+                return RedirectToAction("Index");
+            }
+
+            opinia.UzytkownikId = uzytkownikId;
             opinia.KsiazkaId = IdKsiazka;
             //var ksiazka = _dbcontext.Ksiazki.Find(IdKsiazka);
             //ksiazka.Opinie.Add(opinia);
