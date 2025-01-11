@@ -1,4 +1,6 @@
-﻿@*
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<Uzytkownik> UserManager
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
@@ -7,6 +9,9 @@
 
     var book2 = ViewData["Book2"] as Ksiazka;
     var avgOcenaBook2 = ViewData["AvgOcenaBook2"] as double?;
+
+    var opiniaAktualnieZalogowanegoUzytkownikaBook1 = book1.Opinie.FirstOrDefault(op => op.UzytkownikId == UserManager.GetUserId(User));
+    var opiniaAktualnieZalogowanegoUzytkownikaBook2 = book2.Opinie.FirstOrDefault(op => op.UzytkownikId == UserManager.GetUserId(User));
 }
 
 <style>
@@ -62,7 +67,11 @@
             <div id="book1-opinions" class="opinions" style="display: none;">
                 <h4>Opinie:</h4>
                 <ul>
-                    @foreach (var opinia in book1.Opinie)
+                    @if (opiniaAktualnieZalogowanegoUzytkownikaBook1 != null)
+                    {
+                        <li>@opiniaAktualnieZalogowanegoUzytkownikaBook1.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook1.Ocena)</li>
+                    }
+                    @foreach (var opinia in book1.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
                     {
                         <li>@opinia.Komentarz (Ocena: @opinia.Ocena)</li>
                     }
@@ -94,7 +103,11 @@
             <div id="book2-opinions" class="opinions" style="display: none;">
                 <h4>Opinie:</h4>
                 <ul>
-                    @foreach (var opinia in book2.Opinie)
+                    @if(opiniaAktualnieZalogowanegoUzytkownikaBook2 != null)
+                    {
+                        <li>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook2.Ocena)</li>
+                    }
+                    @foreach (var opinia in book2.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
                     {
                         <li>@opinia.Komentarz (Ocena: @opinia.Ocena)</li>
                     }

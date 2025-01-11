@@ -65,16 +65,22 @@
                     {
                         <p>Opinie: </p>
                         <br />
-                        @foreach(var opinia in ksiazka.Opinie)
+                        var opiniaAktualnieZalogowanegoUzytkownika = ksiazka.Opinie.FirstOrDefault(op => op.UzytkownikId == UserManager.GetUserId(User));
+                        if(opiniaAktualnieZalogowanegoUzytkownika != null)
+                        {
+                            <div class="Stars" style="--rating: @opiniaAktualnieZalogowanegoUzytkownika.Ocena;" aria-label="Rating">Ocena:</div>
+                                <p>Komentarz: @opiniaAktualnieZalogowanegoUzytkownika.Komentarz</p>
+                                <a asp-action="EditReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg">
+                                Zmień opinię
+                            </a>
+                                <a asp-action="DeleteReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" class="btn btn-secondary btn-lg">
+                                Usuń opinię
+                            </a>
+                        }
+                        @foreach(var opinia in ksiazka.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
                         {
                             <div class="Stars" style="--rating: @opinia.Ocena;" aria-label="Rating">Ocena:</div>
                             <p>Komentarz: @opinia.Komentarz</p>
-                            <a asp-action="EditReview" asp-route-id="@opinia.Id" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary btn-lg">
-                                Zmień opinię
-                            </a>
-                            <a asp-action="DeleteReview" asp-route-id="@opinia.Id" class="btn btn-secondary btn-lg">
-                                Usuń opinię
-                            </a>
                         }
                     }
                 </div>
