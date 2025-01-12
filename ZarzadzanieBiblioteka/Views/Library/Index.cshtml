@@ -145,7 +145,7 @@
                                placeholder="Wyszukaj książkę po tytule"
                                class="form-control search-input"
                                style="
-                               width: 300px;
+                               width: 450px;
                                padding: 10px;
                                font-size: 16px;
                                border: 1px solid #ccc;
@@ -225,6 +225,13 @@
                                     Zarezerwuj książkę
                                 </a>
                             </div>
+                            <div style="margin-top: 10px;">
+                                <button class="btn btn-primary btn-lg select-book"
+                                        data-id="@ksiazka.Id"
+                                        style="width: 100%; max-width: 250px; padding: 10px;">
+                                    Porównaj książkę
+                                </button>
+                            </div>
 
                             <div class="reviews" style="margin-top: 15px;">
                                 @if (!ksiazka.Opinie.Any(op => op.UzytkownikId == UserManager.GetUserId(User)))
@@ -280,3 +287,28 @@
         <h1 class="display-4">Brak dostępu!</h1>
     }
 </div>
+
+<script>
+    let selectedBooks = [];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const compareButtons = document.querySelectorAll('.select-book');
+
+        compareButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const bookId = this.dataset.id;
+
+                if (selectedBooks.length < 2) {
+                    selectedBooks.push(bookId);
+                }
+
+                if (selectedBooks.length === 2) {
+                    const url = `/Library/CompareBooks?book1Id=${selectedBooks[0]}&book2Id=${selectedBooks[1]}`;
+                    window.location.href = url;
+                } else {
+                    alert('Książka została dodana do porównania. Wybierz jeszcze jedną.');
+                }
+            });
+        });
+    });
+</script>
