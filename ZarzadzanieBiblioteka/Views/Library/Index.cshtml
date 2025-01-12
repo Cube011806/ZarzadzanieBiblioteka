@@ -31,7 +31,9 @@
                             <h3>@ksiazka.Tytul</h3>
                             <p><strong>Autor:</strong> @ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko</p>
                             <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
+                            <p><strong>Gatunek:</strong> @ksiazka.Gatunek</p>
                             <p><strong>Data wydania:</strong> @ksiazka.DataWydania.ToString("dd.MM.yyyy")</p>
+                            <p><strong>Liczba stron:</strong> @ksiazka.LiczbaStron</p>
 
                             <div class="buttons" style="margin-top: 15px;">
                                 <a asp-action="Delete" asp-route-id="@ksiazka.Id" class="btn btn-danger me-2">
@@ -45,7 +47,7 @@
                                 </a>
                             </div>
 
-                            <div class="reviews" style="margin-top: 20px;">
+                            <div class="reviews" style="margin-top: 15px;">
                                 @if (!ksiazka.Opinie.Any(op => op.UzytkownikId == UserManager.GetUserId(User)))
                                 {
                                     <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary">
