@@ -21,15 +21,15 @@
             <div class="book-list" style="display: flex; flex-direction: column; gap: 20px;">
                 @foreach (var ksiazka in Model)
                 {
-                    <div class="book-item" style="display: flex; gap: 20px; border-bottom: 1px solid #ddd; padding-bottom: 20px;">
+                    <div class="book-item" style="display: flex; gap: 20px; border-bottom: 1px solid #555555; padding-bottom: 20px;">
                         <div class="book-cover" style="flex: 1; max-width: 500px;">
                             <img src="@ksiazka.Okladka" style="width: 100%; max-width: 500px; border-radius: 10px;" alt="Okładka książki" />
                         </div>
                         <div class="book-info" style="flex: 2; text-align: left;">
                             <h3>@ksiazka.Tytul</h3>
                             <p><strong>Autor:</strong> @ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko</p>
-                            <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
                             <p><strong>Gatunek:</strong> @ksiazka.Gatunek</p>
+                            <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
                             <p><strong>Data wydania:</strong> @ksiazka.DataWydania.ToString("dd.MM.yyyy")</p>
                             <p><strong>Liczba stron:</strong> @ksiazka.LiczbaStron</p>
                             <button class="btn btn-primary btn-lg select-book"

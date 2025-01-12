@@ -1,6 +1,83 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model ICollection<Ksiazka>
 @inject UserManager<Uzytkownik> UserManager
+
+<!-- Font awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    /* Układ typu flex */
+    .sorting form {
+        display: flex;
+        flex-direction: column; /* Pionowe rozstawienie ogółem, ale opcje są poziomo, a pionowo będzie tylko przycisk sortowania*/
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    /* Grupowanie opcji sortujących razem (żeby były poziomo) */
+    .sorting-options {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    /* Ukrycie przycisku radio (tylko są Labele) */
+    input[type="radio"] {
+        display: none;
+    }
+
+    /* Style labeli przycisków */
+    label {
+        display: flex;
+        align-items: center;
+        padding: 8px 15px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        background-color: #f9f9f9;
+        font-size: 14px;
+        color: #333;
+        transition: all 0.3s ease;
+        gap: 8px;
+        min-width: 150px;
+        justify-content: center;
+        text-align: center;
+    }
+
+    /* Efekt najechania myszką na label */
+    label:hover {
+        background-color: #e0e0e0;
+        border-color: #888;
+    }
+
+    /* Podświetlenie wybranego label'u */
+    input[type="radio"]:checked + label {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    /* Style dla przycisku "Sortuj" */
+    .sorting button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        border: none;
+        border-radius: 30px;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    /* Efekt najechania na przycisk "Sortuj" */
+    .sorting button:hover {
+        background-color: #218838;
+    }
+
+</style>
+
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
@@ -20,27 +97,58 @@
     {
         if (Model.Count != 0)
         {
-            <div class="book-list" style="display: flex; flex-direction: column; gap: 20px;">
+            <h3>Sortowanie</h3>
+            <div class="sorting" style="padding: 10px; border-bottom: 1px solid #555555;">
+                <form asp-action="Index" method="get">
+                    <!-- Opcje sortowania w jednym wierszu -->
+                    <div class="sorting-options">
+                        <input type="radio" name="SortujPo" value="Tytul" id="sortujTytul" />
+                        <label for="sortujTytul"><i class="fa fa-book"></i>Tytuł</label>
+
+                        <input type="radio" name="SortujPo" value="Autor" id="sortujAutor" />
+                        <label for="sortujAutor"><i class="fa fa-user"></i>Autor</label>
+
+                        <input type="radio" name="SortujPo" value="Gatunek" id="sortujGatunek" />
+                        <label for="sortujGatunek"><i class="fa fa-tags"></i>Gatunek</label>
+
+                        <input type="radio" name="SortujPo" value="Wydanie" id="sortujWydanie" />
+                        <label for="sortujWydanie"><i class="fa fa-calendar"></i>Wydanie</label>
+
+                        <input type="radio" name="SortujPo" value="DataWydania" id="sortujDataWydania" />
+                        <label for="sortujDataWydania"><i class="fa fa-clock"></i>Data wydania</label>
+
+                        <input type="radio" name="SortujPo" value="LiczbaStron" id="sortujLiczbaStron" />
+                        <label for="sortujLiczbaStron"><i class="fa fa-file-alt"></i>Liczba stron</label>
+                    </div>
+
+                    <!-- Przycisk "Sortuj" pod spodem -->
+                    <div>
+                        <button type="submit">Sortuj</button>
+                    </div>
+                </form>
+            </div>
+            <h3>Katalog książek</h3>
+            <div class="book-list" style="display: flex; flex-direction: column; gap: 20px; padding:10px;">
                 @foreach (var ksiazka in Model)
                 {
-                    <div class="book-item" style="display: flex; gap: 20px; border-bottom: 1px solid #ddd; padding-bottom: 20px;">
+                    <div class="book-item" style="display: flex; gap: 20px; border-bottom: 1px solid #555555; padding-bottom: 20px;">
                         <div class="book-cover" style="flex: 1; max-width: 500px;">
                             <img src="@ksiazka.Okladka" style="width: 100%; max-width: 500px; border-radius: 10px;" alt="Okładka książki" />
                         </div>
                         <div class="book-info" style="flex: 2; text-align: left;">
                             <h3>@ksiazka.Tytul</h3>
                             <p><strong>Autor:</strong> @ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko</p>
-                            <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
                             <p><strong>Gatunek:</strong> @ksiazka.Gatunek</p>
+                            <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
                             <p><strong>Data wydania:</strong> @ksiazka.DataWydania.ToString("dd.MM.yyyy")</p>
                             <p><strong>Liczba stron:</strong> @ksiazka.LiczbaStron</p>
 
                             <div class="buttons" style="margin-top: 15px;">
-                                <a asp-action="Delete" asp-route-id="@ksiazka.Id" class="btn btn-danger me-2">
-                                    Usuń książkę
-                                </a>
                                 <a asp-action="Edit" asp-route-id="@ksiazka.Id" class="btn btn-warning me-2">
                                     Edytuj książkę
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@ksiazka.Id" class="btn btn-danger me-2">
+                                    Usuń książkę
                                 </a>
                                 <a asp-action="ReserveBook" asp-route-id="@ksiazka.Id" class="btn btn-success">
                                     Zarezerwuj książkę

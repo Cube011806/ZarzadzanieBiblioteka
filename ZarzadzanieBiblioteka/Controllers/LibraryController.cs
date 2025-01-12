@@ -17,9 +17,20 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext = dbContext;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public IActionResult Index(string SortujPo)
         {
             var ksiazki = _dbcontext.Ksiazki.ToList();
+
+            ksiazki = SortujPo switch
+            {
+                "Tytul" => ksiazki.OrderBy(ks => ks.Tytul).ToList(),
+                "Autor" => ksiazki.OrderBy(ks => ks.Autor.Imie).OrderBy(ks => ks.Autor.Nazwisko).ToList(),
+                "Gatunek" => ksiazki.OrderBy(ks => ks.Gatunek).ToList(),
+                "Wydanie" => ksiazki.OrderBy(ks => ks.Wydanie).ToList(),
+                "DataWydania" => ksiazki.OrderBy(ks => ks.DataWydania).ToList(),
+                "LiczbaStron" => ksiazki.OrderBy(ks => ks.LiczbaStron).ToList(),
+                _ => ksiazki
+            };
 
             //if(ksiazki == null || ksiazki.Count == 0)
             //{
