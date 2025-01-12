@@ -38,93 +38,98 @@
         margin-bottom: 10px;
     }
 </style>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="container">
+        <h2 class="text-center">Porównanie Książek</h2>
 
-<div class="container">
-    <h2 class="text-center">Porównanie Książek</h2>
+        <div class="row">
+            <!-- Ksiazka1 -->
+            <div class="col-md-6 text-center">
+                <div class="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
+                    <div class="img-box">
+                        <img src="@book1.Okladka" />
+                    </div>
+                </div>
+                <h3>@book1.Tytul</h3>
+                <p><strong>Autor:</strong> @book1.Autor.Imie @book1.Autor.Nazwisko</p>
+                <p><strong>Wydanie:</strong> @book1.Wydanie</p>
+                <p><strong>Gatunek:</strong> @book1.Gatunek</p>
+                <p><strong>Data wydania:</strong> @book1.DataWydania.ToString("dd.MM.yyyy")</p>
+                <p><strong>Liczba stron:</strong> @book1.LiczbaStron</p>
+                <p><strong>Oprawa:</strong> @book1.Oprawa</p>
+                <p><strong>ISBN:</strong> @book1.ISBN</p>
+                @if (avgOcenaBook1 == null || avgOcenaBook1 == 0.0)
+                {
+                    <p><strong>Średnia ocena:</strong> Brak ocen dla książki</p>
+                }
+                else
+                {
+                    <p><strong>Średnia ocena:</strong> @avgOcenaBook1?.ToString("F2")</p>
+                }
 
-    <div class="row">
-        <!-- Ksiazka1 -->
-        <div class="col-md-6 text-center">
-            <div class="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
-                <div class="img-box">
-                    <img src="@book1.Okladka" />
+                <button class="btn btn-primary" onclick="toggleOpinions('book1-opinions')">Pokaż opinie</button>
+                <div id="book1-opinions" class="opinions" style="display: none;">
+                    <h4>Opinie:</h4>
+                    <ul>
+                        @if (opiniaAktualnieZalogowanegoUzytkownikaBook1 != null)
+                        {
+                            <li>@opiniaAktualnieZalogowanegoUzytkownikaBook1.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook1.Ocena) - <strong>@opiniaAktualnieZalogowanegoUzytkownikaBook1.Uzytkownik.Email</strong></li>
+                        }
+                        @foreach (var opinia in book1.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
+                        {
+                            <li>@opinia.Komentarz (Ocena: @opinia.Ocena) - <strong>@opinia.Uzytkownik.Email</strong></li>
+                        }
+                    </ul>
                 </div>
             </div>
-            <h3>@book1.Tytul</h3>
-            <p><strong>Autor:</strong> @book1.Autor.Imie @book1.Autor.Nazwisko</p>
-            <p><strong>Wydanie:</strong> @book1.Wydanie</p>
-            <p><strong>Gatunek:</strong> @book1.Gatunek</p>
-            <p><strong>Data wydania:</strong> @book1.DataWydania.ToString("dd.MM.yyyy")</p>
-            <p><strong>Liczba stron:</strong> @book1.LiczbaStron</p>
-            <p><strong>Oprawa:</strong> @book1.Oprawa</p>
-            <p><strong>ISBN:</strong> @book1.ISBN</p>
-            @if (avgOcenaBook1 == null || avgOcenaBook1 == 0.0)
-            {
-                <p><strong>Średnia ocena:</strong> Brak ocen dla książki</p>
-            }
-            else
-            {
-                <p><strong>Średnia ocena:</strong> @avgOcenaBook1?.ToString("F2")</p>
-            }
 
-            <button class="btn btn-primary" onclick="toggleOpinions('book1-opinions')">Pokaż opinie</button>
-            <div id="book1-opinions" class="opinions" style="display: none;">
-                <h4>Opinie:</h4>
-                <ul>
-                    @if (opiniaAktualnieZalogowanegoUzytkownikaBook1 != null)
-                    {
-                        <li>@opiniaAktualnieZalogowanegoUzytkownikaBook1.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook1.Ocena) - <strong>@opiniaAktualnieZalogowanegoUzytkownikaBook1.Uzytkownik.Email</strong></li>
-                    }
-                    @foreach (var opinia in book1.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
-                    {
-                        <li>@opinia.Komentarz (Ocena: @opinia.Ocena) - <strong>@opinia.Uzytkownik.Email</strong></li>
-                    }
-                </ul>
-            </div>
-        </div>
-
-        <!-- Ksiazka2 -->
-        <div class="col-md-6 text-center">
-            <div class="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
-                <div class="img-box">
-                    <img src="@book2.Okladka" />
+            <!-- Ksiazka2 -->
+            <div class="col-md-6 text-center">
+                <div class="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
+                    <div class="img-box">
+                        <img src="@book2.Okladka" />
+                    </div>
                 </div>
-            </div>
-            <h3>@book2.Tytul</h3>
-            <p><strong>Autor:</strong> @book2.Autor.Imie @book2.Autor.Nazwisko</p>
-            <p><strong>Wydanie:</strong> @book2.Wydanie</p>
-            <p><strong>Gatunek:</strong> @book2.Gatunek</p>
-            <p><strong>Data wydania:</strong> @book2.DataWydania.ToString("dd.MM.yyyy")</p>
-            <p><strong>Liczba stron:</strong> @book2.LiczbaStron</p>
-            <p><strong>Oprawa:</strong> @book2.Oprawa</p>
-            <p><strong>ISBN:</strong> @book2.ISBN</p>
-            @if(avgOcenaBook2 == null || avgOcenaBook2 == 0.0)
-            {
-                <p><strong>Średnia ocena:</strong> Brak ocen dla książki</p>
-            }
-            else
-            {
-                <p><strong>Średnia ocena:</strong> @avgOcenaBook2?.ToString("F2")</p>
-            }
+                <h3>@book2.Tytul</h3>
+                <p><strong>Autor:</strong> @book2.Autor.Imie @book2.Autor.Nazwisko</p>
+                <p><strong>Wydanie:</strong> @book2.Wydanie</p>
+                <p><strong>Gatunek:</strong> @book2.Gatunek</p>
+                <p><strong>Data wydania:</strong> @book2.DataWydania.ToString("dd.MM.yyyy")</p>
+                <p><strong>Liczba stron:</strong> @book2.LiczbaStron</p>
+                <p><strong>Oprawa:</strong> @book2.Oprawa</p>
+                <p><strong>ISBN:</strong> @book2.ISBN</p>
+                @if(avgOcenaBook2 == null || avgOcenaBook2 == 0.0)
+                {
+                    <p><strong>Średnia ocena:</strong> Brak ocen dla książki</p>
+                }
+                else
+                {
+                    <p><strong>Średnia ocena:</strong> @avgOcenaBook2?.ToString("F2")</p>
+                }
 
-            <button class="btn btn-primary" onclick="toggleOpinions('book2-opinions')">Pokaż opinie</button>
-            <div id="book2-opinions" class="opinions" style="display: none;">
-                <h4>Opinie:</h4>
-                <ul>
-                    @if(opiniaAktualnieZalogowanegoUzytkownikaBook2 != null)
-                    {
-                        <li>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook2.Ocena) - <strong>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Uzytkownik.Email</strong></li>
-                    }
-                    @foreach (var opinia in book2.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
-                    {
-                        <li>@opinia.Komentarz (Ocena: @opinia.Ocena) - <strong>@opinia.Uzytkownik.Email</strong></li>
-                    }
-                </ul>
+                <button class="btn btn-primary" onclick="toggleOpinions('book2-opinions')">Pokaż opinie</button>
+                <div id="book2-opinions" class="opinions" style="display: none;">
+                    <h4>Opinie:</h4>
+                    <ul>
+                        @if(opiniaAktualnieZalogowanegoUzytkownikaBook2 != null)
+                        {
+                            <li>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook2.Ocena) - <strong>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Uzytkownik.Email</strong></li>
+                        }
+                        @foreach (var opinia in book2.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
+                        {
+                            <li>@opinia.Komentarz (Ocena: @opinia.Ocena) - <strong>@opinia.Uzytkownik.Email</strong></li>
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
+}
+else
+{
+    <h1 class="display-4">Brak dostępu!</h1>
+}
 <script>
     function toggleOpinions(id) {
         const element = document.getElementById(id);
