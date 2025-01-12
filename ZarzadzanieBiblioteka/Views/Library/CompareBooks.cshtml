@@ -69,11 +69,11 @@
                 <ul>
                     @if (opiniaAktualnieZalogowanegoUzytkownikaBook1 != null)
                     {
-                        <li>@opiniaAktualnieZalogowanegoUzytkownikaBook1.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook1.Ocena)</li>
+                        <li>@opiniaAktualnieZalogowanegoUzytkownikaBook1.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook1.Ocena) - <strong>@opiniaAktualnieZalogowanegoUzytkownikaBook1.Uzytkownik.Email</strong></li>
                     }
                     @foreach (var opinia in book1.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
                     {
-                        <li>@opinia.Komentarz (Ocena: @opinia.Ocena)</li>
+                        <li>@opinia.Komentarz (Ocena: @opinia.Ocena) - <strong>@opinia.Uzytkownik.Email</strong></li>
                     }
                 </ul>
             </div>
@@ -105,11 +105,11 @@
                 <ul>
                     @if(opiniaAktualnieZalogowanegoUzytkownikaBook2 != null)
                     {
-                        <li>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook2.Ocena)</li>
+                        <li>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Komentarz (Ocena: @opiniaAktualnieZalogowanegoUzytkownikaBook2.Ocena) - <strong>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Uzytkownik.Email</strong></li>
                     }
                     @foreach (var opinia in book2.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
                     {
-                        <li>@opinia.Komentarz (Ocena: @opinia.Ocena)</li>
+                        <li>@opinia.Komentarz (Ocena: @opinia.Ocena) - <strong>@opiniaAktualnieZalogowanegoUzytkownikaBook2.Uzytkownik.Email</strong></li>
                     }
                 </ul>
             </div>

@@ -20,10 +20,11 @@ namespace ZarzadzanieBiblioteka.Controllers
         public IActionResult Index()
         {
             var ksiazki = _dbcontext.Ksiazki.ToList();
+
             //if(ksiazki == null || ksiazki.Count == 0)
             //{
-                //TempData["ErrorMessage"] = "Nie udało się pobrać książek z bazy!";
-                //return View();
+            //TempData["ErrorMessage"] = "Nie udało się pobrać książek z bazy!";
+            //return View();
             //}
             return View(ksiazki);
         }
