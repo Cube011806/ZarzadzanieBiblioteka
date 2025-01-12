@@ -4,6 +4,7 @@
 
 <!-- Font awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <style>
     /* Układ typu flex */
     .sorting form {
@@ -76,6 +77,44 @@
         background-color: #218838;
     }
 
+    .search-bar {
+        padding: 20px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+
+    .search-input {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 25px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .search-input:focus {
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-color: #007bff;
+    }
+
+    .search-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 25px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-button:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
 </style>
 
 @if (TempData["ErrorMessage"] != null)
@@ -97,9 +136,41 @@
     {
         if (Model.Count != 0)
         {
-            <h3>Sortowanie</h3>
+            //Wyszukiwanie
+            <div class="search-bar" style="padding: 20px; border-bottom: 1px solid #ccc; margin-bottom: 20px;">
+                <form asp-action="Index" method="get" class="search-form">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <input type="text"
+                               name="KwerendaWyszukujaca"
+                               placeholder="Wyszukaj książkę po tytule"
+                               class="form-control search-input"
+                               style="
+                               width: 300px;
+                               padding: 10px;
+                               font-size: 16px;
+                               border: 1px solid #ccc;
+                               border-radius: 25px;
+                               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" />
+                        <button type="submit"
+                                class="btn btn-primary search-button"
+                                style="
+                                padding: 10px 20px;
+                                font-size: 16px;
+                                border-radius: 25px;
+                                background-color: #007bff;
+                                border: none;
+                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                                        Szukaj
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            //Sortowanie
             <div class="sorting" style="padding: 10px; border-bottom: 1px solid #555555;">
                 <form asp-action="Index" method="get">
+                    <!-- Ukryty input zawierający kwerende wyszukiwajaca -->
+                    <input type="hidden" name="KwerendaWyszukujaca" value="@ViewContext.HttpContext.Request.Query["KwerendaWyszukujaca"]" />
                     <!-- Opcje sortowania w jednym wierszu -->
                     <div class="sorting-options">
                         <input type="radio" name="SortujPo" value="Tytul" id="sortujTytul" />
@@ -127,7 +198,7 @@
                     </div>
                 </form>
             </div>
-            <h3>Katalog książek</h3>
+
             <div class="book-list" style="display: flex; flex-direction: column; gap: 20px; padding:10px;">
                 @foreach (var ksiazka in Model)
                 {

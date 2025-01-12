@@ -17,18 +17,30 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext = dbContext;
             _userManager = userManager;
         }
-        public IActionResult Index(string SortujPo)
+        public IActionResult Index(string SortujPo, string KwerendaWyszukujaca)
         {
-            var ksiazki = _dbcontext.Ksiazki.ToList();
+            //AsQueryable działa tak że teraz LINQ będzie mógł łączyć kwerendy dynamicznie dzięki czemu 
+            //możemy przetworzyć wyszukanie oraz sortowanie jednocześnie i możemy łączyć te dwie funkcje.
+            var ksiazki = _dbcontext.Ksiazki.AsQueryable();
+
+            if (!string.IsNullOrEmpty(KwerendaWyszukujaca))
+            {
+                ksiazki = ksiazki.Where(ks => ks.Tytul.ToLower().Contains(KwerendaWyszukujaca.ToLower()));
+                if (ksiazki.ToList() == null || ksiazki.ToList().Count == 0)
+                {
+                    TempData["ErrorMessage"] = "Nie udało się znaleźć książki, której tytuł zawierałby taką frazę!";
+                    return RedirectToAction("Index");
+                }
+            }
 
             ksiazki = SortujPo switch
             {
-                "Tytul" => ksiazki.OrderBy(ks => ks.Tytul).ToList(),
-                "Autor" => ksiazki.OrderBy(ks => ks.Autor.Imie).OrderBy(ks => ks.Autor.Nazwisko).ToList(),
-                "Gatunek" => ksiazki.OrderBy(ks => ks.Gatunek).ToList(),
-                "Wydanie" => ksiazki.OrderBy(ks => ks.Wydanie).ToList(),
-                "DataWydania" => ksiazki.OrderBy(ks => ks.DataWydania).ToList(),
-                "LiczbaStron" => ksiazki.OrderBy(ks => ks.LiczbaStron).ToList(),
+                "Tytul" => ksiazki.OrderBy(ks => ks.Tytul),
+                "Autor" => ksiazki.OrderBy(ks => ks.Autor.Imie).ThenBy(ks => ks.Autor.Nazwisko),
+                "Gatunek" => ksiazki.OrderBy(ks => ks.Gatunek),
+                "Wydanie" => ksiazki.OrderBy(ks => ks.Wydanie),
+                "DataWydania" => ksiazki.OrderBy(ks => ks.DataWydania),
+                "LiczbaStron" => ksiazki.OrderBy(ks => ks.LiczbaStron),
                 _ => ksiazki
             };
 
@@ -37,7 +49,8 @@ namespace ZarzadzanieBiblioteka.Controllers
             //TempData["ErrorMessage"] = "Nie udało się pobrać książek z bazy!";
             //return View();
             //}
-            return View(ksiazki);
+
+            return View(ksiazki.ToList());
         }
         public IActionResult Add()
         {
