@@ -8,16 +8,16 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ZarzadzanieBiblioteka.Controllers
 {
-    public class LibraryController : Controller
+    public class LibraryController : BaseController
     {
         private readonly ApplicationDbContext _dbcontext;
         private readonly UserManager<Uzytkownik> _userManager;
-        public LibraryController(ApplicationDbContext dbContext, UserManager<Uzytkownik> userManager)
+        public LibraryController(ApplicationDbContext dbContext, UserManager<Uzytkownik> userManager) : base(dbContext)
         {
             _dbcontext = dbContext;
             _userManager = userManager;
         }
-        public IActionResult Index(string SortujPo, string KwerendaWyszukujaca, int? Book1Id)
+        public IActionResult Index(string SortujPo, string KwerendaWyszukujaca, int? Book1Id, string Gatunek)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -27,6 +27,13 @@ namespace ZarzadzanieBiblioteka.Controllers
             //możemy przetworzyć wyszukanie oraz sortowanie jednocześnie i możemy łączyć te dwie funkcje.
             var ksiazki = _dbcontext.Ksiazki.AsQueryable();
 
+            //filtrowanie
+            if(!string.IsNullOrEmpty(Gatunek))
+            {
+                ksiazki = ksiazki.Where(ks => ks.Gatunek == Gatunek);
+            }
+
+            //wyszukiwanie
             if (!string.IsNullOrEmpty(KwerendaWyszukujaca))
             {
                 ksiazki = ksiazki.Where(ks => ks.Tytul.ToLower().Contains(KwerendaWyszukujaca.ToLower()));
@@ -37,6 +44,7 @@ namespace ZarzadzanieBiblioteka.Controllers
                 }
             }
 
+            //sortowanie
             ksiazki = SortujPo switch
             {
                 "Tytul" => ksiazki.OrderBy(ks => ks.Tytul),

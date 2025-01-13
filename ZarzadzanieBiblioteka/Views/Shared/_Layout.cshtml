@@ -13,6 +13,34 @@
             background-size:contain;
             background-repeat:repeat;
         }
+
+        /* Styl dla rozwijanego menu */
+        .custom-dropdown-menu {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styl dla pojedyńczych pozycji w rozwijanym menu */
+        .custom-dropdown-item {
+            color: #343a40;
+            padding: 5px 15px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Styl po najechaniu na pojedyńczą pozycję w rozwijanym menu */
+        .custom-dropdown-item:hover {
+            background-color: #007bff;
+            color: #ffffff;
+            border-radius: 3px;
+        }
+
+        /* Styl dla aktywnej pozycji w rozwijanym menu */
+        .custom-dropdown-item.active {
+            background-color: #0056b3;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -29,8 +57,20 @@
                         
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Library" asp-action="Index">Katalog</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="katalogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Katalog
+                                </a>
+                                <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="katalogDropdown">
+                                    @foreach (var gatunek in (List<string>)ViewData["Gatunki"])
+                                    {
+                                        <li>
+                                            <a class="dropdown-item custom-dropdown-item" asp-controller="Library" asp-action="Index" asp-route-Gatunek="@gatunek">
+                                                @gatunek
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Library" asp-action="Add">Dodaj książkę</a>
