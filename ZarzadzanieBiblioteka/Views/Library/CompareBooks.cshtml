@@ -47,8 +47,8 @@
             <!-- Ksiazka1 -->
             <div class="col-md-6 text-center">
                 <div class="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
-                    <div class="img-box">
-                        <img src="@book1.Okladka" />
+                    <div class="img-box" style="background-color:#cacaca">
+                        <img src="~/@book1.Okladka" style="max-height:550px;" />
                     </div>
                 </div>
                 <h3>@book1.Tytul</h3>
@@ -65,7 +65,7 @@
                 }
                 else
                 {
-                    <p><strong>Średnia ocena:</strong> @avgOcenaBook1?.ToString("F2")</p>
+                    <p class="Stars" style="--rating: @avgOcenaBook1;display:block" aria-label="Rating"><strong>Średnia ocena:</strong></p>
                 }
 
                 <button class="btn btn-primary" onclick="toggleOpinions('book1-opinions')">Pokaż opinie</button>
@@ -87,8 +87,8 @@
             <!-- Ksiazka2 -->
             <div class="col-md-6 text-center">
                 <div class="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
-                    <div class="img-box">
-                        <img src="@book2.Okladka" />
+                    <div class="img-box" style="background-color:#cacaca">
+                        <img src="~/@book2.Okladka" style="max-height:550px;"/>
                     </div>
                 </div>
                 <h3>@book2.Tytul</h3>
@@ -105,7 +105,7 @@
                 }
                 else
                 {
-                    <p><strong>Średnia ocena:</strong> @avgOcenaBook2?.ToString("F2")</p>
+                    <p class="Stars" style="--rating: @avgOcenaBook2;display:block" aria-label="Rating"><strong>Średnia ocena:</strong></p>
                 }
 
                 <button class="btn btn-primary" onclick="toggleOpinions('book2-opinions')">Pokaż opinie</button>
