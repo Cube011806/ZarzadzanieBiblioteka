@@ -19,6 +19,10 @@ namespace ZarzadzanieBiblioteka.Controllers
         }
         public IActionResult Index(string SortujPo, string KwerendaWyszukujaca, int? Book1Id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             //AsQueryable działa tak że teraz LINQ będzie mógł łączyć kwerendy dynamicznie dzięki czemu 
             //możemy przetworzyć wyszukanie oraz sortowanie jednocześnie i możemy łączyć te dwie funkcje.
             var ksiazki = _dbcontext.Ksiazki.AsQueryable();
