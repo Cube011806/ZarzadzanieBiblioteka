@@ -2,6 +2,10 @@
 @model ICollection<Ksiazka>
 @inject UserManager<Uzytkownik> UserManager
 
+@{
+    var books = ViewData["Books"] as List<Ksiazka>;
+}
+
 <!-- Font awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -139,6 +143,7 @@
             //Wyszukiwanie
             <div class="search-bar" style="padding: 20px; border-bottom: 1px solid #ccc; margin-bottom: 20px;">
                 <form asp-action="Index" method="get" class="search-form">
+                    <input type="hidden" name="Book1Id" id="selectedBook1IdForSearching" value="@ViewData["SelectedBook1Id"]" />
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <input type="text"
                                name="KwerendaWyszukujaca"
@@ -169,6 +174,8 @@
             //Sortowanie
             <div class="sorting" style="padding: 10px; border-bottom: 1px solid #555555;">
                 <form asp-action="Index" method="get">
+                    <!-- Ukryty input zawierający id ksiazki nr 1 do porownania-->
+                    <input type="hidden" name="Book1Id" id="selectedBook1IdForSorting" value="@ViewData["SelectedBook1Id"]" />
                     <!-- Ukryty input zawierający kwerende wyszukiwajaca -->
                     <input type="hidden" name="KwerendaWyszukujaca" value="@ViewContext.HttpContext.Request.Query["KwerendaWyszukujaca"]" />
                     <!-- Opcje sortowania w jednym wierszu -->
@@ -289,8 +296,6 @@
 </div>
 
 <script>
-    let selectedBooks = [];
-
     document.addEventListener('DOMContentLoaded', function () {
         const compareButtons = document.querySelectorAll('.select-book');
 
@@ -298,15 +303,23 @@
             button.addEventListener('click', function () {
                 const bookId = this.dataset.id;
 
-                if (selectedBooks.length < 2) {
-                    selectedBooks.push(bookId);
-                }
+                // Check if there's already a first book selected
+                const selectedBook1IdForSearching = document.getElementById('selectedBook1IdForSearching').value;
+                const selectedBook1IdForSorting = document.getElementById('selectedBook1IdForSorting').value;
 
-                if (selectedBooks.length === 2) {
-                    const url = `/Library/CompareBooks?book1Id=${selectedBooks[0]}&book2Id=${selectedBooks[1]}`;
-                    window.location.href = url;
-                } else {
+                if (selectedBook1IdForSearching === "0" && selectedBook1IdForSorting === "0") {
+                    // First book selected, store its ID in the hidden input
+                    document.getElementById('selectedBook1IdForSearching').value = bookId;
+                    document.getElementById('selectedBook1IdForSorting').value = bookId;
                     alert('Książka została dodana do porównania. Wybierz jeszcze jedną.');
+                } else {
+                    // Second book selected, compare the two books
+                    const book1Id = selectedBook1IdForSearching; //Nie ważne co tu damy te wartości będą te same
+                    const book2Id = bookId;
+
+                    // Redirect to the comparison page with the two book IDs
+                    const url = `/Library/CompareBooks?book1Id=${book1Id}&book2Id=${book2Id}`;
+                    window.location.href = url;
                 }
             });
         });

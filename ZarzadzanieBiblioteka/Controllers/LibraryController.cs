@@ -17,7 +17,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext = dbContext;
             _userManager = userManager;
         }
-        public IActionResult Index(string SortujPo, string KwerendaWyszukujaca)
+        public IActionResult Index(string SortujPo, string KwerendaWyszukujaca, int? Book1Id)
         {
             //AsQueryable działa tak że teraz LINQ będzie mógł łączyć kwerendy dynamicznie dzięki czemu 
             //możemy przetworzyć wyszukanie oraz sortowanie jednocześnie i możemy łączyć te dwie funkcje.
@@ -49,6 +49,8 @@ namespace ZarzadzanieBiblioteka.Controllers
             //TempData["ErrorMessage"] = "Nie udało się pobrać książek z bazy!";
             //return View();
             //}
+
+            ViewData["SelectedBook1Id"] = Book1Id ?? 0;
 
             return View(ksiazki.ToList());
         }
@@ -359,11 +361,6 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             TempData["SuccessMessage"] = "Pomyślnie zarezerwowano wolumin książki!";
             return RedirectToAction("Index");
-        }
-        public IActionResult IndexCompare()
-        {
-            var ksiazki = _dbcontext.Ksiazki.ToList();
-            return View(ksiazki);
         }
         public IActionResult CompareBooks(int book1Id, int book2Id)
         {
