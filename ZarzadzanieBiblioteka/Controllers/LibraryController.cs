@@ -348,11 +348,6 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexLoans");
         }
-        public IActionResult ReserveBook(int id)
-        {
-            var ksiazka = _dbcontext.Ksiazki.Find(id);
-            return View(ksiazka);
-        }
         public IActionResult Reservation(int id)
         {
             var wolumin = _dbcontext.Woluminy.Find(id);
