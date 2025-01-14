@@ -1,0 +1,12 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <div>
+        <a class="btn btn-info me-2" asp-controller="Library" asp-action="Add">Dodaj książkę</a>
+        <a class="btn btn-info me-2" asp-controller="Library" asp-action="IndexAuthors">Autorzy</a>
+        <a class="btn btn-info me-2" asp-controller="Library" asp-action="IndexVolumes">Woluminy</a>
+    </div>
+}
+else
+{
+    <h1 class="display-4">Brak dostępu!</h1>
+}

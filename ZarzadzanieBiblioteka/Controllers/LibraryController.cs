@@ -408,5 +408,13 @@ namespace ZarzadzanieBiblioteka.Controllers
 
             return View();
         }
+        public IActionResult IndexManage()
+        {
+            return View();
+        }
+        public IActionResult BookDetails()
+        {
+            return View();
+        }
     }
 }

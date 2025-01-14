@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity.UI.Services
+@using Microsoft.AspNetCore.Identity.UI
+
+@inject UserManager<Uzytkownik> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,37 +15,37 @@
     <link rel="stylesheet" href="~/ZarzadzanieBiblioteka.styles.css" asp-append-version="true" />
     <style>
         header{
-            background-image : url('/images/bookshelf.jpg');
-            background-size:contain;
-            background-repeat:repeat;
+        background-image : url('/images/bookshelf.jpg');
+        background-size:contain;
+        background-repeat:repeat;
         }
 
         /* Styl dla rozwijanego menu */
         .custom-dropdown-menu {
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         /* Styl dla pojedyńczych pozycji w rozwijanym menu */
         .custom-dropdown-item {
-            color: #343a40;
-            padding: 5px 15px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+        color: #343a40;
+        padding: 5px 15px;
+        transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Styl po najechaniu na pojedyńczą pozycję w rozwijanym menu */
         .custom-dropdown-item:hover {
-            background-color: #007bff;
-            color: #ffffff;
-            border-radius: 3px;
+        background-color: #007bff;
+        color: #ffffff;
+        border-radius: 3px;
         }
 
         /* Styl dla aktywnej pozycji w rozwijanym menu */
         .custom-dropdown-item.active {
-            background-color: #0056b3;
-            color: #ffffff;
+        background-color: #0056b3;
+        color: #ffffff;
         }
     </style>
 </head>
@@ -49,12 +55,12 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Library" asp-action="Index">Strona Główna</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        
+
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
@@ -72,18 +78,17 @@
                                     }
                                 </ul> *@
                             </li>
+                            
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Library" asp-action="Add">Dodaj książkę</a>
+                                <a class="nav-link text-dark" asp-controller="Library" asp-action="IndexLoans">Rezerwacje i Wypożyczenia</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Library" asp-action="IndexAuthors">Autorzy - tymczasowo tutaj</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Library" asp-action="IndexVolumes">Woluminy - tymczasowo tutaj</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Library" asp-action="IndexLoans">Wypożyczenia - tymczasowo tutaj</a>
-                            </li>
+                            {
+                                var id = UserManager.GetUserId(User);
+                                if (UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
+                                {
+                                    <li class="nav-item"> <a class="nav-link text-dark" asp-controller="Library" asp-action="IndexManage">Panel Zarządzania</a> </li>
+                                }
+                            }
                         }
                     </ul>
                     <partial name="_LoginPartial" />
