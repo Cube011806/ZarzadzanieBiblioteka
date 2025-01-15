@@ -220,6 +220,7 @@
                             <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
                             <p><strong>Data wydania:</strong> @ksiazka.DataWydania.ToString("dd.MM.yyyy")</p>
                             <p><strong>Liczba stron:</strong> @ksiazka.LiczbaStron</p>
+                            <p><strong>Dostępnych sztuk:</strong> @ksiazka.Woluminy.Where(w=>w.Rezerwacje.Count() == 0).Count()</p>
                             @{
                                 var id = UserManager.GetUserId(User);
                                 if(UserManager.FindByIdAsync(id).Result.AccessLevel == 1) {
@@ -237,6 +238,11 @@
                             <div style="margin-top: 10px;">
                                 <a class="btn btn-success btn-lg" asp-controller="Library" asp-action="BookDetails" asp-route-id="@ksiazka.Id" style="width: 100%; max-width: 250px; padding: 10px;">Więcej informacji</a>
                             </div>
+                            @if (ksiazka.Woluminy.Where(w => w.Rezerwacje.Count() == 0).Count() > 0){
+                                <div style="margin-top: 10px;">
+                                    <a class="btn btn-light btn-info btn-lg" asp-controller="Library" asp-action="AddReservation" asp-route-id="@ksiazka.Id" style="width: 100%; max-width: 250px; padding: 10px;">Zarezerwuj</a>
+                                </div>
+                            }
                             <div style="margin-top: 10px;">
                                 <button class="btn btn-primary btn-lg select-book"
                                         data-id="@ksiazka.Id"

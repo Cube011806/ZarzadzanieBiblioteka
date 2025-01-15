@@ -290,7 +290,8 @@ namespace ZarzadzanieBiblioteka.Controllers
         }
         public IActionResult IndexLoans()
         {
-            var loans = _dbcontext.Wypozyczenia.ToList();
+            var loans = _dbcontext.Wypozyczenia.ToList(); 
+            ViewBag.Rezerwacje = _dbcontext.Rezerwacje.ToList();
             return View(loans);
         }
         public IActionResult IndexVolumes()
@@ -326,6 +327,16 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexVolumes");
         }
+        public IActionResult CancelReservation (int id)
+        {
+            var reservation = _dbcontext.Rezerwacje.Find(id);
+            if(reservation != null)
+            {
+                _dbcontext.Rezerwacje.Remove(reservation);
+                _dbcontext.SaveChanges();
+            }
+            return RedirectToAction("IndexLoans");
+        }
         public IActionResult LoanVolume(int volid)
         {
             var wolumin = _dbcontext.Woluminy.Find(volid);
@@ -348,27 +359,62 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexLoans");
         }
-        public IActionResult Reservation(int id)
+        public IActionResult AddReservation(int id)
         {
-            var wolumin = _dbcontext.Woluminy.Find(id);
-            return View(wolumin);
-        }
-        [HttpPost]
-        public IActionResult ConfirmReservation(int id)
-        {
-            var uzytkownikId = _userManager.GetUserId(User);
-            var dataRezerwacji = DateTime.Now;
-            var dataWygasniecia = dataRezerwacji.AddDays(7);
-            var rezerwcaja = new Rezerwacja();
-            rezerwcaja.WoluminId = id;
-            rezerwcaja.UzytkownikId = uzytkownikId;
-            rezerwcaja.DataRezerwacji = dataRezerwacji;
-            rezerwcaja.DataWygasniecia = dataWygasniecia;
-            _dbcontext.Rezerwacje.Add(rezerwcaja);
+            var ksiazka = _dbcontext.Ksiazki.Find(id);
+            if (ksiazka == null)
+            {
+                return NotFound();
+            }
+
+            var wolumin = ksiazka.Woluminy.FirstOrDefault(w => !w.Rezerwacje.Any());
+            if (wolumin == null)
+            {
+                return RedirectToAction("Index"); 
+            }
+
+            var userId = _userManager.GetUserId(User);
+
+            var existingReservation = _dbcontext.Rezerwacje
+                .FirstOrDefault(r => r.UzytkownikId == userId && r.DataWygasniecia > DateTime.Now);
+
+            if (existingReservation != null)
+            {
+                TempData["ErrorMessage"] = "Zarezerwowałeś już tę książkę.";
+                return RedirectToAction("Index");
+            }
+
+            var rezerwacja = new Rezerwacja
+            {
+                DataRezerwacji = DateTime.Now,
+                DataWygasniecia = DateTime.Now.AddDays(14),
+                UzytkownikId = userId,
+                WoluminId = wolumin.Id
+            };
+
+            _dbcontext.Rezerwacje.Add(rezerwacja);
             _dbcontext.SaveChanges();
-            TempData["SuccessMessage"] = "Pomyślnie zarezerwowano wolumin książki!";
+
+            TempData["SuccessMessage"] = "Rezerwacja została pomyślnie dodana.";
             return RedirectToAction("Index");
         }
+
+        //[HttpPost]
+        //public IActionResult ConfirmReservation(int id)
+        //{
+        //    var uzytkownikId = _userManager.GetUserId(User);
+        //    var dataRezerwacji = DateTime.Now;
+        //    var dataWygasniecia = dataRezerwacji.AddDays(7);
+        //    var rezerwcaja = new Rezerwacja();
+        //    rezerwcaja.WoluminId = id;
+        //    rezerwcaja.UzytkownikId = uzytkownikId;
+        //    rezerwcaja.DataRezerwacji = dataRezerwacji;
+        //    rezerwcaja.DataWygasniecia = dataWygasniecia;
+        //    _dbcontext.Rezerwacje.Add(rezerwcaja);
+        //    _dbcontext.SaveChanges();
+        //    TempData["SuccessMessage"] = "Pomyślnie zarezerwowano wolumin książki!";
+        //    return RedirectToAction("Index");
+        //}
         public IActionResult CompareBooks(int book1Id, int book2Id)
         {
             if(book1Id == book2Id)

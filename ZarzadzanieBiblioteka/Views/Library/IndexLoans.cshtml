@@ -1,18 +1,68 @@
-﻿@model ICollection<Wypozyczenie>
-<h2>Wypożyczenia</h2>
-<div style="border: black 1px solid">
-    @foreach (var loan in Model)
-    {
-        <div>
-            <label>Id Wypożyczenia: <p>@loan.Id</p></label>
-            <label>Data Wypożyczenia:<p>@loan.DataWypozyczenia</p></label>
-            <label>Id Woluminu:<p>@loan.Wolumin.Id</p></label>
-            <label>Tytuł Książki:<p>@loan.Wolumin.Ksiazka.Tytul</p></label>
-            <label>Data Zwrotu:<p>@loan.DataZwrotu</p></label>
-            <label>Nazwa Wypożyczającego:<p>@loan.Uzytkownik.UserName</p></label>
-            <p>Akcje: </p>
-            <a class="btn btn-info" asp-route-id="@loan.Id" asp-action="ReturnVolume">Zwróć książkę</a>
-            <a class="btn btn-info" asp-route-id="@loan.Id">Przedłuż wypożyczenie</a>
+﻿@using Microsoft.AspNetCore.Identity
+@model ICollection<Wypozyczenie>
+@inject UserManager<Uzytkownik> UserManager
+@{
+    var id = UserManager.GetUserId(User);
+    var accessLevel = UserManager.FindByIdAsync(id).Result.AccessLevel;
+}
+
+<div class="container">
+    <div class="row">
+        <!-- Kolumna Wypożyczeń -->
+        <div class="col-md-6" style="border-right: 1px solid #000; margin-top: 10px">
+            <h2 class="text-center my-4">Wypożyczenia</h2>
+            <div>
+                @foreach (var loan in Model)
+                {
+                    if (accessLevel == 1 || loan.UzytkownikId == id)
+                    {
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Wypożyczenie #@loan.Id</h5>
+                                <ul class="list-unstyled mb-3">
+                                    <li><strong>Data Wypożyczenia:</strong> @loan.DataWypozyczenia.ToString("dd.MM.yyyy")</li>
+                                    <li><strong>Id Woluminu:</strong> @loan.Wolumin.Id</li>
+                                    <li><strong>Tytuł Książki:</strong> @loan.Wolumin.Ksiazka.Tytul</li>
+                                    <li><strong>Data Zwrotu:</strong> @loan.DataZwrotu</li>
+                                    <li><strong>Wypożyczający:</strong> @loan.Uzytkownik.UserName</li>
+                                </ul>
+                                <div class="d-flex justify-content-between">
+                                    <a class="btn btn-primary" asp-route-id="@loan.Id" asp-action="ReturnVolume">Zwróć książkę</a>
+                                    <a class="btn btn-secondary" asp-route-id="@loan.Id">Przedłuż wypożyczenie</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
         </div>
-    }
+
+        <!-- Kolumna Rezerwacji -->
+        <div class="col-md-6" style="margin-top: 10px">
+            <h2 class="text-center my-4">Rezerwacje</h2>
+            <div>
+                @foreach (var reservation in ViewBag.Rezerwacje)
+                {
+                    if (accessLevel == 1 || reservation.UzytkownikId == id)
+                    {
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Rezerwacja #@reservation.Id</h5>
+                                <ul class="list-unstyled mb-3">
+                                    <li><strong>Data Rezerwacji:</strong> @reservation.DataRezerwacji.ToString("dd.MM.yyyy")</li>
+                                    <li><strong>Data Wygasnięcia:</strong> @reservation.DataWygasniecia.ToString("dd.MM.yyyy")</li>
+                                    <li><strong>Id Woluminu:</strong> @reservation.Wolumin.Id</li>
+                                    <li><strong>Tytuł Książki:</strong> @reservation.Wolumin.Ksiazka.Tytul</li>
+                                    <li><strong>Rezerwujący:</strong> @reservation.Uzytkownik.UserName</li>
+                                </ul>
+                                <div class="d-flex justify-content-between">
+                                    <a class="btn btn-primary" asp-route-id="@reservation.Id" asp-action="CancelReservation">Anuluj Rezerwację</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
 </div>

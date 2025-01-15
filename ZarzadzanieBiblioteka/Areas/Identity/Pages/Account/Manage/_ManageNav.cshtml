@@ -7,10 +7,10 @@
     <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Dane osobiste</a></li>
     @{
         var id = UserManager.GetUserId(User);
-    }
-    @if (UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
-    {
-        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="ManageUsers">Zarządzanie użytkownikami</a></li>
+        if (UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
+        {
+            <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="ManageUsers">Zarządzanie użytkownikami</a></li>
+        }
     }
 
 </ul>
