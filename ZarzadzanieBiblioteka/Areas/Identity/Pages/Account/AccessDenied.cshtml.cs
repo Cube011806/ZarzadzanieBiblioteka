@@ -3,6 +3,8 @@
 #nullable disable
 
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage;
+using ZarzadzanieBiblioteka.Data;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
 {
@@ -10,8 +12,12 @@ namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
     ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
-    public class AccessDeniedModel : PageModel
+    public class AccessDeniedModel : BasePageModel
     {
+        public AccessDeniedModel(ApplicationDbContext dbContext) : base(dbContext)
+        {
+        }
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.

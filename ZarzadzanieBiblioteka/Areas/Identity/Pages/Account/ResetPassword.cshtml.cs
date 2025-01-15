@@ -11,15 +11,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
 {
-    public class ResetPasswordModel : PageModel
+    public class ResetPasswordModel : BasePageModel
     {
         private readonly UserManager<Uzytkownik> _userManager;
 
-        public ResetPasswordModel(UserManager<Uzytkownik> userManager)
+        public ResetPasswordModel(ApplicationDbContext dbContext, UserManager<Uzytkownik> userManager) : base(dbContext)
         {
             _userManager = userManager;
         }

@@ -9,20 +9,22 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage
 {
-    public class DeletePersonalDataModel : PageModel
+    public class DeletePersonalDataModel : BasePageModel
     {
         private readonly UserManager<Uzytkownik> _userManager;
         private readonly SignInManager<Uzytkownik> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
+            ApplicationDbContext dbContext,
             UserManager<Uzytkownik> userManager,
             SignInManager<Uzytkownik> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger) : base(dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;

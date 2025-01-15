@@ -6,18 +6,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage
 {
-    public class PersonalDataModel : PageModel
+    public class PersonalDataModel : BasePageModel
     {
         private readonly UserManager<Uzytkownik> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
         public PersonalDataModel(
+            ApplicationDbContext dbContext,
             UserManager<Uzytkownik> userManager,
-            ILogger<PersonalDataModel> logger)
+            ILogger<PersonalDataModel> logger) : base(dbContext)
         {
             _userManager = userManager;
             _logger = logger;

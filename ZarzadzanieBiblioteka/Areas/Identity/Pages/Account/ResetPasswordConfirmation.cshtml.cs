@@ -4,6 +4,8 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage;
+using ZarzadzanieBiblioteka.Data;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
 {
@@ -12,8 +14,12 @@ namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
     [AllowAnonymous]
-    public class ResetPasswordConfirmationModel : PageModel
+    public class ResetPasswordConfirmationModel : BasePageModel
     {
+        public ResetPasswordConfirmationModel(ApplicationDbContext dbContext) : base(dbContext)
+        {
+        }
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.

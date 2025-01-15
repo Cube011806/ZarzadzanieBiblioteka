@@ -10,19 +10,22 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
 {
-    public class LoginWithRecoveryCodeModel : PageModel
+    public class LoginWithRecoveryCodeModel : BasePageModel
     {
         private readonly SignInManager<Uzytkownik> _signInManager;
         private readonly UserManager<Uzytkownik> _userManager;
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
         public LoginWithRecoveryCodeModel(
+            ApplicationDbContext dbContext,
             SignInManager<Uzytkownik> signInManager,
             UserManager<Uzytkownik> userManager,
-            ILogger<LoginWithRecoveryCodeModel> logger)
+            ILogger<LoginWithRecoveryCodeModel> logger) : base(dbContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;

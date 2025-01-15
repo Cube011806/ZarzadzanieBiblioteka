@@ -9,20 +9,22 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage
 {
-    public class ChangePasswordModel : PageModel
+    public class ChangePasswordModel : BasePageModel
     {
         private readonly UserManager<Uzytkownik> _userManager;
         private readonly SignInManager<Uzytkownik> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
 
         public ChangePasswordModel(
+            ApplicationDbContext dbContext,
             UserManager<Uzytkownik> userManager,
             SignInManager<Uzytkownik> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILogger<ChangePasswordModel> logger) : base(dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;

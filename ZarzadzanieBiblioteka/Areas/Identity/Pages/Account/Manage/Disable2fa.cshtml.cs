@@ -8,18 +8,20 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage
 {
-    public class Disable2faModel : PageModel
+    public class Disable2faModel : BasePageModel
     {
         private readonly UserManager<Uzytkownik> _userManager;
         private readonly ILogger<Disable2faModel> _logger;
 
         public Disable2faModel(
+            ApplicationDbContext dbContext,
             UserManager<Uzytkownik> userManager,
-            ILogger<Disable2faModel> logger)
+            ILogger<Disable2faModel> logger) : base(dbContext)
         {
             _userManager = userManager;
             _logger = logger;

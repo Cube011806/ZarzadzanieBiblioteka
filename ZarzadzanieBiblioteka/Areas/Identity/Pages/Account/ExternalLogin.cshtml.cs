@@ -18,11 +18,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ZarzadzanieBiblioteka.Models;
+using ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage;
+using ZarzadzanieBiblioteka.Data;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class ExternalLoginModel : PageModel
+    public class ExternalLoginModel : BasePageModel
     {
         private readonly SignInManager <Uzytkownik> _signInManager;
         private readonly UserManager<Uzytkownik> _userManager;
@@ -32,11 +34,12 @@ namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
+            ApplicationDbContext dbContext,
             SignInManager<Uzytkownik> signInManager,
             UserManager<Uzytkownik> userManager,
             IUserStore<Uzytkownik> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender) : base(dbContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;

@@ -11,17 +11,19 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
-    public class RegisterConfirmationModel : PageModel
+    public class RegisterConfirmationModel : BasePageModel
     {
         private readonly UserManager<Uzytkownik> _userManager;
         private readonly IEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<Uzytkownik> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(ApplicationDbContext dbContext, UserManager<Uzytkownik> userManager, IEmailSender sender) : base(dbContext)
         {
             _userManager = userManager;
             _sender = sender;

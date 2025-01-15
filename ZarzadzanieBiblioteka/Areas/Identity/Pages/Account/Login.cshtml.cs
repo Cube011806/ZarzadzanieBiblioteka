@@ -15,15 +15,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using ZarzadzanieBiblioteka.Models;
+using ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage;
+using ZarzadzanieBiblioteka.Data;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account
 {
-    public class LoginModel : PageModel
+    public class LoginModel : BasePageModel
     {
         private readonly SignInManager<Uzytkownik> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<Uzytkownik> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(ApplicationDbContext dbContext, SignInManager<Uzytkownik> signInManager, ILogger<LoginModel> logger) : base(dbContext)
         {
             _signInManager = signInManager;
             _logger = logger;

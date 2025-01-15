@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
 namespace ZarzadzanieBiblioteka.Areas.Identity.Pages.Account.Manage
 {
-    public class SetPasswordModel : PageModel
+    public class SetPasswordModel : BasePageModel
     {
         private readonly UserManager<Uzytkownik> _userManager;
         private readonly SignInManager<Uzytkownik> _signInManager;
 
         public SetPasswordModel(
+            ApplicationDbContext dbContext,
             UserManager<Uzytkownik> userManager,
-            SignInManager<Uzytkownik> signInManager)
+            SignInManager<Uzytkownik> signInManager) : base(dbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
