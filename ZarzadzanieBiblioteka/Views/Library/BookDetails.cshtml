@@ -1,1 +1,84 @@
-﻿@model Ksiazka
+﻿@using Microsoft.AspNetCore.Identity
+@model Ksiazka
+@inject UserManager<Uzytkownik> UserManager
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["ErrorMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["SuccessMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="container d-flex justify-content-center mt-4" style="margin-left: 100px;">
+        <div class="col-lg-8">
+            <div class="row align-items-center">
+                <div class="col-md-5 text-center">
+                    <img src="~/@Model.Okladka" class="img-fluid rounded" alt="Okładka książki" style="max-width: 100%; margin-bottom: 20px;" />
+                </div>
+                <div class="col-md-7" style="padding-left: 60px;">
+                    <div>
+                        <h3>@Model.Tytul</h3>
+                        <p><strong>Autor:</strong> @Model.Autor.Imie @Model.Autor.Nazwisko</p>
+                        <p><strong>Gatunek:</strong> @Model.Gatunek</p>
+                        <p><strong>Wydanie:</strong> @Model.Wydanie</p>
+                        <p><strong>Data wydania:</strong> @Model.DataWydania.ToString("dd.MM.yyyy") r.</p>
+                        <p><strong>Liczba stron:</strong> @Model.LiczbaStron</p>
+                        <p><strong>Oprawa:</strong> @Model.Oprawa</p>
+                        <p><strong>ISBN:</strong> @Model.ISBN</p>
+                        <p><strong>Dostępnych sztuk:</strong> @Model.Woluminy.Where(w => w.Rezerwacje.Count() == 0).Count()</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    @if (!Model.Opinie.Any(op => op.UzytkownikId == UserManager.GetUserId(User)))
+                    {
+                        <a asp-action="AddReview" asp-route-idksiazka="@Model.Id" class="btn btn-secondary mb-3">
+                            Dodaj opinię
+                        </a>
+                    }
+                    @if (@Model.Opinie.Count == 0)
+                    {
+                        <p>Brak opinii</p>
+                    }
+                    else
+                    {
+                        <h3>Opinie:</h3>
+                        var opiniaAktualnieZalogowanegoUzytkownika = @Model.Opinie.FirstOrDefault(op => op.UzytkownikId == UserManager.GetUserId(User));
+                        if (opiniaAktualnieZalogowanegoUzytkownika != null)
+                        {
+                            <div class="Stars" style="--rating: @opiniaAktualnieZalogowanegoUzytkownika.Ocena;" aria-label="Rating">Ocena:</div>
+                            <p>Komentarz: @opiniaAktualnieZalogowanegoUzytkownika.Komentarz - <strong>@opiniaAktualnieZalogowanegoUzytkownika.Uzytkownik.Email</strong></p>
+                            <a asp-action="EditReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" asp-route-idksiazka="@Model.Id" class="btn btn-secondary me-2">
+                                Zmień opinię
+                            </a>
+                            <a asp-action="DeleteReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" class="btn btn-secondary">
+                                Usuń opinię
+                            </a>
+                        }
+                        @foreach (var opinia in Model.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
+                        {
+                            <hr />
+                            <div class="Stars" style="--rating: @opinia.Ocena;" aria-label="Rating">Ocena:</div>
+                            <p>Komentarz: @opinia.Komentarz - <strong>@opinia.Uzytkownik.Email</strong></p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1 class="display-4 text-center">Brak dostępu!</h1>
+}

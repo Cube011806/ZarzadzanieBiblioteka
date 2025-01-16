@@ -247,7 +247,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             if(czyIstniejeOpinia != null)
             {
                 TempData["ErrorMessage"] = "Już dodałeś opinię do tej książki!";
-                return RedirectToAction("Index");
+                return RedirectToAction("BookDetails", IdKsiazka);
             }
 
             opinia.UzytkownikId = uzytkownikId;
@@ -257,7 +257,8 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.Opinie.Add(opinia);
             _dbcontext.SaveChanges();
             TempData["SuccessMessage"] = "Pomyślnie dodano opinię!";
-            return RedirectToAction("Index");
+            var ksiazka = _dbcontext.Ksiazki.Include(k => k.Opinie).ThenInclude(o => o.Uzytkownik).FirstOrDefault(k => k.Id == IdKsiazka);
+            return View("BookDetails",ksiazka);
         }
         public IActionResult EditReview(int id, int IdKsiazka)
         {
@@ -275,18 +276,22 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.Opinie.Update(opinia);
             _dbcontext.SaveChanges();
             TempData["SuccessMessage"] = "Pomyślnie edytowano opinię!";
-            return RedirectToAction("Index");
+            var ksiazka = _dbcontext.Ksiazki.Include(k => k.Opinie).ThenInclude(o => o.Uzytkownik).FirstOrDefault(k => k.Id == IdKsiazka);
+            return View("BookDetails", ksiazka);
         }
         public IActionResult DeleteReview(int id)
         {
             var opinia = _dbcontext.Opinie.Find(id);
+            var ksiazka = _dbcontext.Ksiazki.Include(k => k.Opinie).ThenInclude(o => o.Uzytkownik).FirstOrDefault(k => k.Id == opinia.KsiazkaId);
             if (opinia != null)
             {
                 _dbcontext.Opinie.Remove(opinia);
                 _dbcontext.SaveChanges();
                 TempData["SuccessMessage"] = "Pomyślnie usunięto opinię!";
+                return View("BookDetails", ksiazka);
             }
-            return RedirectToAction("Index");
+            TempData["ErrorMessage"] = "Nie udało się usunąć opinii!";
+            return View("BookDetails", ksiazka);
         }
         public IActionResult IndexLoans()
         {
@@ -458,9 +463,10 @@ namespace ZarzadzanieBiblioteka.Controllers
         {
             return View();
         }
-        public IActionResult BookDetails()
+        public IActionResult BookDetails(int id)
         {
-            return View();
+            var ksiazka = _dbcontext.Ksiazki.Find(id);
+            return View(ksiazka);
         }
     }
 }

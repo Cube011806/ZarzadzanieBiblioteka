@@ -233,7 +233,6 @@
                                         </a>
                                     </div>
                                 }
-                                
                             }
                             <div style="margin-top: 10px;">
                                 <a class="btn btn-success btn-lg" asp-controller="Library" asp-action="BookDetails" asp-route-id="@ksiazka.Id" style="width: 100%; max-width: 250px; padding: 10px;">Więcej informacji</a>
@@ -249,46 +248,6 @@
                                         style="width: 100%; max-width: 250px; padding: 10px;">
                                     Porównaj książkę
                                 </button>
-                            </div>
-
-                            <div class="reviews" style="margin-top: 15px;">
-                                @if (!ksiazka.Opinie.Any(op => op.UzytkownikId == UserManager.GetUserId(User)))
-                                {
-                                    <a asp-action="AddReview" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary">
-                                        Dodaj opinię
-                                    </a>
-                                }
-                                else
-                                {
-                                    <p>Już dodałeś opinię do tej książki. Znajduje się ona poniżej</p>
-                                }
-                                @if (ksiazka.Opinie.Count == 0)
-                                {
-                                    <p>Brak opinii</p>
-                                }
-                                else
-                                {
-                                    <h5>Opinie:</h5>
-                                    var opiniaAktualnieZalogowanegoUzytkownika = ksiazka.Opinie.FirstOrDefault(op => op.UzytkownikId == UserManager.GetUserId(User));
-                                    if (opiniaAktualnieZalogowanegoUzytkownika != null)
-                                    {
-
-                                        <div class="Stars" style="--rating: @opiniaAktualnieZalogowanegoUzytkownika.Ocena;" aria-label="Rating">Ocena:</div>
-                                        <p>Komentarz: @opiniaAktualnieZalogowanegoUzytkownika.Komentarz - <strong>@opiniaAktualnieZalogowanegoUzytkownika.Uzytkownik.Email</strong></p>
-                                        <a asp-action="EditReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" asp-route-idksiazka="@ksiazka.Id" class="btn btn-secondary me-2">
-                                            Zmień opinię
-                                        </a>
-                                        <a asp-action="DeleteReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" class="btn btn-secondary">
-                                            Usuń opinię
-                                        </a>
-                                    }
-                                    @foreach (var opinia in ksiazka.Opinie.Where(op => op.UzytkownikId != UserManager.GetUserId(User)))
-                                    {
-                                        <br />
-                                        <div class="Stars" style="--rating: @opinia.Ocena;" aria-label="Rating">Ocena:</div>
-                                        <p>Komentarz: @opinia.Komentarz - <strong>@opinia.Uzytkownik.Email</strong></p>
-                                    }
-                                }
                             </div>
                         </div>
                     </div>
@@ -314,7 +273,7 @@
             button.addEventListener('click', function () {
                 const bookId = this.dataset.id;
 
-                // Check if there's already a first book selected
+                // Sprawdza czy już jest jakaś książka wybrana
                 const selectedBook1IdForSearching = document.getElementById('selectedBook1IdForSearching').value;
                 const selectedBook1IdForSorting = document.getElementById('selectedBook1IdForSorting').value;
 
@@ -324,11 +283,11 @@
                     document.getElementById('selectedBook1IdForSorting').value = bookId;
                     alert('Książka została dodana do porównania. Wybierz jeszcze jedną.');
                 } else {
-                    // Second book selected, compare the two books
+                    // Druga książka została wybrana więc porównuje
                     const book1Id = selectedBook1IdForSearching; //Nie ważne co tu damy te wartości będą te same
                     const book2Id = bookId;
 
-                    // Redirect to the comparison page with the two book IDs
+                    // Przekierowuje na stronkę z porównywaniem i przekazuje dwa parametry (id tyc książek)
                     const url = `/Library/CompareBooks?book1Id=${book1Id}&book2Id=${book2Id}`;
                     window.location.href = url;
                 }
