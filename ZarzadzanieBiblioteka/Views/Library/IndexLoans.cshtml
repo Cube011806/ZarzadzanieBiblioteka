@@ -20,7 +20,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Wypożyczenie #@loan.Id</h5>
                                 <ul class="list-unstyled mb-3">
-                                    <li><strong>Data Wypożyczenia:</strong> @loan.DataWypozyczenia.ToString("dd.MM.yyyy")</li>
+                                    <li><strong>Data Wypożyczenia:</strong> @loan.DataWypozyczenia.ToString("dd.MM.yyyy") r.</li>
                                     <li><strong>Id Woluminu:</strong> @loan.Wolumin.Id</li>
                                     <li><strong>Tytuł Książki:</strong> @loan.Wolumin.Ksiazka.Tytul</li>
                                     <li><strong>Data Zwrotu:</strong> @loan.DataZwrotu</li>
@@ -49,8 +49,8 @@
                             <div class="card-body">
                                 <h5 class="card-title">Rezerwacja #@reservation.Id</h5>
                                 <ul class="list-unstyled mb-3">
-                                    <li><strong>Data Rezerwacji:</strong> @reservation.DataRezerwacji.ToString("dd.MM.yyyy")</li>
-                                    <li><strong>Data Wygasnięcia:</strong> @reservation.DataWygasniecia.ToString("dd.MM.yyyy")</li>
+                                    <li><strong>Data Rezerwacji:</strong> @reservation.DataRezerwacji.ToString("dd.MM.yyyy") r.</li>
+                                    <li><strong>Data Wygasnięcia:</strong> @reservation.DataWygasniecia.ToString("dd.MM.yyyy") r.</li>
                                     <li><strong>Id Woluminu:</strong> @reservation.Wolumin.Id</li>
                                     <li><strong>Tytuł Książki:</strong> @reservation.Wolumin.Ksiazka.Tytul</li>
                                     <li><strong>Rezerwujący:</strong> @reservation.Uzytkownik.UserName</li>

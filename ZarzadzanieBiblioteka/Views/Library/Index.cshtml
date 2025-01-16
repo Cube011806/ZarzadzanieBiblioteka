@@ -218,7 +218,7 @@
                             <p><strong>Autor:</strong> @ksiazka.Autor.Imie @ksiazka.Autor.Nazwisko</p>
                             <p><strong>Gatunek:</strong> @ksiazka.Gatunek</p>
                             <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
-                            <p><strong>Data wydania:</strong> @ksiazka.DataWydania.ToString("dd.MM.yyyy")</p>
+                            <p><strong>Data wydania:</strong> @ksiazka.DataWydania.ToString("dd.MM.yyyy") r.</p>
                             <p><strong>Liczba stron:</strong> @ksiazka.LiczbaStron</p>
                             <p><strong>Dostępnych sztuk:</strong> @ksiazka.Woluminy.Where(w=>w.Rezerwacje.Count() == 0).Count()</p>
                             @{

@@ -59,7 +59,7 @@
                 <p><strong>Autor:</strong> @book1.Autor.Imie @book1.Autor.Nazwisko</p>
                 <p><strong>Gatunek:</strong> @book1.Gatunek</p>
                 <p><strong>Wydanie:</strong> @book1.Wydanie</p>
-                <p><strong>Data wydania:</strong> @book1.DataWydania.ToString("dd.MM.yyyy")</p>
+                <p><strong>Data wydania:</strong> @book1.DataWydania.ToString("dd.MM.yyyy") r.</p>
                 <p><strong>Liczba stron:</strong> @book1.LiczbaStron</p>
                 <p><strong>Oprawa:</strong> @book1.Oprawa</p>
                 <p><strong>ISBN:</strong> @book1.ISBN</p>
@@ -69,7 +69,7 @@
                 }
                 else
                 {
-                    <p class="Stars" style="--rating: @avgOcenaBook1;display:block" aria-label="Rating"><strong>Średnia ocena:</strong></p>
+                    <p><strong>Średnia ocena:</strong> @avgOcenaBook1?.ToString("F2")</p>
                 }
 
                 <button class="btn btn-primary" onclick="toggleOpinions('book1-opinions')">Pokaż opinie</button>
@@ -99,7 +99,7 @@
                 <p><strong>Autor:</strong> @book2.Autor.Imie @book2.Autor.Nazwisko</p>
                 <p><strong>Gatunek:</strong> @book2.Gatunek</p>
                 <p><strong>Wydanie:</strong> @book2.Wydanie</p>
-                <p><strong>Data wydania:</strong> @book2.DataWydania.ToString("dd.MM.yyyy")</p>
+                <p><strong>Data wydania:</strong> @book2.DataWydania.ToString("dd.MM.yyyy") r.</p>
                 <p><strong>Liczba stron:</strong> @book2.LiczbaStron</p>
                 <p><strong>Oprawa:</strong> @book2.Oprawa</p>
                 <p><strong>ISBN:</strong> @book2.ISBN</p>
@@ -109,7 +109,7 @@
                 }
                 else
                 {
-                    <p class="Stars" style="--rating: @avgOcenaBook2;display:block" aria-label="Rating"><strong>Średnia ocena:</strong></p>
+                    <p><strong>Średnia ocena:</strong> @avgOcenaBook2?.ToString("F2")</p>
                 }
 
                 <button class="btn btn-primary" onclick="toggleOpinions('book2-opinions')">Pokaż opinie</button>
