@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using ZarzadzanieBiblioteka.Controllers;
+using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 
-public class ContactController : Controller
+public class ContactController : BaseController
 {
     private readonly EmailService _emailService;
 
-    public ContactController(EmailService emailService)
+    public ContactController(ApplicationDbContext dbContext, EmailService emailService) : base(dbContext)
     {
         _emailService = emailService;
     }

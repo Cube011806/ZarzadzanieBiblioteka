@@ -37,6 +37,10 @@
         margin-top: 10px;
         margin-bottom: 10px;
     }
+
+    .img-box:hover img {
+    transform: none !important; /* Disable zoom on hover */
+    }
 </style>
 @if (User.Identity.IsAuthenticated)
 {
