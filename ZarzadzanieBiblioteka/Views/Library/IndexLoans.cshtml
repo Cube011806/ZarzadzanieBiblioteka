@@ -23,12 +23,12 @@
                                     <li><strong>Data Wypożyczenia:</strong> @loan.DataWypozyczenia.ToString("dd.MM.yyyy") r.</li>
                                     <li><strong>Id Woluminu:</strong> @loan.Wolumin.Id</li>
                                     <li><strong>Tytuł Książki:</strong> @loan.Wolumin.Ksiazka.Tytul</li>
-                                    <li><strong>Data Zwrotu:</strong> @loan.DataZwrotu</li>
+                                    <li><strong>Data Zwrotu:</strong> @loan.DataZwrotu.ToString("dd.MM.yyyy") r.</li>
                                     <li><strong>Wypożyczający:</strong> @loan.Uzytkownik.UserName</li>
                                 </ul>
                                 <div class="d-flex justify-content-between">
                                     <a class="btn btn-primary" asp-route-id="@loan.Id" asp-action="ReturnVolume">Zwróć książkę</a>
-                                    <a class="btn btn-secondary" asp-route-id="@loan.Id">Przedłuż wypożyczenie</a>
+                                    <a class="btn btn-secondary" asp-action="ExtendLoan" asp-route-id="@loan.Id">Przedłuż wypożyczenie</a>
                                 </div>
                             </div>
                         </div>

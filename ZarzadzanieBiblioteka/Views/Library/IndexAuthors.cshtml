@@ -1,33 +1,111 @@
 ﻿@model ICollection<Autor>
-<div class="text-center">
-    @if (User.Identity.IsAuthenticated)
-    {
-        if(Model.Count == 0)
+
+<div class="container my-5">
+    <div class="text-center">
+        @if (User.Identity.IsAuthenticated)
         {
-            <h2>Brak autorów</h2>
-        }
-        <a asp-action="AddAuthor" class="btn btn-info" style="display:inline-block">Dodaj Autora</a>
-        <div style="display:flex; gap: 10px; flex-wrap: wrap; margin: 7px">
-        @foreach(var autor in Model)
-        {
-            <div style="border: solid 1px black; display:inline-block;">
-                <p>@autor.Id
-                @autor.Imie
-                @autor.Nazwisko</p>
-                <a asp-action="EditAuthor" class="btn btn-danger" asp-route-id="@autor.Id">Edytuj</a>
-                @if(autor.Ksiazki.Count == 0){
-                    <a asp-action="DeleteAuthor" class="btn btn-danger" asp-route-id="@autor.Id">Usuń</a>
+            @if (Model.Count == 0)
+            {
+                <h2>Brak autorów</h2>
+            }
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @foreach (var autor in Model)
+                {
+                    <div class="col">
+                        <div class="card shadow-sm custom-card">
+                            <div class="card-body">
+                                <h5 class="card-title">@autor.Imie @autor.Nazwisko</h5>
+                                <p class="card-text"><strong>ID:</strong> @autor.Id</p>
+
+                                <!-- Rozwijany element książek -->
+                                <button class="btn btn-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBooks_@autor.Id" aria-expanded="false" aria-controls="collapseBooks_@autor.Id">
+                                    Pokaż książki
+                                </button>
+
+                                <div class="collapse mt-3" id="collapseBooks_@autor.Id">
+                                    <ul class="list-group">
+                                        @foreach (var ksiazka in autor.Ksiazki)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                @ksiazka.Tytul
+                                                <a asp-action="BookDetails" asp-route-id="@ksiazka.Id" class="btn btn-info btn-sm">Szczegóły</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-3">
+                                    <a asp-action="EditAuthor" class="btn btn-warning btn-sm" asp-route-id="@autor.Id">Edytuj</a>
+
+                                    @if (autor.Ksiazki.Count == 0)
+                                    {
+                                        <a asp-action="DeleteAuthor" class="btn btn-danger btn-sm" asp-route-id="@autor.Id">Usuń</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Nie można usunąć</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
-                else{
-                    <span>Usuwanie jest niedostępne - Autor posiada przypisane książki</span>
-                }
-                
             </div>
+            <a asp-action="AddAuthor" class="btn btn-primary mb-4 btn-lg" style="width: 250px; margin-top: 30px;">Dodaj autora</a>
         }
-        </div>
-    }
-    else
-    {
-        <h1>Zaloguj się by zobaczyć zawartość</h1>
-    }
+        else
+        {
+            <h1>Zaloguj się, aby zobaczyć zawartość</h1>
+        }
+    </div>
 </div>
+
+<style>
+    .card {
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+    }
+
+    .container {
+        padding: 30px 15px;
+    }
+
+    .btn-primary {
+        font-size: 1.1rem;
+        padding: 10px 20px;
+    }
+
+    .row-cols-md-2 .col {
+        display: flex;
+        justify-content: center;
+        max-width: 100%;
+    }
+
+    /* Zwiększamy szerokość kart */
+    .custom-card {
+        width: 100%;
+        min-width: 320px;
+    }
+
+    .list-group-item {
+        background-color: #f8f9fa;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>

@@ -1,12 +1,44 @@
-﻿@if (User.Identity.IsAuthenticated)
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity.UI.Services
+@using Microsoft.AspNetCore.Identity.UI
+
+@inject UserManager<Uzytkownik> UserManager;
+@{
+    var id = UserManager.GetUserId(User);
+}
+@if (UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
 {
-    <div>
-        <a class="btn btn-info me-2" asp-controller="Library" asp-action="Add">Dodaj książkę</a>
-        <a class="btn btn-info me-2" asp-controller="Library" asp-action="IndexAuthors">Autorzy</a>
-        <a class="btn btn-info me-2" asp-controller="Library" asp-action="IndexVolumes">Woluminy</a>
+    <div class="container d-flex justify-content-center align-items-start min-vh-100 py-5">
+        <div class="card shadow-lg border-0" style="max-width: 400px; width: 100%;">
+            <div class="card-header bg-primary text-white text-center">
+                <h5 class="mb-0">Panel Administratora</h5>
+            </div>
+            <div class="card-body text-center">
+                <div>
+                    <a class="btn btn-primary shadow-sm mb-2 d-flex align-items-center justify-content-center" asp-controller="Library" asp-action="Add">
+                        <i class="bi bi-plus-circle"></i> Dodaj książkę
+                    </a>
+                    <a class="btn btn-secondary shadow-sm mb-2 d-flex align-items-center justify-content-center" asp-controller="Library" asp-action="IndexAuthors">
+                        <i class="bi bi-people"></i> Autorzy
+                    </a>
+                    <a class="btn btn-warning shadow-sm d-flex align-items-center justify-content-center" asp-controller="Library" asp-action="IndexVolumes">
+                        <i class="bi bi-book"></i> Woluminy
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 }
 else
 {
-    <h1 class="display-4">Brak dostępu!</h1>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="text-center">
+            <h1 class="display-4 text-danger">Brak dostępu!</h1>
+            <p class="lead text-muted">Nie masz odpowiednich uprawnień, aby zobaczyć tę stronę.</p>
+            <a class="btn btn-outline-primary mt-3" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-house-door"></i> Powrót do strony głównej
+            </a>
+        </div>
+    </div>
 }

@@ -403,7 +403,17 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Rezerwacja została pomyślnie dodana.";
             return RedirectToAction("Index");
         }
-
+        public IActionResult ExtendLoan(int id)
+        {
+            var wypozyczenie = _dbcontext.Wypozyczenia.Find(id);
+            if (wypozyczenie != null)
+            {
+                wypozyczenie.DataZwrotu = wypozyczenie.DataZwrotu.AddDays(14);
+                _dbcontext.Wypozyczenia.Update(wypozyczenie);
+                _dbcontext.SaveChanges();
+            }
+            return RedirectToAction("IndexLoans");
+        }
         //[HttpPost]
         //public IActionResult ConfirmReservation(int id)
         //{

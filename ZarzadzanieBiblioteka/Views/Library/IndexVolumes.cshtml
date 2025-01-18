@@ -1,34 +1,117 @@
 ﻿@model Tuple<IEnumerable<Ksiazka>, IEnumerable<Rezerwacja>>
-<div style="border: black 1px solid">
-    @foreach (var book in Model.Item1){
-        <p>@book.Id</p>
-        <p>@book.Tytul</p>
-        <p>@book.ISBN</p>
-        <p>Woluminy: </p>
-        <div style="border: black 1px solid">
-        @foreach (var volume in book.Woluminy){
-            @if(Model.Item2.Any(reservation => reservation.WoluminId == volume.Id))
-            {
-                <p>@volume.Id - Zarezerwowany</p>
-                <a class="btn btn-danger" asp-action="DeleteVolume" asp-route-id="@volume.Id">Usuń</a>
-                <a class="btn btn-info" disabled asp-action="Reservation" asp-route-id="@volume.Id">Zarezerwuj</a>
-                @if(volume.Wypozyczenia.Count == 0){
-                    <a class="btn btn-info" asp-action="LoanVolume" asp-route-volid="@volume.Id">Wypożycz</a>
-                }
-            }
-            else
-            {
-                <p>@volume.Id</p>
-                <a class="btn btn-danger" asp-action="DeleteVolume" asp-route-id="@volume.Id">Usuń</a>
-                <a class="btn btn-info" asp-action="Reservation" asp-route-id="@volume.Id">Zarezerwuj</a>
-                @if (volume.Wypozyczenia.Count == 0)
-                {
-                    <a class="btn btn-info" asp-action="LoanVolume" asp-route-volid="@volume.Id">Wypożycz</a>
-                }
-            }
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+@using Microsoft.AspNetCore.Identity.UI.Services
+@using Microsoft.AspNetCore.Identity.UI
 
-        }
+@inject UserManager<Uzytkownik> UserManager;
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+    if (user != null && user.AccessLevel == 1)
+    {
+        <div class="container my-4">
+            @foreach (var book in Model.Item1)
+            {
+                <div class="book-item mb-4 p-4 border rounded shadow-sm">
+                    <h3 class="text-center mb-3">@book.Tytul</h3>
+                    <p><strong>ISBN:</strong> @book.ISBN</p>
+
+                    <div class="volume-section mt-3">
+                        <h5>Woluminy:</h5>
+                        <div class="volume-list">
+                            @foreach (var volume in book.Woluminy)
+                            {
+                                <div class="volume-item mb-3 p-3 border rounded @((Model.Item2.Any(reservation => reservation.WoluminId == volume.Id)) ? "bg-warning" : "bg-light")">
+                                    <div class="d-flex justify-content-between">
+                                        <p class="m-0"><strong>Wolumin ID:</strong> @volume.Id</p>
+
+                                        @if (Model.Item2.Any(reservation => reservation.WoluminId == volume.Id))
+                                        {
+                                            <span class="badge bg-danger">Zarezerwowany</span>
+                                            <p class="m-0">
+                                                <strong>Zarezerwowany przez:</strong>
+                                                @Model.Item2.FirstOrDefault(reservation => reservation.WoluminId == volume.Id)?.Uzytkownik.UserName
+                                                (@Model.Item2.FirstOrDefault(reservation => reservation.WoluminId == volume.Id)?.Uzytkownik.Id)
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Dostępny do rezerwacji</span>
+                                        }
+                                    </div>
+
+                                    <div class="button-group mt-2">
+                                        @if (Model.Item2.Any(reservation => reservation.WoluminId == volume.Id))
+                                        {
+                                            <a class="btn btn-danger btn-sm" asp-action="DeleteVolume" asp-route-id="@volume.Id">Usuń</a>
+                                            // <a class="btn btn-info btn-sm" disabled>Nie dostępne</a>
+                                            @if (volume.Wypozyczenia.Count == 0)
+                                            {
+                                                <a class="btn btn-info btn-sm" asp-action="LoanVolume" asp-route-volid="@volume.Id">Wypożycz</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-danger btn-sm" asp-action="DeleteVolume" asp-route-id="@volume.Id">Usuń</a>
+                                            // <a class="btn btn-info btn-sm" asp-action="Reservation" asp-route-id="@volume.Id">Zarezerwuj</a>
+                                            @if (volume.Wypozyczenia.Count == 0)
+                                            {
+                                                <a class="btn btn-info btn-sm" asp-action="LoanVolume" asp-route-volid="@volume.Id">Wypożycz</a>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3 d-flex justify-content-center">
+                        <a class="btn btn-primary btn-lg me-2" asp-action="AddVolume" asp-route-id="@book.Id">Dodaj wolumin</a>
+                        <a class="btn btn-info btn-lg" asp-action="BookDetails" asp-route-id="@book.Id">Szczegóły</a>
+                    </div>
+                </div>
+            }
         </div>
-        <a class="btn btn-info" asp-route-id="@book.Id" asp-action="AddVolume">Dodaj wolumin</a>
     }
-</div>
+    else
+    {
+        <div class="container d-flex justify-content-center align-items-center min-vh-100">
+            <div class="text-center">
+                <h1 class="display-4 text-danger">Brak dostępu!</h1>
+                <p class="lead text-muted">Nie masz odpowiednich uprawnień, aby zobaczyć tę stronę.</p>
+                <a class="btn btn-outline-primary mt-3" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-house-door"></i> Powrót do strony głównej
+                </a>
+            </div>
+        </div>
+    }
+}
+<style>
+    .book-item {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .volume-item {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+
+        .volume-item.bg-warning {
+            background-color: #fff3cd;
+        }
+
+        .volume-item.bg-light {
+            background-color: #f8f9fa;
+        }
+
+    .button-group a {
+        margin-right: 10px;
+    }
+
+    .badge {
+        font-size: 14px;
+    }
+</style>

@@ -2,13 +2,50 @@
     ViewData["Title"] = "Strona Główna";
 }
 
-<div class="text-center">
+<div class="container-fluid text-center py-5" style="background: linear-gradient(to right, #6a11cb, #2575fc); color: white;">
     @if (User.Identity.IsAuthenticated)
     {
-        <h1 class="display-4">Witaj @User.Identity.Name</h1>
+        <h1 class="display-4 mb-4" style="font-weight: bold;">Witaj @User.Identity.Name</h1>
+        <p class="lead mb-4">Cieszymy się, że jesteś z nami!</p>
     }
     else
     {
-        <h1 class="display-4">Witaj Gościu</h1>
+        <h1 class="display-4 mb-4" style="font-weight: bold;">Witaj w katalogu książek biblioteki</h1>
+        <p class="lead mb-4">Zaloguj się, aby uzyskać pełny dostęp do funkcji</p>
+        <img src="~/images/Library1.jpg" class="rounded-circle" alt="Placeholder Image" />
     }
 </div>
+
+<div class="text-center mt-5">
+    <a href="#" class="btn btn-lg btn-light" style="border-radius: 25px; padding: 12px 30px; font-size: 1.1rem;">Zaloguj się</a>
+</div>
+
+<style>
+    .container-fluid {
+        background-color: #f8f9fa;
+    }
+
+    .btn-light {
+        background-color: #ffffff;
+        color: #333333;
+        border: 2px solid #333333;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .btn-light:hover {
+            background-color: #333333;
+            color: white;
+            border: 2px solid transparent;
+        }
+
+    h1, p {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .container-fluid img {
+        margin-top: 20px;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>

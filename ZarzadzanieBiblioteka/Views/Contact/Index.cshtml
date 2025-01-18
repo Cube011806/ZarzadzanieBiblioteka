@@ -2,23 +2,45 @@
     ViewData["Title"] = "Kontakt z Administratorem";
 }
 
-<h2>Skontaktuj się z Administratorem</h2>
-
-<form asp-action="Send" method="post">
-    <div class="form-group">
-        <label for="subject">Temat</label>
-        <input type="text" class="form-control" id="subject" name="subject" required />
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Skontaktuj się z biblioteką</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Send" method="post">
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Temat</label>
+                            <input type="text"
+                                   class="form-control shadow-sm"
+                                   id="subject"
+                                   name="subject"
+                                   placeholder="Wpisz temat wiadomości"
+                                   required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Wiadomość</label>
+                            <textarea class="form-control shadow-sm"
+                                      id="message"
+                                      name="message"
+                                      rows="5"
+                                      placeholder="Treść wiadomości"
+                                      required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg shadow-sm">Wyślij</button>
+                        </div>
+                    </form>
+                </div>
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="card-footer bg-success text-white text-center">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="message">Wiadomość</label>
-        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary mt-3">Wyślij</button>
-</form>
-
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success mt-3">
-        @TempData["SuccessMessage"]
-    </div>
-}
+</div>
