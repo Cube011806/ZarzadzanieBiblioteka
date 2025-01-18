@@ -14,57 +14,79 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ZarzadzanieBiblioteka.styles.css" asp-append-version="true" />
     <style>
-        /* header{
-        background-image : url('/images/bookshelf.jpg');
-        background-size:contain;
-        background-repeat:repeat;
-        } */
-
-        /* Styl dla rozwijanego menu */
-        .custom-dropdown-menu {
-        background-color: #f8f9fa;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .navbar {
+            background-color: #D35400;
+            border-bottom: 2px solid #A04000;
         }
 
-        /* Styl dla pojedyńczych pozycji w rozwijanym menu */
-        .custom-dropdown-item {
-        color: #343a40;
-        padding: 5px 15px;
-        transition: background-color 0.3s ease, color 0.3s ease;
+            .navbar .navbar-nav .nav-link {
+                color: #ffffff;
+                transition: color 0.3s ease, background-color 0.3s ease;
+                padding: 10px 15px;
+            }
+
+                .navbar .navbar-nav .nav-link:hover,
+                .navbar .navbar-nav .active .nav-link {
+                    color: #FFD700;
+                    background-color: #A04000;
+                    border-radius: 5px;
+                }
+
+            .navbar .navbar-brand {
+                color: #ffffff;
+                font-weight: bold;
+                font-size: 1.2rem;
+            }
+
+                .navbar .navbar-brand:hover {
+                    color: #FFD700;
+                }
+
+        .navbar-toggler {
+            border-color: #ffffff;
         }
 
-        /* Styl po najechaniu na pojedyńczą pozycję w rozwijanym menu */
-        .custom-dropdown-item:hover {
-        background-color: #007bff;
-        color: #ffffff;
-        border-radius: 3px;
+        .navbar-toggler-icon {
+            background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" fill="%23ffffff" viewBox="0 0 30 30"%3E%3Cpath stroke="none" d="M0 0h30v30H0z"/%3E%3Cpath stroke="rgba(255, 255, 255, 1)" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
         }
 
-        /* Styl dla aktywnej pozycji w rozwijanym menu */
-        .custom-dropdown-item.active {
-        background-color: #0056b3;
-        color: #ffffff;
+        .navbar .dropdown-menu {
+            background-color: #F39C12;
+            border-color: #A04000;
         }
+
+        .navbar .dropdown-item {
+            color: #ffffff;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .navbar .dropdown-item:hover,
+            .navbar .dropdown-item.active {
+                background-color: #A04000;
+                color: #FFD700;
+            }
+
+        .navbar .dropdown-toggle::after {
+            color: #ffffff;
+        }
+
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-7 bg-opacity-50">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-7">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Library" asp-action="Index">Strona Główna</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="katalogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="katalogDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Katalog
                                 </a>
                                 <ul class="dropdown-menu custom-dropdown-menu" aria-labelledby="katalogDropdown">
@@ -75,22 +97,22 @@
                                                 @gatunek
                                             </a>
                                         </li>
-                                    } 
+                                    }
                                 </ul>
                             </li>
-                            
+
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Library" asp-action="IndexLoans">Rezerwacje i Wypożyczenia</a>
+                                <a class="nav-link" asp-controller="Library" asp-action="IndexLoans">Rezerwacje i Wypożyczenia</a>
                             </li>
                             {
                                 var id = UserManager.GetUserId(User);
                                 if (UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
                                 {
-                                    <li class="nav-item"> <a class="nav-link text-dark" asp-controller="Library" asp-action="IndexManage">Panel Zarządzania</a> </li>
+                                    <li class="nav-item"> <a class="nav-link" asp-controller="Library" asp-action="IndexManage">Panel Zarządzania</a> </li>
                                 }
                             }
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Contact" asp-action="Index">Kontakt</a>
+                                <a class="nav-link" asp-controller="Contact" asp-action="Index">Kontakt</a>
                             </li>
                         }
                     </ul>
