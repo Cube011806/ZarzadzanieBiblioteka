@@ -1,52 +1,71 @@
 ﻿@model Ksiazka
 
-<h1>Edytuj książkę</h1>
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
-    <div class="Ksiazka">
-        <left>
-            <p>
-                <label asp-for="Tytul">Tytuł:</label>
-                <input type ="text" asp-for="Tytul" class="form-control" required/>
-            </p>
-            <p>
-                <label for="Autor">Autor</label>
-                <select asp-for="AutorId" class="form-control" asp-items="ViewBag.ListaAutorow">
-                    <option value="" disabled>-- Wybierz autora --</option>
-                </select>
-            </p>
-            <p>
-                <label asp-for="Gatunek">Gatunek:</label>
-                <input asp-for="Gatunek" class="form-control" required/>
-            </p>
-            <p>
-                <label asp-for="DataWydania">Data wydania:</label>
-                <input type="date" asp-for="DataWydania" class="form-control" required />
-            </p>
-            <p>
-                <label asp-for="LiczbaStron">Liczba stron:</label>
-                <input asp-for="LiczbaStron" class="form-control" required/>
-            </p>
-            <p>
-                <label asp-for="Oprawa">Oprawa:</label>
-                <input asp-for="Oprawa" class="form-control" required/>
-            </p>
-            <p>
-                <label asp-for="Wydanie">Wydanie:</label>
-                <input asp-for="Wydanie" class="form-control" required/>
-            </p>
-            <p>
-                <label asp-for="ISBN">ISBN:</label>
-                <input asp-for="ISBN" class="form-control" required/>
-            </p>
-        </left>
-        <img for="file" class="prev" id="preview" src="~/@Model.Okladka" alt="Image Preview" style="display: grid; width:100%; height: 100%; object-fit:contain" />
-        <div class="drop" id="drop-zone" style="border: 2px dashed #ccc; padding: 20px; text-align: center; display:flex; flex-direction:column; align-items:center;justify-content:center;">
-            <div style="padding:5px">Drag and drop an image file here or click to select.</div>
-            <input type="file" id="file" name="file" accept="image/*" class="form-control" onchange="previewImage(event)" />
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Edytuj książkę</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Tytul" class="form-label">Tytuł</label>
+                                    <input type="text" class="form-control shadow-sm" asp-for="Tytul" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="AutorId" class="form-label">Autor</label>
+                                    <select asp-for="AutorId" class="form-select shadow-sm" asp-items="ViewBag.ListaAutorow">
+                                        <option value="" disabled>-- Wybierz autora --</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Gatunek" class="form-label">Gatunek</label>
+                                    <input type="text" class="form-control shadow-sm" asp-for="Gatunek" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="DataWydania" class="form-label">Data wydania</label>
+                                    <input type="date" class="form-control shadow-sm" asp-for="DataWydania" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="LiczbaStron" class="form-label">Liczba stron</label>
+                                    <input type="number" class="form-control shadow-sm" asp-for="LiczbaStron" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Oprawa" class="form-label">Oprawa</label>
+                                    <input type="text" class="form-control shadow-sm" asp-for="Oprawa" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Wydanie" class="form-label">Wydanie</label>
+                                    <input type="number" class="form-control shadow-sm" asp-for="Wydanie" required />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="ISBN" class="form-label">ISBN</label>
+                                    <input type="text" class="form-control shadow-sm" asp-for="ISBN" required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-center mb-3">
+                                    <img id="preview" src="~/@Model.Okladka" alt="Podgląd okładki" class="img-fluid shadow-sm rounded" style="max-height: 300px; object-fit: contain;" />
+                                </div>
+                                <div class="dropzone p-4 border rounded text-center shadow-sm" id="drop-zone">
+                                    <div class="mb-2">Przeciągnij i upuść plik obrazu tutaj lub kliknij, aby wybrać.</div>
+                                    <input type="file" id="file" name="file" accept="image/*" class="form-control d-none" onchange="previewImage(event)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success btn-lg shadow-sm">Edytuj książkę</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="form-control btn-success">Edytuj</button>
     </div>
-</form>
+</div>
+
 <script>
     var dropZone = document.getElementById('drop-zone');
     var fileInput = document.getElementById('file');
@@ -57,30 +76,30 @@
 
     dropZone.addEventListener('dragover', function (e) {
         e.preventDefault();
-        dropZone.style.backgroundColor = '#ccc'
+        dropZone.style.backgroundColor = '#e9ecef';
     });
 
     dropZone.addEventListener('dragleave', function (e) {
         e.preventDefault();
-        dropZone.style.backgroundColor = '#fff';
+        dropZone.style.backgroundColor = 'white';
     });
 
     dropZone.addEventListener('drop', function (e) {
         e.preventDefault();
-        dropZone.style.backgroundColor = '#fff';
+        dropZone.style.backgroundColor = 'white';
         var files = e.dataTransfer.files;
         if (files.length > 0) {
             fileInput.files = files;
             previewImage({ target: { files: files } });
         }
     });
-    //
+
     function previewImage(event) {
         var reader = new FileReader();
         reader.onload = function () {
             var output = document.getElementById('preview');
             output.src = reader.result;
-        }
+        };
         reader.readAsDataURL(event.target.files[0]);
     }
 </script>
