@@ -41,6 +41,22 @@
     .img-box:hover img {
     transform: none !important;
     }
+
+    .img-box img {
+        width: 85%;
+        height: 780px;
+        object-fit: cover;
+    }
+
+    .ksiazka1
+    {
+        
+    }
+
+    .ksiazka2
+    {
+        
+    }
 </style>
 
 @if (User.Identity.IsAuthenticated)
@@ -48,7 +64,7 @@
     <div class="container">
         <div class="row">
             <!-- Ksiazka1 -->
-            <div class="col-md-6 text-center">
+            <div class="col-md-6 text-center ksiazka1">
                 <div class="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
                     <div class="img-box" style="background-color:#cacaca">
                         <img src="~/@book1.Okladka" style="max-height:550px;" />
@@ -88,7 +104,7 @@
             </div>
 
             <!-- Ksiazka2 -->
-            <div class="col-md-6 text-center">
+            <div class="col-md-6 text-center ksiazka2">
                 <div class="itemoopic" style="display:grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 5px">
                     <div class="img-box" style="background-color:#cacaca">
                         <img src="~/@book2.Okladka" style="max-height:550px;"/>
