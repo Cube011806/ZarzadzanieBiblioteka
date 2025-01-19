@@ -1,23 +1,80 @@
 ﻿@model Opinia
-<div>
-    <form asp-action="EditReview" method="post">
-        <input type="hidden" asp-for="Id" />
-        <input type="hidden" name="IdKsiazka" value="@ViewBag.IdKsiazka" />
-        <div class="star-rating">
-            <input type="radio" id="star5" name="Ocena" value="5" asp-for="Ocena" />
-            <label for="star5" title="5 stars">&#9733;</label>
-            <input type="radio" id="star4" name="Ocena" value="4" asp-for="Ocena" />
-            <label for="star4" title="4 stars">&#9733;</label>
-            <input type="radio" id="star3" name="Ocena" value="3" asp-for="Ocena" />
-            <label for="star3" title="3 stars">&#9733;</label>
-            <input type="radio" id="star2" name="Ocena" value="2" asp-for="Ocena" />
-            <label for="star2" title="2 stars">&#9733;</label>
-            <input type="radio" id="star1" name="Ocena" value="1" asp-for="Ocena" />
-            <label for="star1" title="1 star">&#9733;</label>
-            :Ocena
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Edytuj opinię</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="EditReview" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" name="IdKsiazka" value="@ViewBag.IdKsiazka" />
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Ocena</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="Ocena" value="5" asp-for="Ocena" />
+                                    <label for="star5" title="5 stars">&#9733;</label>
+
+                                    <input type="radio" id="star4" name="Ocena" value="4" asp-for="Ocena" />
+                                    <label for="star4" title="4 stars">&#9733;</label>
+
+                                    <input type="radio" id="star3" name="Ocena" value="3" asp-for="Ocena" />
+                                    <label for="star3" title="3 stars">&#9733;</label>
+
+                                    <input type="radio" id="star2" name="Ocena" value="2" asp-for="Ocena" />
+                                    <label for="star2" title="2 stars">&#9733;</label>
+
+                                    <input type="radio" id="star1" name="Ocena" value="1" asp-for="Ocena" />
+                                    <label for="star1" title="1 star">&#9733;</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label" for="Komentarz">Komentarz</label>
+                                <textarea class="form-control shadow-sm" asp-for="Komentarz" rows="5" required></textarea>
+                            </div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success btn-lg shadow-sm">Edytuj opinię</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <p></p>
-        <label>Komentarz: <input type="text" asp-for="Komentarz" /></label>
-        <button type="submit" class="btn btn-info">Edytuj</button>
-    </form>
+    </div>
 </div>
+
+<style>
+    .form-control {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+    .form-control:focus {
+        border-color: #2575fc;
+        box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
+    }
+
+    .btn-success {
+        background-color: #2575fc;
+        border-color: #2575fc;
+        padding: 12px 20px;
+    }
+
+    .btn-success:hover {
+        background-color: #6a11cb;
+        border-color: #6a11cb;
+    }
+
+    .card-body {
+        margin-top: 20px;
+    }
+
+    .d-grid {
+        margin-top: 20px;
+    }
+</style>

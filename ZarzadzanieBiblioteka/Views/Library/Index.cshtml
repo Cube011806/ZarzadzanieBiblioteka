@@ -247,7 +247,7 @@
                             </div>
                             @if (ksiazka.Woluminy.Where(w => w.Rezerwacje.Count() == 0).Count() > 0){
                                 <div style="margin-top: 10px;">
-                                    <a class="btn btn-light btn-info btn-lg" asp-controller="Library" asp-action="AddReservation" asp-route-id="@ksiazka.Id" style="width: 100%; max-width: 250px; padding: 10px;">Zarezerwuj</a>
+                                    <a class="btn btn-light btn-info btn-lg" asp-controller="Library" asp-action="AddReservation" asp-route-id="@ksiazka.Id" style="width: 100%; max-width: 250px; padding: 10px;">Zarezerwuj książkę</a>
                                 </div>
                             }
                             <div style="margin-top: 10px;">

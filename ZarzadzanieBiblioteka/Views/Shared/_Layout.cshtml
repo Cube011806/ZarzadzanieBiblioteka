@@ -19,28 +19,28 @@
             border-bottom: 2px solid #A04000;
         }
 
-            .navbar .navbar-nav .nav-link {
-                color: #ffffff;
-                transition: color 0.3s ease, background-color 0.3s ease;
-                padding: 10px 15px;
+        .navbar .navbar-nav .nav-link {
+            color: #ffffff;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            padding: 10px 15px;
+        }
+
+        .navbar .navbar-nav .nav-link:hover,
+        .navbar .navbar-nav .active .nav-link {
+            color: #FFD700;
+            background-color: #A04000;
+            border-radius: 5px;
             }
 
-                .navbar .navbar-nav .nav-link:hover,
-                .navbar .navbar-nav .active .nav-link {
-                    color: #FFD700;
-                    background-color: #A04000;
-                    border-radius: 5px;
-                }
+        .navbar .navbar-brand {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
 
-            .navbar .navbar-brand {
-                color: #ffffff;
-                font-weight: bold;
-                font-size: 1.2rem;
-            }
-
-                .navbar .navbar-brand:hover {
-                    color: #FFD700;
-                }
+        .navbar .navbar-brand:hover {
+            color: #FFD700;
+        }
 
         .navbar-toggler {
             border-color: #ffffff;
@@ -51,7 +51,7 @@
         }
 
         .navbar .dropdown-menu {
-            background-color: #F39C12;
+            background-color: #D35400;
             border-color: #A04000;
         }
 
@@ -60,11 +60,11 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-            .navbar .dropdown-item:hover,
-            .navbar .dropdown-item.active {
-                background-color: #A04000;
-                color: #FFD700;
-            }
+        .navbar .dropdown-item:hover,
+        .navbar .dropdown-item.active {
+            background-color: #A04000;
+            color: #FFD700;
+        }
 
         .navbar .dropdown-toggle::after {
             color: #ffffff;
@@ -108,7 +108,7 @@
                                 var id = UserManager.GetUserId(User);
                                 if (UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
                                 {
-                                    <li class="nav-item"> <a class="nav-link" asp-controller="Library" asp-action="IndexManage">Panel Zarządzania</a> </li>
+                                    <li class="nav-item"> <a class="nav-link" asp-controller="Library" asp-action="IndexManage">Panel zarządzania</a> </li>
                                 }
                             }
                             <li class="nav-item">

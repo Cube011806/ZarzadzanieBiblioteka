@@ -53,11 +53,12 @@
                     }
                     else
                     {
-                        <h3>Opinie:</h3>
+                        <h2>Opinie:</h2>
                         var opiniaAktualnieZalogowanegoUzytkownika = @Model.Opinie.FirstOrDefault(op => op.UzytkownikId == UserManager.GetUserId(User));
                         if (opiniaAktualnieZalogowanegoUzytkownika != null)
                         {
-                            <div class="Stars" style="--rating: @opiniaAktualnieZalogowanegoUzytkownika.Ocena;" aria-label="Rating">Ocena:</div>
+                            @:Ocena: 
+                            <div class="Stars" style="--rating: @opiniaAktualnieZalogowanegoUzytkownika.Ocena;" aria-label="Rating"></div>
                             <p>Komentarz: @opiniaAktualnieZalogowanegoUzytkownika.Komentarz - <strong>@opiniaAktualnieZalogowanegoUzytkownika.Uzytkownik.Email</strong></p>
                             <a asp-action="EditReview" asp-route-id="@opiniaAktualnieZalogowanegoUzytkownika.Id" asp-route-idksiazka="@Model.Id" class="btn btn-secondary me-2">
                                 Zmień opinię
