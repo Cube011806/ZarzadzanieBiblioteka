@@ -303,7 +303,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             if(!string.IsNullOrEmpty(KwerendaWyszukujaca))
             {
                 loans = _dbcontext.Wypozyczenia.Where(w => w.Uzytkownik.Email.ToLower().Contains(KwerendaWyszukujaca.ToLower())).ToList();
-                ViewBag.Rezerwacje = _dbcontext.Rezerwacje.Where(r => r.Uzytkownik.Email.ToLower().Contains(KwerendaWyszukujaca.ToLower())).ToList();
+                ViewBag.Rezerwacje = _dbcontext.Rezerwacje.Where(r => r.Uzytkownik.Email.ToLower().Contains(KwerendaWyszukujaca.ToLower()) && r.DataWygasniecia > DateTime.Now).ToList();
                 if((loans == null || loans.Count == 0) && (ViewBag.Rezerwacje == null || ViewBag.Rezerwacje.Count == 0))
                 {
                     TempData["ErrorMessage"] = "Nie udało się znaleźć użytkownika, którego email zawierałby taką frazę!";
@@ -313,7 +313,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             else
             {
                 loans = _dbcontext.Wypozyczenia.ToList();
-                ViewBag.Rezerwacje = _dbcontext.Rezerwacje.ToList();
+                ViewBag.Rezerwacje = _dbcontext.Rezerwacje.Where(r => r.DataWygasniecia > DateTime.Now).ToList();
             }
             return View(loans);
         }

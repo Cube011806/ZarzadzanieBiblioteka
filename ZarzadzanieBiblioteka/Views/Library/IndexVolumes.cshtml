@@ -22,17 +22,17 @@
                         <div class="volume-list">
                             @foreach (var volume in book.Woluminy)
                             {
-                                <div class="volume-item mb-3 p-3 border rounded @((Model.Item2.Any(reservation => reservation.WoluminId == volume.Id)) ? "bg-warning" : "bg-light")">
+                                <div class="volume-item mb-3 p-3 border rounded @((Model.Item2.Any(reservation => reservation.WoluminId == volume.Id && reservation.DataWygasniecia > DateTime.Now)) ? "bg-warning" : "bg-light")">
                                     <div class="d-flex justify-content-between">
                                         <p class="m-0"><strong>Wolumin ID:</strong> @volume.Id</p>
 
-                                        @if (Model.Item2.Any(reservation => reservation.WoluminId == volume.Id))
+                                        @if (Model.Item2.Any(reservation => reservation.WoluminId == volume.Id && reservation.DataWygasniecia > DateTime.Now))
                                         {
                                             <span class="badge bg-danger">Zarezerwowany</span>
                                             <p class="m-0">
                                                 <strong>Zarezerwowany przez:</strong>
-                                                @Model.Item2.FirstOrDefault(reservation => reservation.WoluminId == volume.Id)?.Uzytkownik.UserName
-                                                (@Model.Item2.FirstOrDefault(reservation => reservation.WoluminId == volume.Id)?.Uzytkownik.Id)
+                                                @Model.Item2.FirstOrDefault(reservation => reservation.WoluminId == volume.Id && reservation.DataWygasniecia > DateTime.Now)?.Uzytkownik.UserName
+                                                (@Model.Item2.FirstOrDefault(reservation => reservation.WoluminId == volume.Id && reservation.DataWygasniecia > DateTime.Now)?.Uzytkownik.Id)
                                             </p>
                                         }
                                         else
@@ -42,7 +42,7 @@
                                     </div>
 
                                     <div class="button-group mt-2">
-                                        @if (Model.Item2.Any(reservation => reservation.WoluminId == volume.Id))
+                                        @if (Model.Item2.Any(reservation => reservation.WoluminId == volume.Id && reservation.DataWygasniecia > DateTime.Now))
                                         {
                                             <a class="btn btn-danger btn-sm" asp-action="DeleteVolume" asp-route-id="@volume.Id">Usuń</a>
                                             // <a class="btn btn-info btn-sm" disabled>Nie dostępne</a>
