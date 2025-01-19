@@ -151,6 +151,7 @@
             //Wyszukiwanie
             <div class="search-bar" style="padding: 20px; border-bottom: 1px solid #ccc; margin-bottom: 20px;">
                 <form asp-action="Index" method="get" class="search-form">
+                    <input type="hidden" name="Gatunek" id="Gatunek" value="@ViewContext.HttpContext.Request.Query["Gatunek"]" />
                     <input type="hidden" name="Book1Id" id="selectedBook1IdForSearching" value="@ViewData["SelectedBook1Id"]" />
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <input type="text"
@@ -182,6 +183,8 @@
             //Sortowanie
             <div class="sorting" style="padding: 10px; border-bottom: 1px solid #555555;">
                 <form asp-action="Index" method="get">
+                    <!-- Ukryty input zawierający nazwe filtrowanego gatunku -->
+                    <input type="hidden" name="Gatunek" id="Gatunek" value="@ViewContext.HttpContext.Request.Query["Gatunek"]" />
                     <!-- Ukryty input zawierający id ksiazki nr 1 do porownania-->
                     <input type="hidden" name="Book1Id" id="selectedBook1IdForSorting" value="@ViewData["SelectedBook1Id"]" />
                     <!-- Ukryty input zawierający kwerende wyszukiwajaca -->

@@ -93,7 +93,7 @@
                                     @foreach (var gatunek in (List<string>)ViewData["Gatunki"])
                                     {
                                         <li>
-                                            <a class="dropdown-item custom-dropdown-item" asp-controller="Library" asp-action="Index" asp-route-Gatunek="@gatunek">
+                                            <a class="dropdown-item custom-dropdown-item" asp-controller="Library" asp-action="Index" asp-route-Gatunek="@gatunek" asp-route-KwerendaWyszukujaca="@Context.Request.Query["KwerendaWyszukujaca"]" asp-route-SortujPo="@Context.Request.Query["SortujPo"]">
                                                 @gatunek
                                             </a>
                                         </li>

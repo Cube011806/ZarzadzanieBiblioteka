@@ -63,6 +63,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             //}
 
             ViewData["SelectedBook1Id"] = Book1Id ?? 0;
+            ViewData["Gatuenk"] = Gatunek;
 
             return View(ksiazki.ToList());
         }
