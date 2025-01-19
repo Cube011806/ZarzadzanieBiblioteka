@@ -6,6 +6,98 @@
     var accessLevel = UserManager.FindByIdAsync(id).Result.AccessLevel;
 }
 
+<style>
+    .search-bar {
+        padding: 20px;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 20px;
+    }
+
+    .search-input {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 25px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-color: #007bff;
+        }
+
+    .search-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 25px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .search-button:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    .btn-light.btn-info.btn-lg {
+        background-color: #17a2b8;
+        color: white;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+</style>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["ErrorMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["SuccessMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="search-bar" style="padding: 20px; border-bottom: 1px solid #ccc; margin-bottom: 20px;">
+    <form asp-action="IndexLoans" method="get" class="search-form">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+            <input type="text"
+                   name="KwerendaWyszukujaca"
+                   placeholder="Wyszukaj użytkownika po adresie email"
+                   class="form-control search-input"
+                   style="
+                               width: 450px;
+                               padding: 10px;
+                               font-size: 16px;
+                               border: 1px solid #ccc;
+                               border-radius: 25px;
+                               box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" />
+            <button type="submit"
+                    class="btn btn-primary search-button"
+                    style="
+                                padding: 10px 20px;
+                                font-size: 16px;
+                                border-radius: 25px;
+                                background-color: #007bff;
+                                border: none;
+                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                Szukaj
+            </button>
+        </div>
+    </form>
+</div>
+
 <div class="container">
     <div class="row">
         <!-- Kolumna Wypożyczeń -->

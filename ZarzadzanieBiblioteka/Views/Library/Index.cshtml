@@ -153,6 +153,7 @@
                 <form asp-action="Index" method="get" class="search-form">
                     <input type="hidden" name="Gatunek" id="Gatunek" value="@ViewContext.HttpContext.Request.Query["Gatunek"]" />
                     <input type="hidden" name="Book1Id" id="selectedBook1IdForSearching" value="@ViewData["SelectedBook1Id"]" />
+                    <input type="hidden" name="SortujPo" id="SortujPo" value="@Context.Request.Query["SortujPo"]" />
                     <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <input type="text"
                                name="KwerendaWyszukujaca"

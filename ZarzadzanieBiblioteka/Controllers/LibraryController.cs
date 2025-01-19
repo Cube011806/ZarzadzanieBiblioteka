@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 using static System.Reflection.Metadata.BlobBuilder;
@@ -64,6 +65,8 @@ namespace ZarzadzanieBiblioteka.Controllers
 
             ViewData["SelectedBook1Id"] = Book1Id ?? 0;
             ViewData["Gatuenk"] = Gatunek;
+            ViewData["KwerendaWyszukująca"] = KwerendaWyszukujaca;
+            ViewData["SortujPo"] = SortujPo;
 
             return View(ksiazki.ToList());
         }
@@ -294,10 +297,24 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["ErrorMessage"] = "Nie udało się usunąć opinii!";
             return View("BookDetails", ksiazka);
         }
-        public IActionResult IndexLoans()
+        public IActionResult IndexLoans(string KwerendaWyszukujaca)
         {
-            var loans = _dbcontext.Wypozyczenia.ToList(); 
-            ViewBag.Rezerwacje = _dbcontext.Rezerwacje.ToList();
+            var loans = _dbcontext.Wypozyczenia.ToList();
+            if(!string.IsNullOrEmpty(KwerendaWyszukujaca))
+            {
+                loans = _dbcontext.Wypozyczenia.Where(w => w.Uzytkownik.Email.ToLower().Contains(KwerendaWyszukujaca.ToLower())).ToList();
+                ViewBag.Rezerwacje = _dbcontext.Rezerwacje.Where(r => r.Uzytkownik.Email.ToLower().Contains(KwerendaWyszukujaca.ToLower())).ToList();
+                if((loans == null || loans.Count == 0) && (ViewBag.Rezerwacje == null || ViewBag.Rezerwacje.Count == 0))
+                {
+                    TempData["ErrorMessage"] = "Nie udało się znaleźć użytkownika, którego email zawierałby taką frazę!";
+                    return RedirectToAction("IndexLoans");
+                }
+            }
+            else
+            {
+                loans = _dbcontext.Wypozyczenia.ToList();
+                ViewBag.Rezerwacje = _dbcontext.Rezerwacje.ToList();
+            }
             return View(loans);
         }
         public IActionResult IndexVolumes()
