@@ -154,7 +154,7 @@ body {
 .star-rating{
     direction:rtl;
     display:inline-flex;
-    font-size:30px;
+    font-size:25px;
 }
 
 .star-rating input[type="radio"]{
@@ -189,7 +189,7 @@ body {
 .Stars {
     --percent: calc(var(--rating)/5*100%);
     display: inline-block;
-    font-size:30px;
+    font-size:25px;
     line-height: 1;
     margin-left: 5px;
     &::after{
