@@ -6,6 +6,48 @@
 
 @inject UserManager<Uzytkownik> UserManager;
 
+<style>
+    .book-item {
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .volume-item {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+
+        .volume-item.bg-warning {
+            background-color: #fff3cd;
+        }
+
+        .volume-item.bg-light {
+            background-color: #f8f9fa;
+        }
+
+    .button-group a {
+        margin-right: 10px;
+    }
+
+    .badge {
+        font-size: 14px;
+    }
+</style>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["ErrorMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["SuccessMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 @{
     var user = await UserManager.GetUserAsync(User);
     if (user != null && user.AccessLevel == 1)
@@ -87,31 +129,3 @@
         </div>
     }
 }
-<style>
-    .book-item {
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .volume-item {
-        background-color: #f9f9f9;
-        border-radius: 8px;
-    }
-
-        .volume-item.bg-warning {
-            background-color: #fff3cd;
-        }
-
-        .volume-item.bg-light {
-            background-color: #f8f9fa;
-        }
-
-    .button-group a {
-        margin-right: 10px;
-    }
-
-    .badge {
-        font-size: 14px;
-    }
-</style>

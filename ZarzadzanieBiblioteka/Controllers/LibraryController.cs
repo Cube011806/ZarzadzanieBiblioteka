@@ -211,6 +211,7 @@ namespace ZarzadzanieBiblioteka.Controllers
         {
             _dbcontext.Autorzy.Add(autor);
             _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie dodano autora!";
             return RedirectToAction("IndexAuthors");
         }
         public IActionResult EditAuthor(int id)
@@ -223,6 +224,7 @@ namespace ZarzadzanieBiblioteka.Controllers
         {
             _dbcontext.Autorzy.Update(autor);
             _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie edytowano autora!";
             return RedirectToAction("IndexAuthors");
         }
         public IActionResult DeleteAuthor(int id)
@@ -232,7 +234,9 @@ namespace ZarzadzanieBiblioteka.Controllers
             {
                 _dbcontext.Autorzy.Remove(author);
                 _dbcontext.SaveChanges();
+                TempData["SuccessMessage"] = "Pomyślnie usunięto autora!";
             }
+            TempData["ErrorMessage"] = "Nie udało się usunąć autora!";
             return RedirectToAction("IndexAuthors");
         }
         public IActionResult AddReview(int idksiazka)
@@ -330,7 +334,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             var ksiazka = _dbcontext.Ksiazki.FirstOrDefault(k => k.Id == id);
             if (ksiazka == null)
             {
-                return NotFound("Nie znaleziono książki o podanym ID.");
+                return NotFound("Nie znaleziono książki o podanym ID!");
             }
             var wolumin = new Wolumin();
             wolumin.KsiazkaId = id;
@@ -338,6 +342,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.Woluminy.Add(wolumin);
             _dbcontext.Update(ksiazka);
             _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie dodano wolumin książki!";
             return RedirectToAction("IndexVolumes");
         }
         public IActionResult DeleteVolume(int id)
@@ -346,6 +351,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             if (wolumin != null)
             {
                 _dbcontext.Woluminy.Remove(wolumin);
+                TempData["SuccessMessage"] = "Pomyślnie usunięto wolumin książki!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Nie udało się usunąć woluminu książki!";
             }
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexVolumes");
@@ -357,6 +367,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             {
                 _dbcontext.Rezerwacje.Remove(reservation);
                 _dbcontext.SaveChanges();
+                TempData["SuccessMessage"] = "Pomyślnie anulowano rezerwacje!";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Nie udało się anulować rezerwacji!";
             }
             return RedirectToAction("IndexLoans");
         }
@@ -383,6 +398,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.Wypozyczenia.Add(wypozyczenie);
             _dbcontext.SaveChanges();
 
+            TempData["SuccessMessage"] = "Pomyślnie wypożyczono wolumin książki!";
             return RedirectToAction("IndexLoans");
         }
 
@@ -391,6 +407,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             var wypozyczenie = _dbcontext.Wypozyczenia.Find(id);
             _dbcontext.Wypozyczenia.Remove(wypozyczenie);
             _dbcontext.SaveChanges();
+            TempData["SuccessMessage"] = "Pomyślnie zwrócono wolumin książki!";
             return RedirectToAction("IndexLoans");
         }
         public IActionResult AddReservation(int id)
@@ -414,7 +431,7 @@ namespace ZarzadzanieBiblioteka.Controllers
 
             if (existingReservation != null)
             {
-                TempData["ErrorMessage"] = "Zarezerwowałeś już tę książkę.";
+                TempData["ErrorMessage"] = "Masz już zarezerwowaną conajmniej jedną książkę!";
                 return RedirectToAction("Index");
             }
 
@@ -429,7 +446,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.Rezerwacje.Add(rezerwacja);
             _dbcontext.SaveChanges();
 
-            TempData["SuccessMessage"] = "Rezerwacja została pomyślnie dodana.";
+            TempData["SuccessMessage"] = "Pomyślnie zarezerwowano książkę!";
             return RedirectToAction("Index");
         }
         public IActionResult ExtendLoan(int id)
@@ -439,7 +456,12 @@ namespace ZarzadzanieBiblioteka.Controllers
             {
                 wypozyczenie.DataZwrotu = wypozyczenie.DataZwrotu.AddDays(14);
                 _dbcontext.Wypozyczenia.Update(wypozyczenie);
+                TempData["SuccessMessage"] = "Pomyślnie przedłużono wypożyczenie książki!";
                 _dbcontext.SaveChanges();
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Nie udało się przedłużyć wypożyczenia książki!";
             }
             return RedirectToAction("IndexLoans");
         }
