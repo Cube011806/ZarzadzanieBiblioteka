@@ -281,8 +281,6 @@ namespace ZarzadzanieBiblioteka.Controllers
         {
             opinia.UzytkownikId = _userManager.GetUserId(User);
             opinia.KsiazkaId = IdKsiazka;
-            //var ksiazka = _dbcontext.Ksiazki.Find(IdKsiazka);
-            //ksiazka.Opinie.Add(opinia);
             _dbcontext.Opinie.Update(opinia);
             _dbcontext.SaveChanges();
             TempData["SuccessMessage"] = "Pomyślnie edytowano opinię!";
@@ -460,7 +458,7 @@ namespace ZarzadzanieBiblioteka.Controllers
                 return NotFound();
             }
 
-            var wolumin = ksiazka.Woluminy.FirstOrDefault(w => !w.Rezerwacje.Any());
+            var wolumin = ksiazka.Woluminy.FirstOrDefault(w => !w.Rezerwacje.Any() && !w.Wypozyczenia.Any());
             if (wolumin == null)
             {
                 return RedirectToAction("Index"); 
@@ -507,22 +505,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             }
             return RedirectToAction("IndexLoans", new { KwerendaWyszukujaca = KwerendaWyszukujaca });
         }
-        //[HttpPost]
-        //public IActionResult ConfirmReservation(int id)
-        //{
-        //    var uzytkownikId = _userManager.GetUserId(User);
-        //    var dataRezerwacji = DateTime.Now;
-        //    var dataWygasniecia = dataRezerwacji.AddDays(7);
-        //    var rezerwcaja = new Rezerwacja();
-        //    rezerwcaja.WoluminId = id;
-        //    rezerwcaja.UzytkownikId = uzytkownikId;
-        //    rezerwcaja.DataRezerwacji = dataRezerwacji;
-        //    rezerwcaja.DataWygasniecia = dataWygasniecia;
-        //    _dbcontext.Rezerwacje.Add(rezerwcaja);
-        //    _dbcontext.SaveChanges();
-        //    TempData["SuccessMessage"] = "Pomyślnie zarezerwowano wolumin książki!";
-        //    return RedirectToAction("Index");
-        //}
+
         public IActionResult CompareBooks(int book1Id, int book2Id)
         {
             if(book1Id == book2Id)
@@ -542,13 +525,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             double avgOcenaBook1 = 0.0;
             double avgOcenaBook2 = 0.0;
 
-            //obliczamy srednia arytmetyczna z wszystkich ocen dla ksiazki1
             if(book1.Opinie.Count > 0)
             {
                 avgOcenaBook1 = book1.Opinie.Average(op => op.Ocena);
             }
 
-            //obliczamy srednia arytmetyczna z wszystkich ocen dla ksiazki2
             if (book2.Opinie.Count > 0)
             {
                 avgOcenaBook2 = book2.Opinie.Average(op => op.Ocena);
