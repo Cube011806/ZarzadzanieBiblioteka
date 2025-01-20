@@ -427,9 +427,13 @@ namespace ZarzadzanieBiblioteka.Controllers
                 .Include(w => w.Ksiazka)
                 .FirstOrDefault(w => w.Id == wypozyczenie.WoluminId);
             ViewBag.Wolumin = wolumin;
-
+ 
             wypozyczenie.DataZwrotu = wypozyczenie.DataWypozyczenia.AddDays(14);
-
+            foreach(var rezerwacja in wolumin.Rezerwacje)
+            {
+                _dbcontext.Remove(rezerwacja);
+            }
+            _dbcontext.Woluminy.Update(wolumin);
             _dbcontext.Wypozyczenia.Add(wypozyczenie);
             _dbcontext.SaveChanges();
 
