@@ -70,35 +70,37 @@
     </div>
 }
 
-<div class="search-bar" style="padding: 20px; border-bottom: 1px solid #ccc; margin-bottom: 20px;">
-    <form asp-action="IndexLoans" method="get" class="search-form">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-            <input type="text"
-                   name="KwerendaWyszukujaca"
-                   placeholder="Wyszukaj użytkownika po adresie email"
-                   class="form-control search-input"
-                   style="
+@if (UserManager.FindByIdAsync(id).Result.AccessLevel == 1)
+{
+    <div class="search-bar" style="padding: 20px; border-bottom: 1px solid #ccc; margin-bottom: 20px;">
+        <form asp-action="IndexLoans" method="get" class="search-form">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <input type="text"
+                       name="KwerendaWyszukujaca"
+                       placeholder="Wyszukaj użytkownika po adresie email"
+                       class="form-control search-input"
+                       style="
                                width: 450px;
                                padding: 10px;
                                font-size: 16px;
                                border: 1px solid #ccc;
                                border-radius: 25px;
                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" />
-            <button type="submit"
-                    class="btn btn-primary search-button"
-                    style="
+                <button type="submit"
+                        class="btn btn-primary search-button"
+                        style="
                                 padding: 10px 20px;
                                 font-size: 16px;
                                 border-radius: 25px;
                                 background-color: #007bff;
                                 border: none;
                                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                Szukaj
-            </button>
-        </div>
-    </form>
-</div>
-
+                    Szukaj
+                </button>
+            </div>
+        </form>
+    </div>
+}
 <div class="container">
     <div class="row">
         <!-- Kolumna Wypożyczeń -->
