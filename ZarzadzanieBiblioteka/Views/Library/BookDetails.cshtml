@@ -34,7 +34,15 @@
                         <p><strong>Liczba stron:</strong> @Model.LiczbaStron</p>
                         <p><strong>Oprawa:</strong> @Model.Oprawa</p>
                         <p><strong>ISBN:</strong> @Model.ISBN</p>
-                        <p><strong>Dostępnych sztuk:</strong> @Model.Woluminy.Where(w => w.Rezerwacje.Count() == 0).Count()</p>
+                        <p>
+                            <strong>Dostępnych sztuk:</strong>
+                            @(@Model.Woluminy
+                                .Where(w =>
+                                !w.Rezerwacje.Any(r => r.DataWygasniecia > DateTime.Now) &&
+                                w.Wypozyczenia.All(wp => wp.DataZwrotu <= DateTime.Now)
+                                )
+                                .Count())
+                        </p>
                     </div>
                 </div>
             </div>

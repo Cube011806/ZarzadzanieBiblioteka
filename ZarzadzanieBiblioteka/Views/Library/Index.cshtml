@@ -233,7 +233,12 @@
                             <p><strong>Liczba stron:</strong> @ksiazka.LiczbaStron</p>
                             <p>
                                 <strong>Dostępnych sztuk:</strong>
-                                @ksiazka.Woluminy.Where(w => w.Rezerwacje.Count() == 0 && w.Wypozyczenia.Count() == 0).Count()
+                                @(@ksiazka.Woluminy
+                                    .Where(w =>
+                                    !w.Rezerwacje.Any(r => r.DataWygasniecia > DateTime.Now) &&
+                                    w.Wypozyczenia.All(wp => wp.DataZwrotu <= DateTime.Now) 
+                                    )
+                                    .Count())
                             </p>
 
                             @{

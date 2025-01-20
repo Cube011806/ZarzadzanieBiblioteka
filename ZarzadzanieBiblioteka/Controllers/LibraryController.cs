@@ -430,8 +430,8 @@ namespace ZarzadzanieBiblioteka.Controllers
                 .Include(w => w.Ksiazka)
                 .FirstOrDefault(w => w.Id == wypozyczenie.WoluminId);
             ViewBag.Wolumin = wolumin;
- 
-            wypozyczenie.DataZwrotu = wypozyczenie.DataWypozyczenia.AddDays(14);
+            wypozyczenie.DataWypozyczenia = DateTime.Now;
+            wypozyczenie.DataZwrotu = DateTime.Now.AddDays(14);
             foreach(var rezerwacja in wolumin.Rezerwacje)
             {
                 _dbcontext.Remove(rezerwacja);
