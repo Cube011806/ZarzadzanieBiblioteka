@@ -394,7 +394,20 @@ namespace ZarzadzanieBiblioteka.Controllers
                 {
                     var userId = wolumin.Rezerwacje.First().Uzytkownik.Id;
                     var user = _dbcontext.Uzytkownicy.Find(userId);
+                    var wypozyczenie = new Wypozyczenie
+                    {
+                        UzytkownikId = userId,
+                        WoluminId = wolumin.Id,
+                        DataWypozyczenia = DateTime.Now,
+                        DataZwrotu = DateTime.Now.AddDays(14)
+                    };
+
+                    _dbcontext.Wypozyczenia.Add(wypozyczenie);
+                    _dbcontext.SaveChanges();
                     users.Add(user);
+
+                    TempData["SuccessMessage"] = "Pomyślnie wypożyczono wolumin książki!";
+                    return RedirectToAction("IndexLoans");
                 }
                 else
                 {
