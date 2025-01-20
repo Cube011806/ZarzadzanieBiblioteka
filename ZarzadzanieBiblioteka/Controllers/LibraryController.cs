@@ -308,11 +308,17 @@ namespace ZarzadzanieBiblioteka.Controllers
             var loans = _dbcontext.Wypozyczenia.ToList();
             if(!string.IsNullOrEmpty(KwerendaWyszukujaca))
             {
+                var uzytkownik = _dbContext.Uzytkownicy.FirstOrDefault(u => u.Email.ToLower().Contains(KwerendaWyszukujaca.ToLower()));
+                if (uzytkownik == null)
+                {
+                    TempData["ErrorMessage"] = "Nie udało się znaleźć użytkownika, którego email zawierałby taką frazę!";
+                    return RedirectToAction("IndexLoans");
+                }
                 loans = _dbcontext.Wypozyczenia.Where(w => w.Uzytkownik.Email.ToLower().Contains(KwerendaWyszukujaca.ToLower())).ToList();
                 ViewBag.Rezerwacje = _dbcontext.Rezerwacje.Where(r => r.Uzytkownik.Email.ToLower().Contains(KwerendaWyszukujaca.ToLower()) && r.DataWygasniecia > DateTime.Now).ToList();
                 if((loans == null || loans.Count == 0) && (ViewBag.Rezerwacje == null || ViewBag.Rezerwacje.Count == 0))
                 {
-                    TempData["ErrorMessage"] = "Nie udało się znaleźć użytkownika, którego email zawierałby taką frazę!";
+                    TempData["ErrorMessage"] = "Użytkownicy o tej frazie nie mają aktualnie zarezerwowanych lub wypożyczonych książek!";
                     return RedirectToAction("IndexLoans");
                 }
             }
@@ -321,6 +327,7 @@ namespace ZarzadzanieBiblioteka.Controllers
                 loans = _dbcontext.Wypozyczenia.ToList();
                 ViewBag.Rezerwacje = _dbcontext.Rezerwacje.Where(r => r.DataWygasniecia > DateTime.Now).ToList();
             }
+            ViewData["KwerendaWyszukujaca"] = KwerendaWyszukujaca;
             return View(loans);
         }
         public IActionResult IndexVolumes()
@@ -362,7 +369,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexVolumes");
         }
-        public IActionResult CancelReservation (int id)
+        public IActionResult CancelReservation (int id, string KwerendaWyszukujaca)
         {
             var reservation = _dbcontext.Rezerwacje.Find(id);
             if(reservation != null)
@@ -375,7 +382,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             {
                 TempData["ErrorMessage"] = "Nie udało się anulować rezerwacji!";
             }
-            return RedirectToAction("IndexLoans");
+            return RedirectToAction("IndexLoans", new { KwerendaWyszukujaca = KwerendaWyszukujaca });
         }
         public IActionResult LoanVolume(int volid)
         {
@@ -417,13 +424,13 @@ namespace ZarzadzanieBiblioteka.Controllers
             return RedirectToAction("IndexLoans");
         }
 
-        public IActionResult ReturnVolume(int id)
+        public IActionResult ReturnVolume(int id, string KwerendaWyszukujaca)
         {
             var wypozyczenie = _dbcontext.Wypozyczenia.Find(id);
             _dbcontext.Wypozyczenia.Remove(wypozyczenie);
             _dbcontext.SaveChanges();
             TempData["SuccessMessage"] = "Pomyślnie zwrócono wolumin książki!";
-            return RedirectToAction("IndexLoans");
+            return RedirectToAction("IndexLoans", new { KwerendaWyszukujaca = KwerendaWyszukujaca });
         }
         public IActionResult AddReservation(int id)
         {
@@ -446,7 +453,7 @@ namespace ZarzadzanieBiblioteka.Controllers
 
             if (existingReservation != null)
             {
-                TempData["ErrorMessage"] = "Masz już zarezerwowaną conajmniej jedną książkę!";
+                TempData["ErrorMessage"] = "Masz już zarezerwowaną jedną książkę!";
                 return RedirectToAction("Index");
             }
 
@@ -464,7 +471,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie zarezerwowano książkę!";
             return RedirectToAction("Index");
         }
-        public IActionResult ExtendLoan(int id)
+        public IActionResult ExtendLoan(int id, string KwerendaWyszukujaca)
         {
             var wypozyczenie = _dbcontext.Wypozyczenia.Find(id);
             if (wypozyczenie != null)
@@ -478,7 +485,7 @@ namespace ZarzadzanieBiblioteka.Controllers
             {
                 TempData["ErrorMessage"] = "Nie udało się przedłużyć wypożyczenia książki!";
             }
-            return RedirectToAction("IndexLoans");
+            return RedirectToAction("IndexLoans", new { KwerendaWyszukujaca = KwerendaWyszukujaca });
         }
         //[HttpPost]
         //public IActionResult ConfirmReservation(int id)

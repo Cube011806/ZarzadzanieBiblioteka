@@ -120,8 +120,8 @@
                                     <li><strong>Wypożyczający:</strong> @loan.Uzytkownik.UserName</li>
                                 </ul>
                                 <div class="d-flex justify-content-between">
-                                    <a class="btn btn-primary" asp-route-id="@loan.Id" asp-action="ReturnVolume">Zwróć książkę</a>
-                                    <a class="btn btn-secondary" asp-action="ExtendLoan" asp-route-id="@loan.Id">Przedłuż wypożyczenie</a>
+                                    <a class="btn btn-primary" asp-route-id="@loan.Id" asp-action="ReturnVolume" asp-route-KwerendaWyszukujaca="@ViewData["KwerendaWyszukujaca"]">Zwróć książkę</a>
+                                    <a class="btn btn-secondary" asp-action="ExtendLoan" asp-route-id="@loan.Id" asp-route-KwerendaWyszukujaca="@ViewData["KwerendaWyszukujaca"]">Przedłuż wypożyczenie</a>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@
                                     <li><strong>Rezerwujący:</strong> @reservation.Uzytkownik.UserName</li>
                                 </ul>
                                 <div class="d-flex justify-content-between">
-                                    <a class="btn btn-primary" asp-route-id="@reservation.Id" asp-action="CancelReservation">Anuluj Rezerwację</a>
+                                    <a class="btn btn-primary" asp-route-id="@reservation.Id" asp-action="CancelReservation" asp-route-KwerendaWyszukujaca="@ViewData["KwerendaWyszukujaca"]">Anuluj Rezerwację</a>
                                 </div>
                             </div>
                         </div>

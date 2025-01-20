@@ -142,7 +142,6 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
-<input type="hidden" name="Gatunek" id="Gatunek" value="@Context.Request.Query["Gatunek"]" />
 <div class="text-center" style="padding: 30px; max-width: 1200px; margin: 0 auto;">
     @if (User.Identity.IsAuthenticated)
     {
@@ -290,7 +289,7 @@
                 const selectedBook1IdForSorting = document.getElementById('selectedBook1IdForSorting').value;
 
                 if (selectedBook1IdForSearching === "0" && selectedBook1IdForSorting === "0") {
-                    // First book selected, store its ID in the hidden input
+                    // Zapamiętujemy id pierwszej książki do porównania
                     document.getElementById('selectedBook1IdForSearching').value = bookId;
                     document.getElementById('selectedBook1IdForSorting').value = bookId;
                     alert('Książka została dodana do porównania. Wybierz jeszcze jedną.');
