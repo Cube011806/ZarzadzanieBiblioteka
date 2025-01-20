@@ -231,7 +231,11 @@
                             <p><strong>Wydanie:</strong> @ksiazka.Wydanie</p>
                             <p><strong>Data wydania:</strong> @ksiazka.DataWydania.ToString("dd.MM.yyyy") r.</p>
                             <p><strong>Liczba stron:</strong> @ksiazka.LiczbaStron</p>
-                            <p><strong>Dostępnych sztuk:</strong> @ksiazka.Woluminy.Where(w=>w.Rezerwacje.Count() == 0).Count()</p>
+                            <p>
+                                <strong>Dostępnych sztuk:</strong>
+                                @ksiazka.Woluminy.Where(w => w.Rezerwacje.Count() == 0 && w.Wypozyczenia.Count() == 0).Count()
+                            </p>
+
                             @{
                                 var id = UserManager.GetUserId(User);
                                 if(UserManager.FindByIdAsync(id).Result.AccessLevel == 1) {
