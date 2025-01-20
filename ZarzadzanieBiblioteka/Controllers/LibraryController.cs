@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections;
+using System.Collections.Generic;
 using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
 using static System.Reflection.Metadata.BlobBuilder;
@@ -378,9 +380,22 @@ namespace ZarzadzanieBiblioteka.Controllers
         public IActionResult LoanVolume(int volid)
         {
             var wolumin = _dbcontext.Woluminy.Find(volid);
-            var users = _dbcontext.Uzytkownicy.ToList(); 
-            ViewBag.Users = new SelectList(users, "Id", "UserName");
-            ViewBag.Wolumin = wolumin;
+            if(wolumin != null)
+            {
+                var users = new List<Uzytkownik>();
+                if (wolumin.Rezerwacje.Count != 0)
+                {
+                    var userId = wolumin.Rezerwacje.First().Uzytkownik.Id;
+                    var user = _dbcontext.Uzytkownicy.Find(userId);
+                    users.Add(user);
+                }
+                else
+                {
+                    users = _dbcontext.Uzytkownicy.ToList();
+                }
+                ViewBag.Users = new SelectList(users, "Id", "UserName");
+                ViewBag.Wolumin = wolumin;
+            }
             return View();
         }
         [HttpPost]
