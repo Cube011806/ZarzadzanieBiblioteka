@@ -1,42 +1,4 @@
 ﻿@model Autor
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
-        <strong>@TempData["ErrorMessage"]</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-        <strong>@TempData["SuccessMessage"]</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-<div class="container my-5">
-    <div class="card shadow-sm">
-        <div class="card-header text-center">
-            <h3>Dodaj autora</h3>
-        </div>
-        <div class="card-body">
-            <form asp-action="AddAuthor" method="post">
-                <div class="mb-3">
-                    <label for="Imie" class="form-label">Imię</label>
-                    <input type="text" asp-for="Imie" class="form-control" id="Imie" placeholder="Wpisz imię autora" />
-                </div>
-
-                <div class="mb-3">
-                    <label for="Nazwisko" class="form-label">Nazwisko</label>
-                    <input type="text" asp-for="Nazwisko" class="form-control" id="Nazwisko" placeholder="Wpisz nazwisko autora" />
-                </div>
-
-                <div class="text-center">
-                    <button type="submit" class="btn btn-info">Dodaj</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <style>
     .card {
@@ -63,3 +25,45 @@
         font-size: 1.1rem;
     }
 </style>
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["ErrorMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <strong>@TempData["SuccessMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Dodaj autora</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddAuthor" method="post">
+                        <div class="mb-3">
+                            <label asp-for="Imie" class="form-label">Imię</label>
+                            <input type="text" class="form-control shadow-sm" asp-for="Imie" placeholder="Wpisz imię autora" required />
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Nazwisko" class="form-label">Nazwisko</label>
+                            <input type="text" class="form-control shadow-sm" asp-for="Nazwisko" placeholder="Wpisz nazwisko autora" required />
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success btn-lg shadow-sm">Dodaj autora</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
