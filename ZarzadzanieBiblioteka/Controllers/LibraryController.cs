@@ -371,10 +371,21 @@ namespace ZarzadzanieBiblioteka.Controllers
         [HttpPost]
         public IActionResult LoanVolume(Wypozyczenie wypozyczenie)
         {
+            var users = _dbcontext.Uzytkownicy.ToList();
+            ViewBag.Users = new SelectList(users, "Id", "UserName");
+            var wolumin = _dbcontext.Woluminy
+                .Include(w => w.Ksiazka)
+                .FirstOrDefault(w => w.Id == wypozyczenie.WoluminId);
+            ViewBag.Wolumin = wolumin;
+
+            wypozyczenie.DataZwrotu = wypozyczenie.DataWypozyczenia.AddDays(14);
+
             _dbcontext.Wypozyczenia.Add(wypozyczenie);
             _dbcontext.SaveChanges();
+
             return RedirectToAction("IndexLoans");
         }
+
         public IActionResult ReturnVolume(int id)
         {
             var wypozyczenie = _dbcontext.Wypozyczenia.Find(id);
