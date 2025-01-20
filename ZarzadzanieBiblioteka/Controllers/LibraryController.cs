@@ -401,11 +401,14 @@ namespace ZarzadzanieBiblioteka.Controllers
                         DataWypozyczenia = DateTime.Now,
                         DataZwrotu = DateTime.Now.AddDays(14)
                     };
-
+                    foreach (var rezerwacja in wolumin.Rezerwacje)
+                    {
+                        _dbcontext.Remove(rezerwacja);
+                    }
+                    _dbcontext.Woluminy.Update(wolumin);
                     _dbcontext.Wypozyczenia.Add(wypozyczenie);
                     _dbcontext.SaveChanges();
                     users.Add(user);
-
                     TempData["SuccessMessage"] = "Pomyślnie wypożyczono wolumin książki!";
                     return RedirectToAction("IndexLoans");
                 }
