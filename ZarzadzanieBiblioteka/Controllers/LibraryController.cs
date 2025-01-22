@@ -229,28 +229,19 @@ namespace ZarzadzanieBiblioteka.Controllers
             return View(authors);
         }
 
-        /// 
-        //public IActionResult ViewAuthor(Ksiazka ksiazka)
-        //{
-        //    var authors = _dbcontext.autorzy.tolist();
-        //    return view(authors);
-        //}
-        //public IActionResult SelectAuthor(Ksiazka ksiazka, int id)
-        //{
-        //    ksiazka.AutorId = id;
-        //    _dbcontext.Update(ksiazka);
-        //    _dbcontext.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
         /// <summary>
-        /// Displays all authors added to the database.
+        /// Displays view with form allowing adding new author to the database.
         /// </summary>
-        /// <returns>Returns view with list of every author added to the system.</returns>
+        /// <returns>Returns the view with form.</returns>
         public IActionResult AddAuthor()
         {
             return View();
         }
+        /// <summary>
+        /// Adds new author to the database.
+        /// </summary>
+        /// <param name="autor">Object of class <see cref="Autor"/> filled with information from the form.</param>
+        /// <returns>Returns redirection to view IndexAuthors.</returns>
         [HttpPost]
         public IActionResult AddAuthor(Autor autor)
         {
@@ -259,11 +250,21 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie dodano autora!";
             return RedirectToAction("IndexAuthors");
         }
+        /// <summary>
+        /// Displays view with form allowing to edit existing author in the database.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Autor"/>.</param>
+        /// <returns>Returns the view with form.</returns>
         public IActionResult EditAuthor(int id)
         {
             var author = _dbcontext.Autorzy.Find(id);
             return View(author);
         }
+        /// <summary>
+        /// Makes changes to existing author in the database.
+        /// </summary>
+        /// <param name="autor">Object of class <see cref="Autor"/> filled with edited information from the form.</param>
+        /// <returns>Returns redirection to view IndexAuthors.</returns>
         [HttpPost]
         public IActionResult EditAuthor(Autor autor)
         {
@@ -272,6 +273,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie edytowano autora!";
             return RedirectToAction("IndexAuthors");
         }
+        /// <summary>
+        /// Deletes existing author from the database.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Autor"/>.</param>
+        /// <returns>Returns redirection to view IndexAuthors.</returns>
         public IActionResult DeleteAuthor(int id)
         {
             var author = _dbcontext.Autorzy.Find(id);
@@ -284,17 +290,27 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["ErrorMessage"] = "Nie udało się usunąć autora!";
             return RedirectToAction("IndexAuthors");
         }
-        public IActionResult AddReview(int idksiazka)
+        /// <summary>
+        /// Displays view with form allowing to add new review of the book pointed by idKsiazka.
+        /// </summary>
+        /// <param name="idKsiazka">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <returns>Returns the view with form.</returns>
+        public IActionResult AddReview(int idKsiazka)
         {
-            ViewBag.IdKsiazka = idksiazka;
+            ViewBag.IdKsiazka = idKsiazka;
             return View();
         }
+        /// <summary>
+        /// Adds new review created by form to the database and links it with existing book.
+        /// </summary>
+        /// <param name="opinia">Object of the class <see cref="Opinia" /> created by the form.</param>
+        /// <param name="idKsiazka">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <returns>Returns redirection to view BookDetails.</returns>
         [HttpPost]
         public IActionResult AddReview(Opinia opinia, int IdKsiazka)
         {
             var uzytkownikId = _userManager.GetUserId(User);
 
-            //sprawdzamy czy użytkownik dodał już opinie o tej książcę
             var czyIstniejeOpinia = _dbcontext.Opinie.FirstOrDefault(op => op.KsiazkaId == IdKsiazka && op.UzytkownikId == uzytkownikId);
 
             if(czyIstniejeOpinia != null)
@@ -305,20 +321,30 @@ namespace ZarzadzanieBiblioteka.Controllers
 
             opinia.UzytkownikId = uzytkownikId;
             opinia.KsiazkaId = IdKsiazka;
-            //var ksiazka = _dbcontext.Ksiazki.Find(IdKsiazka);
-            //ksiazka.Opinie.Add(opinia);
             _dbcontext.Opinie.Add(opinia);
             _dbcontext.SaveChanges();
             TempData["SuccessMessage"] = "Pomyślnie dodano opinię!";
             var ksiazka = _dbcontext.Ksiazki.Include(k => k.Opinie).ThenInclude(o => o.Uzytkownik).FirstOrDefault(k => k.Id == IdKsiazka);
             return View("BookDetails",ksiazka);
         }
+        /// <summary>
+        /// Displays view with form allowing to edit existing review of the book pointed by idKsiazka.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Opinia"/>.</param>
+        /// <param name="idKsiazka">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <returns>Returns the view with form.</returns>
         public IActionResult EditReview(int id, int IdKsiazka)
         {
             ViewBag.IdKsiazka = IdKsiazka;
             var opinia = _dbcontext.Opinie.Find(id);
             return View(opinia);
         }
+        /// <summary>
+        /// Edits existing review with data retrieved from form.
+        /// </summary>
+        /// <param name="opinia">Updated object of the class <see cref="Opinia" /> by data from the form.</param>
+        /// <param name="idKsiazka">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <returns>Returns redirection to view BookDetails.</returns>
         [HttpPost]
         public IActionResult EditReview(Opinia opinia, int IdKsiazka)
         {
@@ -330,6 +356,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             var ksiazka = _dbcontext.Ksiazki.Include(k => k.Opinie).ThenInclude(o => o.Uzytkownik).FirstOrDefault(k => k.Id == IdKsiazka);
             return View("BookDetails", ksiazka);
         }
+        /// <summary>
+        /// Deletes existing review from the database.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Opinia"/>.</param>
+        /// <returns>Returns redirection to view BookDetails.</returns>
         public IActionResult DeleteReview(int id)
         {
             var opinia = _dbcontext.Opinie.Find(id);
@@ -344,6 +375,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["ErrorMessage"] = "Nie udało się usunąć opinii!";
             return View("BookDetails", ksiazka);
         }
+        /// <summary>
+        /// Displays loans and reservations from the database.
+        /// </summary>
+        /// <param name="KwerendaWyszukujaca">String that allows to filter and sort content of the view.</param>
+        /// <returns>Returns view with list of loans and reservations from the database.</returns>
         public IActionResult IndexLoans(string KwerendaWyszukujaca)
         {
             var loans = _dbcontext.Wypozyczenia.ToList();
@@ -371,6 +407,10 @@ namespace ZarzadzanieBiblioteka.Controllers
             ViewData["KwerendaWyszukujaca"] = KwerendaWyszukujaca;
             return View(loans);
         }
+        /// <summary>
+        /// Displays list of all volumes for books from the database.
+        /// </summary>
+        /// <returns>Returns view with list of books and volumes from the database.</returns>
         public IActionResult IndexVolumes()
         {
             var books = _dbcontext.Ksiazki.ToList();
@@ -379,6 +419,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             var booksAndReservations = new Tuple<IEnumerable<Ksiazka>, IEnumerable<Rezerwacja>>(books, reservations);
             return View(booksAndReservations);
         }
+        /// <summary>
+        /// Adds new volume for book from the database.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <returns>Returns redirection to view IndexVolumes.</returns>
         public IActionResult AddVolume(int id)
         {
             var ksiazka = _dbcontext.Ksiazki.FirstOrDefault(k => k.Id == id);
@@ -395,6 +440,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie dodano wolumin książki!";
             return RedirectToAction("IndexVolumes");
         }
+        /// <summary>
+        /// Deletes volume from the database.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Wolumin"/>.</param>
+        /// <returns>Returns redirection to view IndexVolumes.</returns>
         public IActionResult DeleteVolume(int id)
         {
             var wolumin = _dbcontext.Woluminy.Find(id);
@@ -410,6 +460,12 @@ namespace ZarzadzanieBiblioteka.Controllers
             _dbcontext.SaveChanges();
             return RedirectToAction("IndexVolumes");
         }
+        /// <summary>
+        /// Cancels reservation of the book.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Rezerwacja"/>.</param>
+        /// <param name="KwerendaWyszukujaca">String that allows to filter and sort content of the view.</param>
+        /// <returns>Returns redirection to view IndexLoans.</returns>
         public IActionResult CancelReservation (int id, string KwerendaWyszukujaca)
         {
             var reservation = _dbcontext.Rezerwacje.Find(id);
@@ -425,9 +481,14 @@ namespace ZarzadzanieBiblioteka.Controllers
             }
             return RedirectToAction("IndexLoans", new { KwerendaWyszukujaca = KwerendaWyszukujaca });
         }
-        public IActionResult LoanVolume(int volid)
+        /// <summary>
+        /// Display form to loan volume to the selected user.
+        /// </summary>
+        /// <param name="volId">Id number of the existing object of class <see cref="Wolumin"/>.</param>
+        /// <returns>Returns redirection to view IndexLoans or returns view with form.</returns>
+        public IActionResult LoanVolume(int volId)
         {
-            var wolumin = _dbcontext.Woluminy.Find(volid);
+            var wolumin = _dbcontext.Woluminy.Find(volId);
             if(wolumin != null)
             {
                 var users = new List<Uzytkownik>();
@@ -462,6 +523,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             }
             return View();
         }
+        /// <summary>
+        /// Loans first available volume to the selected user.
+        /// </summary>
+        /// <param name="wypozyczenie">Id number of the existing object of class <see cref="Wypozyczenie"/>.</param>
+        /// <returns>Returns redirection to view IndexLoans.</returns>
         [HttpPost]
         public IActionResult LoanVolume(Wypozyczenie wypozyczenie)
         {
@@ -484,7 +550,12 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie wypożyczono wolumin książki!";
             return RedirectToAction("IndexLoans");
         }
-
+        /// <summary>
+        /// Allows to return loaned volume.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Wypozyczenie"/>.</param>
+        /// <param name="KwerendaWyszukujaca">String that allows to filter and sort content of the view.</param>
+        /// <returns>Returns redirection to view IndexLoans.</returns>
         public IActionResult ReturnVolume(int id, string KwerendaWyszukujaca)
         {
             var wypozyczenie = _dbcontext.Wypozyczenia.Find(id);
@@ -493,6 +564,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie zwrócono wolumin książki!";
             return RedirectToAction("IndexLoans", new { KwerendaWyszukujaca = KwerendaWyszukujaca });
         }
+        /// <summary>
+        /// Makes reservation for the first available volume of the book.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <returns>Returns redirection to view Index, containing list of books.</returns>
         public IActionResult AddReservation(int id)
         {
             var ksiazka = _dbcontext.Ksiazki.Find(id);
@@ -532,6 +608,12 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie zarezerwowano książkę!";
             return RedirectToAction("Index");
         }
+        /// <summary>
+        /// Extends the loan period of selected volume by 2 weeks.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Wypozyczenie"/>.</param>
+        /// <param name="KwerendaWyszukujaca">String that allows to filter and sort content of the view.</param>
+        /// <returns>Returns redirection to view IndexLoans, containing list of loans and reservations.</returns>
         public IActionResult ExtendLoan(int id, string KwerendaWyszukujaca)
         {
             var wypozyczenie = _dbcontext.Wypozyczenia.Find(id);
@@ -548,7 +630,12 @@ namespace ZarzadzanieBiblioteka.Controllers
             }
             return RedirectToAction("IndexLoans", new { KwerendaWyszukujaca = KwerendaWyszukujaca });
         }
-
+        /// <summary>
+        /// Compares selected books.
+        /// </summary>
+        /// <param name="book1Id">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <param name="book2Id">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <returns>Returs redirection to view which contains comparison between selected books.</returns>
         public IActionResult CompareBooks(int book1Id, int book2Id)
         {
             if(book1Id == book2Id)
@@ -586,10 +673,19 @@ namespace ZarzadzanieBiblioteka.Controllers
 
             return View();
         }
+        /// <summary>
+        /// Displays the list of library management exclusive functions.
+        /// </summary>
+        /// <returns>Returns view with options designed for use by library employees.</returns>
         public IActionResult IndexManage()
         {
             return View();
         }
+        /// <summary>
+        /// Displays view with details about selected book.
+        /// </summary>
+        /// <param name="id">Id number of the existing object of class <see cref="Ksiazka"/>.</param>
+        /// <returns>Returs view which contains all available data about selected book.</returns>
         public IActionResult BookDetails(int id)
         {
             var ksiazka = _dbcontext.Ksiazki.Find(id);
