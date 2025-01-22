@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ZarzadzanieBiblioteka.Data;
-using ZarzadzanieBiblioteka.Models;
+using ZarzadzanieBiblioteka.Models; // Replace with your actual namespace
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +16,13 @@ builder.Services.AddDefaultIdentity<Uzytkownik>(options => options.SignIn.Requir
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<EmailService>();
 var app = builder.Build();
+
+// Apply migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
