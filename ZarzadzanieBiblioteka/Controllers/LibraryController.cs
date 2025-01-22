@@ -2,32 +2,39 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Collections;
-using System.Collections.Generic;
 using ZarzadzanieBiblioteka.Data;
 using ZarzadzanieBiblioteka.Models;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace ZarzadzanieBiblioteka.Controllers
 {
+    /// <summary>
+    /// Controller for managing the library system.
+    /// Provides functionality for books, authors, reviews, reservations, and loans.
+    /// </summary>
     public class LibraryController : BaseController
     {
         private readonly ApplicationDbContext _dbcontext;
         private readonly UserManager<Uzytkownik> _userManager;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LibraryController"/> class.
+        /// </summary>
+        /// <param name="userManager">The user manager for handling user-related operations.</param>
+        /// <param name="dbContext">The application database context.</param>
         public LibraryController(ApplicationDbContext dbContext, UserManager<Uzytkownik> userManager) : base(dbContext)
         {
             _dbcontext = dbContext;
             _userManager = userManager;
         }
+        /// <summary>
+        /// Displays the list of books in the library.
+        /// </summary>
+        /// <returns>A view with a list of books.</returns>
         public IActionResult Index(string SortujPo, string KwerendaWyszukujaca, int? Book1Id, string Gatunek)
         {
             if (!User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
             }
-            //AsQueryable działa tak że teraz LINQ będzie mógł łączyć kwerendy dynamicznie dzięki czemu 
-            //możemy przetworzyć wyszukanie oraz sortowanie jednocześnie i możemy łączyć te dwie funkcje.
             var ksiazki = _dbcontext.Ksiazki.AsQueryable();
 
             //filtrowanie
@@ -72,6 +79,10 @@ namespace ZarzadzanieBiblioteka.Controllers
 
             return View(ksiazki.ToList());
         }
+        /// <summary>
+        /// Displays the view with form allowing user to create a book.
+        /// </summary>
+        /// <returns>A view with a form.</returns>
         public IActionResult Add()
         {
             var authors = _dbcontext.Autorzy.Select(a => new
@@ -82,7 +93,12 @@ namespace ZarzadzanieBiblioteka.Controllers
             ViewBag.ListaAutorow = new SelectList(authors, "Id", "Dane");
             return View();
         }
-
+        /// <summary>
+        /// Add new book to the system.
+        /// </summary>
+        /// <param name="ksiazka">Object of class <see cref="Ksiazka"/> created in the form.</param>
+        /// <param name="file">File containing cover of the added book.</param>
+        /// <returns>A asynchronous task adding book to the database.</returns>
         [HttpPost]
         public async Task<IActionResult> Add(Ksiazka ksiazka, IFormFile file)
         {
@@ -106,13 +122,21 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie dodano książkę!";
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// Displays view with form to confirm deleting book from the database.
+        /// </summary>
+        /// <param name="id">The id number of the book to be removed.</param>
+        /// <returns>Returns view with form to confirm delete.</returns>
         public IActionResult Delete(int id)
         {
             var ksiazka = _dbcontext.Ksiazki.Find(id);
             return View(ksiazka);
         }
-
+        /// <summary>
+        /// Removes book from the database.
+        /// </summary>
+        /// <param name="id">The id number of the book to be removed.</param>
+        /// <returns>Returns view with list of all books.</returns>
         [HttpPost]
         public IActionResult ConfirmDelete(int id)
         {
@@ -127,7 +151,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie usunięto książkę!";
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// Displays form allowing to update book informations.
+        /// </summary>
+        /// <param name="id">The id number of the book to be edited. It allows to display already filled in form</param>
+        /// <returns>Returns view with form to edit a book.</returns>
         public IActionResult Edit(int id)
         {
             var ksiazkaToEdit = _dbcontext.Ksiazki.FirstOrDefault(ksiazka => ksiazka.Id == id);
@@ -145,7 +173,11 @@ namespace ZarzadzanieBiblioteka.Controllers
             ViewBag.ListaAutorow = new SelectList(authors, "Id", "Dane");
             return View(ksiazkaToEdit);
         }
-
+        /// <summary>
+        /// Updates book informations.
+        /// </summary>
+        /// <param name="id">The id number of the book to be edited.</param>
+        /// <returns>Returns view with all books.</returns>
         [HttpPost]
         public async Task<IActionResult> Edit(Ksiazka ksiazka, IFormFile file)
         {
@@ -187,23 +219,34 @@ namespace ZarzadzanieBiblioteka.Controllers
             TempData["SuccessMessage"] = "Pomyślnie edytowano książkę!";
             return RedirectToAction("Index");
         }
+        /// <summary>
+        /// Displays all authors added to the database.
+        /// </summary>
+        /// <returns>Returns view with list of every author added to the system.</returns>
         public IActionResult IndexAuthors()
         {
             var authors = _dbcontext.Autorzy.ToList();
             return View(authors);
         }
-        public IActionResult ViewAuthor(Ksiazka ksiazka)
-        {
-            var authors = _dbcontext.Autorzy.ToList();
-            return View(authors);
-        }
-        public IActionResult SelectAuthor(Ksiazka ksiazka, int id)
-        {
-            ksiazka.AutorId = id;
-            _dbcontext.Update(ksiazka);
-            _dbcontext.SaveChanges();
-            return RedirectToAction("Index");
-        }
+
+        /// 
+        //public IActionResult ViewAuthor(Ksiazka ksiazka)
+        //{
+        //    var authors = _dbcontext.autorzy.tolist();
+        //    return view(authors);
+        //}
+        //public IActionResult SelectAuthor(Ksiazka ksiazka, int id)
+        //{
+        //    ksiazka.AutorId = id;
+        //    _dbcontext.Update(ksiazka);
+        //    _dbcontext.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+        /// <summary>
+        /// Displays all authors added to the database.
+        /// </summary>
+        /// <returns>Returns view with list of every author added to the system.</returns>
         public IActionResult AddAuthor()
         {
             return View();
