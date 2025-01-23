@@ -33,7 +33,7 @@ namespace ZarzadzanieBiblioteka.Controllers
         [HttpPost]
         public async Task<IActionResult> Send(string subject, string message)
         {
-            var adminEmail = "example@gmail.com";
+            var adminEmail = "projektbiblius@gmail.com";
             await _emailService.SendEmailAsync(adminEmail, subject, message);
 
             TempData["SuccessMessage"] = "Twoja wiadomość została wysłana.";

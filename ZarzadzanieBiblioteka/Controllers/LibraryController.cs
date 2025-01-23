@@ -37,6 +37,14 @@ namespace ZarzadzanieBiblioteka.Controllers
             }
             var ksiazki = _dbcontext.Ksiazki.AsQueryable();
 
+            var users = _dbContext.Uzytkownicy.ToList();
+            if (users.Count == 1) {
+                var admin = users.FirstOrDefault();
+                admin.AccessLevel = 1;
+                _dbContext.Uzytkownicy.Update(admin);
+                _dbContext.SaveChanges();
+            }
+
             //filtrowanie
             if(!string.IsNullOrEmpty(Gatunek))
             {
